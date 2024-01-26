@@ -420,34 +420,70 @@ function e($row){
     return base64_encode(gzcompress(rawurlencode(json_encode($row)),9));
 }
 function obtenerTodo(){
-    $row_usuario=q("SELECT p.rif,s.avatar as avatar,split_part(p.rif, '-', 1) as nacionalidad,split_part(p.rif, '-', 2) as nro_rif , s.id,s.email,p.name,s.peoples_id,p.sex,p.birthdate,c.id as city_id,c.name as ciudad,p.phone,p.phone_home,p.saldo
-        FROM users s
-        INNER JOIN peoples p on p.id = s.peoples_id
-        INNER JOIN cities c on c.id = p.cities_id
-        WHERE s.email='".$_SESSION['usuario']['email']."'
-    ")[0];
+    // Configuración de la conexión a la base de datos (reemplaza con tus propios valores)
+    $dsn = 'pgsql:host=localhost;dbname=laravel';
+    $username = 'postgres';
+    $password = '1234';
+    $options = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+    ];
 
-    $habDirection=q("SELECT o.*,c.id as city_id,c.name as parroquia,re.id as region_id,re.name as municipio,st.id as state_id,st.name as estado
-        FROM order_address as o
-        INNER JOIN cities c ON c.id=o.cities_id 
-        INNER JOIN regions re ON re.id=c.regions_id 
-        INNER JOIN states st ON st.id=re.states_id
-        WHERE o.users_id = ".$_SESSION['usuario']['id']." and o.status = 'A' and o.type <> 'delivery'
-    ");
-    
-    $row_direccions=q("SELECT o.*,c.id as city_id,c.name as parroquia,re.id as region_id,re.name as municipio,st.id as state_id,st.name as estado
-        FROM order_address as o
-        INNER JOIN cities c on c.id = o.cities_id
-        INNER JOIN regions re ON re.id=c.regions_id 
-        INNER JOIN states st ON st.id=re.states_id
-        WHERE o.users_id = ".$_SESSION['usuario']['id']." and o.status = 'A' and o.type = 'delivery'
-    ");
-    $_SESSION["usuario"]=$row_usuario;
-    $_SESSION["usuario"]["directions"] = $row_direccions;
-    $_SESSION["usuario"]["habDirection"] = $habDirection;
+    try {
+        // Establecer conexión PDO
+        $pdo = new PDO($dsn, $username, $password, $options);
 
-    salida($_SESSION["usuario"],"Datos actualizados",true);
+        // Consulta para obtener los datos del usuario
+        $query_usuario = "SELECT p.rif, s.avatar as avatar, split_part(p.rif, '-', 1) as nacionalidad, split_part(p.rif, '-', 2) as nro_rif, s.id, s.email, p.name, s.peoples_id, p.sex, p.birthdate, c.id as city_id, c.name as ciudad, p.phone, p.phone_home
+            FROM users s
+            INNER JOIN peoples p ON p.id = s.peoples_id
+            INNER JOIN cities c ON c.id = p.cities_id
+            WHERE s.email = :email";
+
+        // Preparar y ejecutar la consulta de usuario
+        $stmt_usuario = $pdo->prepare($query_usuario);
+        $stmt_usuario->execute(['email' => $_SESSION['usuario']['email']]);
+        $row_usuario = $stmt_usuario->fetch();
+
+        // Consulta para obtener las direcciones habituales
+        $query_habDirection = "SELECT o.*, c.id as city_id, c.name as parroquia, re.id as region_id, re.name as municipio, st.id as state_id, st.name as estado
+            FROM order_address as o
+            INNER JOIN cities c ON c.id = o.cities_id 
+            INNER JOIN regions re ON re.id = c.regions_id 
+            INNER JOIN states st ON st.id = re.states_id
+            WHERE o.users_id = :user_id AND o.status = 'A' AND o.type <> 'delivery'";
+
+        // Preparar y ejecutar la consulta de direcciones habituales
+        $stmt_habDirection = $pdo->prepare($query_habDirection);
+        $stmt_habDirection->execute(['user_id' => $_SESSION['usuario']['id']]);
+        $habDirection = $stmt_habDirection->fetchAll();
+
+        // Consulta para obtener las direcciones de entrega
+        $query_direccions = "SELECT o.*, c.id as city_id, c.name as parroquia, re.id as region_id, re.name as municipio, st.id as state_id, st.name as estado
+            FROM order_address as o
+            INNER JOIN cities c ON c.id = o.cities_id
+            INNER JOIN regions re ON re.id = c.regions_id 
+            INNER JOIN states st ON st.id = re.states_id
+            WHERE o.users_id = :user_id AND o.status = 'A' AND o.type = 'delivery'";
+
+        // Preparar y ejecutar la consulta de direcciones de entrega
+        $stmt_direccions = $pdo->prepare($query_direccions);
+        $stmt_direccions->execute(['user_id' => $_SESSION['usuario']['id']]);
+        $row_direccions = $stmt_direccions->fetchAll();
+
+        // Asignar los resultados a las variables de sesión
+        $_SESSION["usuario"] = $row_usuario;
+        $_SESSION["usuario"]["directions"] = $row_direccions;
+        $_SESSION["usuario"]["habDirection"] = $habDirection;
+
+        salida($_SESSION["usuario"], "Datos actualizados", true);
+    } catch (PDOException $e) {
+        salida(null, "Error al conectar a la base de datos: " . $e->getMessage(), false);
+    }
 }
+
+
 function obtenerDireccion(){
     $row = q("SELECT o.*,c.id as city_id,c.name as parroquia,re.id as region_id,re.name as municipio,st.id as state_id,st.name as estado
         FROM order_address as o

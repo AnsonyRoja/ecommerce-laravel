@@ -80,7 +80,9 @@ function limpiar($var){
 function conectar_db($host,$base_dato,$usuario,$clave,$puerto){
     $conn = pg_connect("host=127.0.0.1 port=5432 dbname=laravel user=postgres password=1234")
     or die('No se ha podido conectar: ' . pg_last_error());
+
     return $dbconn;
+    
 }
 function q($sql){
     $arr=array();

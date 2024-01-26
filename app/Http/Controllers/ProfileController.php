@@ -13,6 +13,8 @@ class ProfileController extends Controller
         if(!isset($_SESSION["usuario"]) && empty($_SESSION["usuario"]) && empty($_SESSION["usuario"]["id"])){
             return redirect()->action('HomeController@index');
         }
+    
+
         $Coin = Coin::where("id",1)->first();
         return view("profile",["tasa_dolar"=>$Coin->rate]);
     }

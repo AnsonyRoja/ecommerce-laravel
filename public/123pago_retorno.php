@@ -69,21 +69,24 @@
 		} 
 	}
 
-	function extraer_datos_db(){
-	    $gestor = @fopen("../.env", "r");
-	    if ($gestor) {
-	        while (($búfer = fgets($gestor, 4096)) !== false) {
-	            $arr[]=$búfer;
-	        }
-	        fclose($gestor);
-	    }
-	    $db['host']     =limpiar($arr[9]);
-	    $db['port']     =limpiar($arr[10]);
-	    $db['database'] =limpiar($arr[11]);
-	    $db['user']     =limpiar($arr[12]);
-	    $db['password'] =limpiar($arr[13]);
-	    return $db;
-	}
+// Importa la clase Dotenv
+use Dotenv\Dotenv;
+
+function extraer_datos_db(){
+    // Carga el archivo .env
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->load();
+
+    // Retorna los valores de configuración de la base de datos
+    return [
+        'host' => $_ENV['DB_HOST'],
+        'port' => $_ENV['DB_PORT'],
+        'database' => $_ENV['DB_DATABASE'],
+        'user' => $_ENV['DB_USERNAME'],
+        'password' => $_ENV['DB_PASSWORD']
+    ];
+}
+
 
 	function limpiar($var){
 	    return trim(explode('=',$var)[1]);

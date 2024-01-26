@@ -7,7 +7,7 @@ var precioMax=50;
 var palabrasClaves="";
 var arrPalabrasClaves=[];
 var islogin=false;
-get("web_no_login");
+get("login");
 verificarSesion();
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
@@ -95,7 +95,7 @@ function procesar(data,evento){
     
     switch(evento){
     case 'web_no_login':
-   // console.log(data);
+   console.log(data);
     var data = JSON.parse(JXG.decompress(data));
 
         if(data.success==true){

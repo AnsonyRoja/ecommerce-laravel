@@ -70,7 +70,7 @@
 											<input type="password" class="form-control" name="password" v-model="user.pass" @keypress="enterLogin($event)">
 										</div>
 										<div class="form-group">
-											<input type="checkbox"> Recordar Contraseña
+											<input type="checkbox"> Recordar Contraseñas
 										</div>
 										<div class="form-group">
 											<button type="button" @click="login()" class="btn">Entrar</button>
@@ -258,29 +258,43 @@ export default {
 			}
 		},
 		login() {
-			axios.get(URLSERVER+"api_rapida.php?evento=login&email="+this.user.email+"&password="+this.user.pass).then( (response) => {
-				if(response.data.success == false)
-				{
-					Swal.fire({
-					  icon: 'error',
-					  title: 'Error',
-					  text: response.data.msj_general,
-					});
-				}else{
-					location.href = window.location.href;
-				}
-			}).catch(err => {
-				if(err.response.data.success == false)
-				{
-					Swal.fire({
-					  icon: 'error',
-					  title: 'Error',
-					  text: "Usuario y/o clave incorrecta",
-					});
-				}
-			});
-			
-		},
+    // Asegurémonos de que el usuario haya proporcionado un correo electrónico y una contraseña
+    if (!this.user.email || !this.user.pass) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Por favor, ingrese su correo electrónico y contraseña',
+        });
+        return; // Detener la ejecución si falta el correo electrónico o la contraseña
+    }
+
+    // Realizar la solicitud GET al servidor para iniciar sesión
+    axios.get(`${URLSERVER}api_rapida.php?evento=login&email=${this.user.email}&password=${this.user.pass}`)
+        .then(response => {
+            // Verificar si la solicitud fue exitosa
+            if (response.data.success === false) {
+                // Si la solicitud fue exitosa pero hubo un error de inicio de sesión
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.data.msj_general || 'Error al iniciar sesión',
+                });
+            } else {
+                // Si el inicio de sesión fue exitoso, redirigir al usuario a la página principal
+                location.href = window.location.href;
+            }
+        })
+        .catch(error => {
+            // Si hubo un error en la solicitud (por ejemplo, error de red o servidor no disponible)
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al comunicarse con el servidor. Por favor, inténtelo de nuevo más tarde.',
+            });
+            console.error('Error en la solicitud:', error);
+        });
+},
+
 		logout()
 		{
 			localStorage.clear();

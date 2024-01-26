@@ -10,7 +10,7 @@ $con=conectar_db($a['host'],$a['database'],$a['user'],$a['password'],$a['port'])
 $datos=run();
 session_start();
 date_default_timezone_set('America/Manaus');
-$json=$_GET['json'];
+$json = isset($_GET['json']) ? $_GET['json'] : null;
 $_GET=seguro($_GET);
 $_POST=seguro($_POST);
 
@@ -42,7 +42,7 @@ switch($evento) {
         $row['msj_general']=true;
         echo e($row);
     break;
-    case 'loginNuevo':
+    case 'login':
         $row['data']['usuario']=loginMovil(true);
         if($row['data']['usuario']['success']==true){
             $row['data']['perfil']=getPerfil(true);
@@ -298,7 +298,7 @@ switch($evento) {
     default:
     
     salidaNueva(null,"Intente de nuevo.",false);
-    //salida($row,"Disculpe debe enviar un evento".$_POST['evento']."-".$_GET['evento'],false);
+    // salida($row,"Disculpe debe enviar un evento".$_POST['evento']."-".$_GET['evento'],false);
 }
 function actualizarFotoPerfil(){
     $users_id=$_SESSION['usuario']['id'];
@@ -501,6 +501,7 @@ function login(){
    }else{
     salida($row,"Correo electrónico no valido",false);
 }
+
 }
 
 function logout(){
@@ -1537,20 +1538,30 @@ function getRegions($tipo_salida){
         return salidaNueva(null,"No se cargaron los municipios",false,$tipo_salida);
     }
 }
-function getRegionsAll($tipo_salida,$all=false){
-    $states_id=$_GET['states_id'];
-    if($all){
-        $status="1=1";
-    }else{
-        $status="status='A'";
+function getRegionsAll($tipo_salida, $all = false) {
+    // Verificar si la clave 'states_id' está definida en $_GET
+    if (isset($_GET['states_id'])) {
+        $states_id = $_GET['states_id'];
+    } else {
+        // Manejar el caso cuando 'states_id' no está definida en $_GET
+        // Puedes lanzar una excepción, devolver un valor predeterminado o realizar otra acción según tu lógica de negocio
+        // Aquí solo se muestra un mensaje de advertencia
+        return salidaNueva(null, "La clave 'states_id' no está definida en la solicitud", false, $tipo_salida);
     }
-    $arr=q("SELECT id,name,states_id FROM regions WHERE $status ORDER BY name");
-    if(is_array($arr)){
-        return salidaNueva($arr,'Listando municipios',true,$tipo_salida);
-    }else{
-        return salidaNueva(null,"No se cargaron los municipios",false,$tipo_salida);
+
+    if ($all) {
+        $status = "1=1";
+    } else {
+        $status = "status='A'";
+    }
+    $arr = q("SELECT id,name,states_id FROM regions WHERE $status ORDER BY name");
+    if (is_array($arr)) {
+        return salidaNueva($arr, 'Listando municipios', true, $tipo_salida);
+    } else {
+        return salidaNueva(null, "No se cargaron los municipios", false, $tipo_salida);
     }
 }
+
 function cambiarClave(){
     $email  =$_SESSION['usuario']['email'];
     $passwordActual=$_POST['passwordActual']; 
@@ -1731,42 +1742,46 @@ function recortar_imagen_combo($row){
      return $row;
     
 }
-function recortar_imagen($row,$cant=null){
-    foreach($row as $id=>$value){
-        $no_image[0]='imagenNoDisponible.png';
-      
-        if($value['image']==null or !file_exists('storage/'.json_decode($value['image'])[0])) $value['image']=json_encode($no_image);
+function recortar_imagen($row, $cant=null) {
+    foreach ($row as $id => $value) {
+        $no_image[0] = 'imagenNoDisponible.png';
 
-        if(isset($value['image_b'])){
-            $row[$id]['image_b']=cambiarBarra($value['image_b']);
+        if ($value['image'] == null or !file_exists('storage/'.json_decode($value['image'])[0])) {
+            $value['image'] = json_encode($no_image);
         }
 
-        $img=json_decode($value['image']);
-        if(is_array($img)){
-            $imgLista=$img[0];
-        }else{
-            $imgLista=$value['image'];
+        if (isset($value['image_b'])) {
+            $row[$id]['image_b'] = cambiarBarra($value['image_b']);
         }
-        $arr=explode(".",$imgLista);
 
-        $row[$id]['image']=cambiarBarra($arr[0].'-cropped.'.$arr[1]);
-        $row[$id]['image_grande']=cambiarBarra($value['image']);
-        $row[$id]['name']=ucwords(mb_strtolower($value['name']));
-        $row[$id]['description_short']=ucfirst(mb_strtolower($value['description_short']));
-        if(is_array($cant)){
-            $row[$id]['cant']=$cant[$value['id']];
+        $img = json_decode($value['image']);
+        if (is_array($img)) {
+            $imgLista = $img[0];
+        } else {
+            $imgLista = $value['image'];
         }
-        if($value['rating']==null){
-            $row[$id]['rating']='0';
-        }
-        if($value['calificado_por_mi']==null){
-            $row[$id]['calificado_por_mi']='0';
-        }
+        $arr = explode(".", $imgLista);
+
+        $row[$id]['image'] = cambiarBarra($arr[0].'-cropped.'.$arr[1]);
+        $row[$id]['image_grande'] = cambiarBarra($value['image']);
+        $row[$id]['name'] = ucwords(mb_strtolower($value['name']));
+        $row[$id]['description_short'] = ucfirst(mb_strtolower($value['description_short']));
         
+        // Verificar si la clave 'calificado_por_mi' está definida en el array $value
+        if (!isset($value['calificado_por_mi'])) {
+            $row[$id]['calificado_por_mi'] = '0';
+        }
+
+        if (is_array($cant)) {
+            $row[$id]['cant'] = $cant[$value['id']];
+        }
+        if ($value['rating'] == null) {
+            $row[$id]['rating'] = '0';
+        }
     }
-     return $row;
-    
+    return $row;
 }
+
 function cambiarBarra($url){
     return str_replace("\\", "/", $url);
 }
@@ -1777,26 +1792,35 @@ function salida($row,$msj_general="",$bueno=true){
     echo json_encode($row);
     exit();
 }
-function salidaNueva($row,$msj_general="",$bueno=true,$tipo_salida=false,$comprimido=false){
-    $rowa['success']=$bueno;
-    if(!$bueno) header('HTTP/1.1 409 Conflict');
-    $rowa['msj_general']=$msj_general;
-    $rowa['data']=$row;
-    if($_SESSION['sesion_iniciada']==true){
-        $rowa['login']=true;
+
+function salidaNueva($row, $msj_general = "", $bueno = true, $tipo_salida = false, $comprimido = false) {
+    $rowa['success'] = $bueno;
+    if (!$bueno) {
+        header('HTTP/1.1 409 Conflict');
     }
-    if($tipo_salida==true){
-        
-        return $rowa;
-    }else{
-        if($comprimido==true){
+    $rowa['msj_general'] = $msj_general;
+    $rowa['data'] = $row;
+    
+    // Verificar si la clave 'sesion_iniciada' está definida en $_SESSION
+    if (isset($_SESSION['sesion_iniciada']) && $_SESSION['sesion_iniciada'] == true) {
+        $rowa['login'] = true;
+    }
+    
+    // Generar la salida si $tipo_salida es verdadero o $comprimido es verdadero
+    if ($tipo_salida == true || $comprimido == true) {
+        if ($comprimido == true) {
             echo d($rowa);
-        }else{
+        } else {
             echo json_encode($rowa);
         }
+    } else {
+        // Si no se genera salida, simplemente devolver el arreglo $rowa
+        return $rowa;
     }
     exit();
 }
+
+
 
 function salida_movil($row,$msj_general="",$bueno=true){
     if(!$bueno) header('HTTP/1.1 409 Conflict');
@@ -1841,55 +1865,75 @@ function extraer_datos_db(){
     $db['password'] =limpiar($arr[13]);
     return $db;
 }
+
 function limpiar($var){
-    return trim(explode('=',$var)[1]);
+    // Verificar si la cadena contiene el carácter "=" antes de dividirla
+    if (strpos($var, '=') !== false) {
+        return trim(explode('=', $var)[1]);
+    } else {
+        // Si no contiene "=", devuelve la cadena original sin cambios
+        return trim($var);
+    }
 }
+
 function conectar_db($host,$base_dato,$usuario,$clave,$puerto){
-    $dbconn = pg_connect("host=".$host." dbname=$base_dato user=$usuario password=$clave port=$puerto")
-    or die('No se ha podido conectar: ' . pg_last_error());
-    return $dbconn;
-}
-function q($sql){
-    $arr=array();
-   // $result = pg_query($sql) or die(false);
-   $con=$GLOBALS["con"];
-    if (pg_send_query($con,$sql)) {
+    $host = "localhost";
+    $database = "laravel";
+    $user = "postgres";
+    $password = "1234";
+    $port = "5432";
+    
+    // Conexión PDO
+    try {
+        $dsn = "pgsql:host=$host;port=$port;dbname=$database;user=$user;password=$password";
+        $dbconn = new PDO($dsn);
+        // Configuración adicional de PDO si es necesario
+        return $dbconn;
 
-        $res=pg_get_result($con);
-        if ($res) {
-          $state = pg_result_error_field($res, PGSQL_DIAG_SQLSTATE);
-          if ($state==0) {
-            while ($line = pg_fetch_array($res, null, PGSQL_ASSOC)) {
-                $arr[]=$line;
-            }
-            if(count($arr)){
-                return $arr;
-            }else{
-                return true;
-            }
-          }
-          else {
-
-              switch($state){
-                  case 23505://El registro ya existe, intente de nuevo
-                    salidaNueva(null,"El registro ya existe.",false);
-                  break;
-                  case '22P02'://faltan campos
-                    salidaNueva(null,"Disculpe intente mas tarde..",false);
-                    
-                  break;
-                  default:
-
-                 // wh_log($sql);
-                    salidaNueva(null,"Disculpe, intente mas tarde...",false);
-              }
-          }
-        }  
-      }
-      salida_movil('',"Disculpe, intente de nuevo",false);
-
+    } catch (PDOException $e) {
+        echo "Error al conectar a la base de datos PostgreSQL: " . $e->getMessage();
+    }
 
 }
+function q($sql) {
+    $arr = array();
+
+    try {
+        // Crear una conexión PDO a la base de datos
+        $dsn = "pgsql:host=localhost;dbname=laravel";
+        $username = "postgres";
+        $password = "1234";
+        $pdo = new PDO($dsn, $username, $password);
+
+        // Preparar y ejecutar la consulta SQL
+        $stmt = $pdo->query($sql);
+
+        // Obtener los resultados como un array asociativo
+        $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Verificar si se devolvieron resultados
+        if (count($arr) > 0) {
+            return $arr;
+        } else {
+            return true; // Consulta ejecutada correctamente pero no devuelve resultados
+        }
+    } catch (PDOException $e) {
+        // Manejar errores de PDO
+        switch ($e->getCode()) {
+            case '23505': // El registro ya existe
+                salidaNueva(null, "El registro ya existe.", false);
+                break;
+            case '22P02': // Error de tipo de datos
+                salidaNueva(null, "Disculpe intente mas tarde..", false);
+                break;
+            default:
+                salidaNueva(null, "Disculpe, intente mas tarde...", false);
+        }
+    }
+
+    salida_movil('', "Disculpe, intente de nuevo", false);
+}
+
 function wh_log($log_msg)
 {
     $log_filename = "log";
@@ -1915,17 +1959,29 @@ function cabecera($error="Off"){
 function run(){
     $postdata = file_get_contents("php://input");
     $input = json_decode($postdata);
-    if($_GET['id_sesion']){
+    
+    // Verificar si la clave 'id_sesion' está definida en $_GET
+    if(isset($_GET['id_sesion'])) {
         session_id($_GET['id_sesion']);
     }
+    
     return $input;
 }
+
 function seguro($varb){
-    foreach($varb as $id=>$var){
-        $_GET[$id]= pg_escape_string(htmlspecialchars(filter_var($var,FILTER_SANITIZE_STRING)));
+    $sanitizedVars = array();
+    foreach($varb as $id => $var) {
+        // Sanitizar y escapar la variable antes de asignarla
+        $sanitizedVar = htmlspecialchars(filter_var($var, FILTER_SANITIZE_STRING));
+
+        // Agregar la variable sanitizada al array de salida
+        $sanitizedVars[$id] = $sanitizedVar;
     }
-    return $_GET;
+
+    // Devolver el array de variables sanitizadas
+    return $sanitizedVars;
 }
+
 
 function plantillaContacto($message){
     return '

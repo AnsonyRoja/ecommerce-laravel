@@ -234,6 +234,7 @@
 													<div class="col-lg-6" id="div_contenedor_fecha" v-if="selectedDirection == 0">
 														<div class="form-group">
 															<label for="address-urb">Fecha y hora aprox. para su entrega:</label>
+
 															<div id="div_fecha"></div>
 															
 														</div>
@@ -241,7 +242,7 @@
 													<div class="col-lg-6" v-if="selectedDirection > 0">
 														<div class="form-group">
 															<label for="address-state">Estado:</label>
-															<input type="text" class="form-control" disabled="disabled" :value="objDirection.estado">
+															<input type="text" class="form-control" disabled="enable" :value="objDirection.estado">
 														</div>
 													</div>
 													<div class="col-lg-6" v-if="selectedDirection > 0">
@@ -584,6 +585,7 @@
 			delivery: Number
 		},
 		methods:{
+		
             up(v, n){
                 return Math.ceil(v * Math.pow(10, n)) / Math.pow(10, n);
             },
@@ -794,10 +796,15 @@
 
 			if(this.isObject(this.userlogged)){
 				this.datauser = this.userlogged;
+				console.log("esto es dataUser", this.datauser);
+
 			}else{
 				this.datauser.id = 'undefined';
 				Swal.fire("Bio en Línea","Debe iniciar sesión para confirmar su carrito de compras","info");
 			}
+
+
+			console.log("esto es la selectedDirection", this.selectedDirection);
 
 			this.order = {
 				user_id     : this.datauser.id,
@@ -811,6 +818,7 @@
 		computed: {
 			objDirection: function() {
 				const len = this.userlogged.directions.length;
+				console.log("esto es userlogged",this.userlogged.directions);
 				let id = -1;
 				for(let i = 0; i<len ; i++) {
 					if(this.userlogged.directions[i].id == this.selectedDirection) {

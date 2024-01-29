@@ -811,9 +811,13 @@ function listarTracking(){
        }
 }
 function horasDisponiblesEntrega(){
-    
+    echo "<script>console.log(' Entre aqui ');</script>";
     $diassemana = array("Lunes","Martes","Miercoles","Jueves","Viernes","Sábado","Domingo");
     $arr=q("SELECT * FROM calendars WHERE status='A'");
+    $arr_json = json_encode($arr);
+    
+    echo "<script>console.log(" . $arr_json . ");</script>";
+
     $horasNoDisponibles=array(20,21,22,23,01,02,03,04,05,06,07);
     $iniciarDespuesDe=2; //Horas
     $timenow = time();
@@ -821,6 +825,7 @@ function horasDisponiblesEntrega(){
     $maxApartado=12;
     $o=0;//hora apartada
     $i=2;//hora inicial
+    $horas = [];
     while($o<$maxApartado){          
 
         $fechaComprobar = strtotime("+ $i hours",time());
@@ -847,6 +852,11 @@ function horasDisponiblesEntrega(){
             break;
         }
     }
+
+    $horas_json = json_encode($horas);
+
+    // Imprimir en la consola del navegador
+    echo "<script>console.log(" . $horas_json . ");</script>";
 
     salidaNueva($horas,"Listando horas disponible para entrega",true,false,false);
 }
@@ -1831,6 +1841,8 @@ function salida($row,$msj_general="",$bueno=true){
 
 function salidaNueva($row, $msj_general = "", $bueno = true, $tipo_salida = false, $comprimido = false) {
     $rowa['success'] = $bueno;
+
+
     if (!$bueno) {
         header('HTTP/1.1 409 Conflict');
     }
@@ -1846,11 +1858,18 @@ function salidaNueva($row, $msj_general = "", $bueno = true, $tipo_salida = fals
     if ($tipo_salida == true || $comprimido == true) {
         if ($comprimido == true) {
             echo d($rowa);
+
+  
         } else {
+           
             echo json_encode($rowa);
         }
     } else {
         // Si no se genera salida, simplemente devolver el arreglo $rowa
+        $rowe = json_encode($rowa);
+
+        echo "<script>console.log(" . $rowe . ");</script>";
+    
         return $rowa;
     }
     exit();

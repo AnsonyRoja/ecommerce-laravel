@@ -17,7 +17,7 @@
 							</form>
 						</div>
 						<div class="profile-info">
-							<h2 class="profile-title">{{userData.name}}</h2>
+							<h2 class="profile-title" v-if="dataLoaded" >{{userData.name}}</h2>
 							<p class="bio-points">Mi saldo disponible<span class="quantity-span">{{ userData.saldo }}<img src="assets/img/icono-puntos-bio.svg" alt="Bio Points"></span></p>
 						</div>
 					</div>
@@ -267,12 +267,13 @@
 
 															<div class="col-lg-4">
 																<div class="form-group">
-																	<label for="address-1-state">Estado:</label>
+																	<label for="address-1-state">Estados:</label>
 																	<!-- <button class="btn btn-edit-info" type="button"><img src="assets/img/editar-bio-mercados.svg"></button>
 																	<button class="btn btn-confirm-info" type="button"><img src="assets/img/confirmar-bio-mercados.svg"></button> -->
 																	<select class="form-control" @change="loadMunicipio($event)" v-model="direction.state_id">
 																		<option value="">Seleccione</option>
-																		<option v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
+
+																		<option v-for="state in Allstates" :key="state.id" :value="state.id">{{state.name}}</option>
 																	</select>
 																	<!-- <input type="text" class="form-control dropdown-toggle"  data-toggle="dropdown" aria-expanded="false" id="address-1-state" name="address-1-state" disabled="disabled"  autocomplete="off"> -->
 																	<!-- <div class="dropdown-menu dropdown-menu-state">
@@ -816,9 +817,12 @@
 			tasadolar: Number
 		},
         methods: {
+		
         	getAmountBW: function(user_id){
         		axios.get(URLHOME+'api/getAmountBW/'+user_id).then( datos => {
         			this.userData.saldo = datos.data;
+					console.log("userData:", this.userData);
+
         		});
         	},
 			getProduct: function(objP) {
@@ -951,24 +955,28 @@
 			},
 			async getStates() {
 				const response = await axios.get(URLSERVER+"api/states");
-				this.states = response.data.data;
+				console.log("esto es la respuesta", response);
+				this.states.push(response.data.data);
 
 				const response2 = await axios.get(URLSERVER+"api/Allstates");
+				console.log("esto es la response2",response2);
 				this.Allstates = response2.data.data;
+				console.log("esto es this.allStates ", this.Allstates);
 			},
 			async getRegions() {
 				const response = await axios.get(URLSERVER+"api/regions");
 				this.regions = response.data.data;
 
-				const response2 = await axios.get(URLSERVER+"api/Allregions");
-				this.Allregions = response2.data.data;
+				const {data} = await axios.get(URLSERVER+"api/Allregions");
+				this.Allregions = data.data;
 			},
 			async getCities() {
 				const response = await axios.get(URLSERVER+"api/cities");
 				this.cities = response.data.data;
 
-				const response2 = await axios.get(URLSERVER+"api/Allcities");
-				this.Allcities = response2.data.data;
+				const {data} = await axios.get(URLSERVER+"api/Allcities");
+				console.log("esto es la respon all cities", data);
+				this.Allcities = data.data;
 			},
 			async loadMunicipio(event) {
 				const state_id = event.target.value;
@@ -1082,7 +1090,7 @@
 						address: direction.address,
 						status: direction.status,
 						users_id: direction.users_id,
-					//	updated_at: direction.updated_at,
+						updated_at: direction.updated_at,
 						zip_code: direction.zip_code,
 						urb: direction.urb,
 						sector: direction.sector,
@@ -1162,7 +1170,9 @@
 					ciudad: '',
 					action:'save',
 				});
-				this.userData = this.userlogged;
+				
+				this.userData.push(this.userlogged);
+
 			},
 			increaseValue(product)
             {
@@ -1210,6 +1220,9 @@
 			this.getRegions();
 			this.getCities();
 			this.getPedidos();
+			console.log("esto es el userLLoger", this.userlogged);
+			this.userData = this.userlogged;
+			console.log("esto es userData", this.userData);
 			this.getAmountBW(this.userData.id);
 			console.log("this.userData::> ",this.userData);
 		},

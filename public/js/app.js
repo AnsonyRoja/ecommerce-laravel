@@ -2006,6 +2006,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     delivery: Number
   },
   methods: {
+    deli_type: function deli_type(type) {
+      // Aquí puedes realizar cualquier acción que necesites cuando se hace clic en el radio button
+      console.log('Tipo de entrega seleccionado:', type);
+    },
     up: function up(v, n) {
       return Math.ceil(v * Math.pow(10, n)) / Math.pow(10, n);
     },
@@ -2252,10 +2256,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
     if (this.isObject(this.userlogged)) {
       this.datauser = this.userlogged;
+      console.log("esto es dataUser", this.datauser);
     } else {
       this.datauser.id = 'undefined';
       Swal.fire("Bio en Línea", "Debe iniciar sesión para confirmar su carrito de compras", "info");
     }
+    console.log("esto es la selectedDirection", this.selectedDirection);
     this.order = {
       user_id: this.datauser.id,
       direction: this.selectedDirection,
@@ -2268,6 +2274,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   computed: {
     objDirection: function objDirection() {
       var len = this.userlogged.directions.length;
+      console.log("esto es userlogged", this.userlogged.directions);
       var id = -1;
       for (var i = 0; i < len; i++) {
         if (this.userlogged.directions[i].id == this.selectedDirection) {
@@ -3472,6 +3479,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
       axios.get(URLHOME + 'api/getAmountBW/' + user_id).then(function (datos) {
         _this2.userData.saldo = datos.data;
+        console.log("userData:", _this2.userData);
       });
     },
     getProduct: function getProduct(objP) {
@@ -3637,13 +3645,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return axios.get(URLSERVER + "api/states");
             case 2:
               response = _context4.sent;
-              _this5.states = response.data.data;
-              _context4.next = 6;
+              console.log("esto es la respuesta", response);
+              _this5.states.push(response.data.data);
+              _context4.next = 7;
               return axios.get(URLSERVER + "api/Allstates");
-            case 6:
+            case 7:
               response2 = _context4.sent;
+              console.log("esto es la response2", response2);
               _this5.Allstates = response2.data.data;
-            case 8:
+              console.log("esto es this.allStates ", _this5.Allstates);
+            case 11:
             case "end":
               return _context4.stop();
           }
@@ -3653,7 +3664,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getRegions: function getRegions() {
       var _this6 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var response, response2;
+        var response, _yield$axios$get, data;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
@@ -3665,9 +3676,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _context5.next = 6;
               return axios.get(URLSERVER + "api/Allregions");
             case 6:
-              response2 = _context5.sent;
-              _this6.Allregions = response2.data.data;
-            case 8:
+              _yield$axios$get = _context5.sent;
+              data = _yield$axios$get.data;
+              _this6.Allregions = data.data;
+            case 9:
             case "end":
               return _context5.stop();
           }
@@ -3677,7 +3689,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getCities: function getCities() {
       var _this7 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        var response, response2;
+        var response, _yield$axios$get2, data;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
@@ -3689,9 +3701,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _context6.next = 6;
               return axios.get(URLSERVER + "api/Allcities");
             case 6:
-              response2 = _context6.sent;
-              _this7.Allcities = response2.data.data;
-            case 8:
+              _yield$axios$get2 = _context6.sent;
+              data = _yield$axios$get2.data;
+              console.log("esto es la respon all cities", data);
+              _this7.Allcities = data.data;
+            case 10:
             case "end":
               return _context6.stop();
           }
@@ -3890,7 +3904,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           address: direction.address,
           status: direction.status,
           users_id: direction.users_id,
-          //	updated_at: direction.updated_at,
+          updated_at: direction.updated_at,
           zip_code: direction.zip_code,
           urb: direction.urb,
           sector: direction.sector,
@@ -3955,7 +3969,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         ciudad: '',
         action: 'save'
       });
-      this.userData = this.userlogged;
+      this.userData.push(this.userlogged);
     },
     increaseValue: function increaseValue(product) {
       var productID = product.id;
@@ -4017,6 +4031,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getRegions();
     this.getCities();
     this.getPedidos();
+    console.log("esto es el userLLoger", this.userlogged);
+    this.userData = this.userlogged;
+    console.log("esto es userData", this.userData);
     this.getAmountBW(this.userData.id);
     console.log("this.userData::> ", this.userData);
   },
@@ -5298,7 +5315,7 @@ var render = function render() {
     staticClass: "form-control",
     attrs: {
       type: "text",
-      disabled: "disabled"
+      disabled: "enable"
     },
     domProps: {
       value: _vm.objDirection.estado
@@ -11289,9 +11306,9 @@ var render = function render() {
     }
   })])])])]), _vm._v(" "), _c("div", {
     staticClass: "profile-info"
-  }, [_c("h2", {
+  }, [_vm.dataLoaded ? _c("h2", {
     staticClass: "profile-title"
-  }, [_vm._v(_vm._s(_vm.userData.name))]), _vm._v(" "), _c("p", {
+  }, [_vm._v(_vm._s(_vm.userData.name))]) : _vm._e(), _vm._v(" "), _c("p", {
     staticClass: "bio-points"
   }, [_vm._v("Mi saldo disponible"), _c("span", {
     staticClass: "quantity-span"
@@ -12066,7 +12083,7 @@ var render = function render() {
       attrs: {
         "for": "address-1-state"
       }
-    }, [_vm._v("Estado:")]), _vm._v(" "), _c("select", {
+    }, [_vm._v("Estados:")]), _vm._v(" "), _c("select", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -12091,7 +12108,7 @@ var render = function render() {
       attrs: {
         value: ""
       }
-    }, [_vm._v("Seleccione")]), _vm._v(" "), _vm._l(_vm.states, function (state) {
+    }, [_vm._v("Seleccione")]), _vm._v(" "), _vm._l(_vm.Allstates, function (state) {
       return _c("option", {
         key: state.id,
         domProps: {

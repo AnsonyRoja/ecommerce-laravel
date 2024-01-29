@@ -5,8 +5,8 @@ var checkDeliveryType=0;
 
 if(document.getElementById("div_fecha")){
 	
-	div_fecha.innerHTML="Cargando...";
 	get('horasDisponiblesEntrega');
+	div_fecha.innerHTML="Cargando...";
 }
 
 if(document.getElementById("div_direccion_entrega")){
@@ -230,7 +230,7 @@ Titular: `+titular+`
 }
 
 function procesar(data,evento){
-	
+	console.log("esto es lo que hay en data", data);
 	switch(evento){
 		case 'guardarPago':
 			var data = JSON.parse(data);
@@ -247,7 +247,7 @@ function procesar(data,evento){
 
 		break;
 		case 'listarBancosdelMetododePago':
-			var data = JSON.parse(data);
+		
 			console.log(data);
 			if(data.success==true){
 				var h='<hr>';
@@ -343,18 +343,18 @@ function procesar(data,evento){
 				var mostrar = "";
 				var titulopago = "Debes Pagar";
 
-if(aPagarBs <= 0){
-	mostrar = "style='display:none'";
-	titulopago = "Has pagado";
-}
+				if(aPagarBs <= 0){
+					mostrar = "style='display:none'";
+					titulopago = "Has pagado";
+				}
 
-if(resta>0){
-	var colorFalta='text-danger';
-}else{
-	var colorFalta='';
-}
+				if(resta>0){
+					var colorFalta='text-danger';
+				}else{
+					var colorFalta='';
+				}
 
-console.log(ra);
+				console.log(ra);
 				
 			cuadroPagado.innerHTML=`
 			<div class="row">
@@ -502,11 +502,12 @@ console.log(ra);
 			}
 
 		break;
-		case 'web_no_logina':
+		case 'web_no_login':
 			var data = JSON.parse(JXG.decompress(data));
 		break;
 		case 'horasDisponiblesEntrega':
-			var data = JSON.parse(data);
+			console.log("esto es data", data);
+		
 			var options='';
 			if(data.success){
 				var datos=data.data;
@@ -706,31 +707,34 @@ function actualizarStore(){
 }
 
 window.onload = function() {
-	setInterval('actualizarStore()',1500);
+	// setInterval('actualizarStore()',1500);
 }
 
+function get(evento	) {
+    var host = window.location.host;
+    var protocol = window.location.protocol;
+    var xmlhttp = new XMLHttpRequest();
+    let data = new Map();
+    data['success'] = false;
+    data['msj_general'] = "Intente mas tarde";
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+            if (xmlhttp.status == 200 || xmlhttp.status == 409) {
+				console.log("entre aqui en xmlhttp 200", xmlhttp.responseText);
+                procesar(xmlhttp.responseText, evento); // Pasar xmlhttp.responseText a procesar
+            } else {
+                procesar(JSON.stringify(data), evento); // Si hay un error, pasar data como cadena JSON a procesar
+            }
+        }
+    };
 
-function get(evento,variables="") {
-	var host=window.location.host;
-	var protocol=window.location.protocol;
-	var xmlhttp = new XMLHttpRequest();
-	let data=new Map();
-	data['success']=false;
-	data['msj_general']="Intente mas tarde";
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-			if (xmlhttp.status == 200 || xmlhttp.status == 409) {
-				procesar(xmlhttp.responseText,evento);
-			}else {
-				procesar(data,evento);
-			}
-		}
-	};
+console.log(evento);
+
+    xmlhttp.open("GET", protocol + "//" + host + "/api_rapida.php?evento=" + evento, true);
+    xmlhttp.send();
+}
+
 	
-	xmlhttp.open("GET", protocol+"//"+host+"/api_rapida.php?evento="+evento+variables, true);
-	xmlhttp.send();
- }
-
  function post(evento,datai) {
 	//var datai = new FormData(document.getElementById(idFormulario));
 	

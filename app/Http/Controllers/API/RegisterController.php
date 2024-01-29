@@ -99,9 +99,10 @@ class RegisterController extends BaseController
      */
     public function update_profile(Request $request)
     {   
+        print_r($request);
         $data_user = $request->all();
-        // print_r($data_user);
-        // die();
+        print_r($data_user);
+        die();
         //USER
         DB::table('users')
             ->where('id', $data_user['user_data']['id'])

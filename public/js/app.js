@@ -2006,10 +2006,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     delivery: Number
   },
   methods: {
-    deli_type: function deli_type(type) {
-      // Aquí puedes realizar cualquier acción que necesites cuando se hace clic en el radio button
-      console.log('Tipo de entrega seleccionado:', type);
-    },
     up: function up(v, n) {
       return Math.ceil(v * Math.pow(10, n)) / Math.pow(10, n);
     },
@@ -2935,7 +2931,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     product: Object,
-    user_id: String,
+    user_id: Number,
     tasadolar: Number
   },
   methods: {
@@ -8149,7 +8145,7 @@ var render = function render() {
     staticClass: "product-options"
   }, [_vm.product.qty_avaliable > 0 ? _c("span", {
     staticClass: "product-info"
-  }, [_vm._v("Disponibles: "), _c("b", [_vm._v(_vm._s(_vm.product.qty_avaliable) + " en Stock")])]) : _c("span", {
+  }, [_vm._v("Disponibles:\n                                    "), _c("b", [_vm._v(_vm._s(_vm.product.qty_avaliable) + " en Stock")])]) : _c("span", {
     staticClass: "product-info"
   }, [_vm._v("Producto"), _c("b", [_vm._v(" Agotado!")])]), _vm._v(" "), _c("form", {
     attrs: {
@@ -8216,7 +8212,7 @@ var render = function render() {
     }
   })])])])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "product-prices"
-  }, [_c("p", [_c("b", [_vm._v("Total:")]), _vm._v(" $ " + _vm._s(_vm._f("FormatDolar")(_vm.up(_vm.totalModal / _vm.tasadolar, 2))) + " / Bs " + _vm._s(_vm._f("FormatNumber")(_vm.totalModal)) + " ")])]), _vm._v(" "), _c("div", {
+  }, [_c("p", [_c("b", [_vm._v("Total:")]), _vm._v(" $ " + _vm._s(_vm._f("FormatDolar")(_vm.up(_vm.totalModal / _vm.tasadolar, 2))) + " / Bs\n                                            " + _vm._s(_vm._f("FormatNumber")(_vm.totalModal)) + " ")])]), _vm._v(" "), _c("div", {
     staticClass: "product-buttons"
   }, [_vm.product.qty_avaliable > 0 ? _c("button", {
     staticClass: "btn",
@@ -8243,7 +8239,7 @@ var render = function render() {
       xmlns: "http://www.w3.org/2000/svg",
       viewBox: "0 0 14.93 15"
     }
-  }, [_c("title", [_vm._v("añadir-favorito-bio")]), _c("g", {
+  }, [_c("title", [_vm._v("añadir-favorito-bio")]), _vm._v(" "), _c("g", {
     attrs: {
       id: "Capa_2",
       "data-name": "Capa 2"
@@ -8258,17 +8254,17 @@ var render = function render() {
     attrs: {
       d: "M4.7,7.56a.42.42,0,0,1-.42-.42V3.5H14.51a.43.43,0,0,1,0,.85H5.13V7.14A.42.42,0,0,1,4.7,7.56Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     staticClass: "cls-1",
     attrs: {
       d: "M14.93,15H7.19a.43.43,0,0,1,0-.85h6.9V5.09a.42.42,0,1,1,.84,0Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     staticClass: "cls-1",
     attrs: {
       d: "M11.53,6a.42.42,0,0,1-.42-.43V2a1,1,0,0,0-.43-.84A1.86,1.86,0,0,0,9.6.85C9,.85,8,1.15,8,2V5.53a.42.42,0,1,1-.84,0V2A2.18,2.18,0,0,1,9.6,0,2.12,2.12,0,0,1,12,2V5.53A.43.43,0,0,1,11.53,6Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     staticClass: "cls-1",
     attrs: {
       d: "M8.74,8.11a2.23,2.23,0,0,0-1.63-.77A3.6,3.6,0,0,0,4.7,8.39,3.58,3.58,0,0,0,2.3,7.34a2.23,2.23,0,0,0-1.63.77A2.51,2.51,0,0,0,0,10.31C.32,12,2,13.69,4.52,15a.39.39,0,0,0,.18,0,.41.41,0,0,0,.19,0c2.57-1.27,4.2-3,4.48-4.65A2.51,2.51,0,0,0,8.74,8.11Zm-.21,2.06c-.1.66-.7,2.34-3.83,3.93C1.57,12.51,1,10.83.87,10.17a1.68,1.68,0,0,1,.4-1.47h0a1.39,1.39,0,0,1,1-.51h0a3.14,3.14,0,0,1,2,1.09.44.44,0,0,0,.6,0A3.15,3.15,0,0,1,7.09,8.18a1.41,1.41,0,0,1,1,.51h0A1.63,1.63,0,0,1,8.53,10.17Z"
@@ -11346,7 +11342,7 @@ var render = function render() {
       xmlns: "http://www.w3.org/2000/svg",
       viewBox: "0 0 16.69 20"
     }
-  }, [_c("title", [_vm._v("datos-personales-bio-mercados")]), _c("g", {
+  }, [_c("title", [_vm._v("datos-personales-bio-mercados")]), _vm._v(" "), _c("g", {
     attrs: {
       id: "Capa_2",
       "data-name": "Capa 2"
@@ -11360,11 +11356,11 @@ var render = function render() {
     attrs: {
       d: "M8.22,9.63a4.63,4.63,0,0,0,3.4-1.41A4.63,4.63,0,0,0,13,4.82a4.65,4.65,0,0,0-1.41-3.41A4.63,4.63,0,0,0,8.22,0,4.65,4.65,0,0,0,4.81,1.41,4.65,4.65,0,0,0,3.4,4.82a4.63,4.63,0,0,0,1.41,3.4A4.65,4.65,0,0,0,8.22,9.63ZM5.64,2.24A3.48,3.48,0,0,1,8.22,1.17a3.46,3.46,0,0,1,2.57,1.07,3.48,3.48,0,0,1,1.07,2.58,3.46,3.46,0,0,1-1.07,2.57A3.46,3.46,0,0,1,8.22,8.46,3.48,3.48,0,0,1,5.64,7.39,3.46,3.46,0,0,1,4.57,4.82,3.48,3.48,0,0,1,5.64,2.24Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M16.65,15.38a12.56,12.56,0,0,0-.17-1.26,9.22,9.22,0,0,0-.31-1.28,6.15,6.15,0,0,0-.52-1.18,4.61,4.61,0,0,0-.79-1,3.69,3.69,0,0,0-1.13-.71,4,4,0,0,0-1.44-.26,1.47,1.47,0,0,0-.79.33l-.81.53A4.46,4.46,0,0,1,9.63,11a4.1,4.1,0,0,1-1.29.21A4.15,4.15,0,0,1,7.05,11a4.37,4.37,0,0,1-1-.46L5.18,10a1.45,1.45,0,0,0-.78-.33A4,4,0,0,0,3,9.92a3.69,3.69,0,0,0-1.13.71,4.92,4.92,0,0,0-.79,1,6.83,6.83,0,0,0-.52,1.18A10.91,10.91,0,0,0,.2,14.12,12.41,12.41,0,0,0,0,15.38c0,.38,0,.78,0,1.18a3.3,3.3,0,0,0,1,2.51A3.52,3.52,0,0,0,3.53,20h9.63a3.53,3.53,0,0,0,2.54-.93,3.34,3.34,0,0,0,1-2.51c0-.4,0-.8,0-1.18Zm-1.76,2.84a2.37,2.37,0,0,1-1.73.61H3.53a2.4,2.4,0,0,1-1.74-.61,2.18,2.18,0,0,1-.62-1.66c0-.37,0-.74,0-1.1a8.52,8.52,0,0,1,.15-1.14,8.36,8.36,0,0,1,.27-1.12,5.09,5.09,0,0,1,.42-1,3.54,3.54,0,0,1,.58-.76A2.39,2.39,0,0,1,3.39,11a2.64,2.64,0,0,1,.92-.18l.23.14.83.54a5.64,5.64,0,0,0,1.32.59,5.37,5.37,0,0,0,3.3,0,5.74,5.74,0,0,0,1.33-.59l.82-.54.24-.14a2.74,2.74,0,0,1,.92.18,2.34,2.34,0,0,1,.75.47,3.24,3.24,0,0,1,.58.76,5.13,5.13,0,0,1,.43,1,8.36,8.36,0,0,1,.27,1.12q.11.62.15,1.14h0c0,.35,0,.72,0,1.1a2.14,2.14,0,0,1-.62,1.66Z"
     }
-  })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\tDatos personales\n\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("li", {
+  })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\tDatos personales\n\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("li", {
     staticClass: "nav-item"
   }, [_c("a", {
     ref: "addressLink",
@@ -11382,7 +11378,7 @@ var render = function render() {
       xmlns: "http://www.w3.org/2000/svg",
       viewBox: "0 0 19.16 19.2"
     }
-  }, [_c("title", [_vm._v("mis-direcciones-bio-mercados")]), _c("g", {
+  }, [_c("title", [_vm._v("mis-direcciones-bio-mercados")]), _vm._v(" "), _c("g", {
     attrs: {
       id: "Capa_2",
       "data-name": "Capa 2"
@@ -11396,15 +11392,15 @@ var render = function render() {
     attrs: {
       d: "M7.59,12.07a4.48,4.48,0,1,1,4.48-4.48.38.38,0,1,1-.76,0,3.72,3.72,0,1,0-3.72,3.72.38.38,0,0,1,0,.76Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M7.36,19.16A.36.36,0,0,1,7,19a28.25,28.25,0,0,0-3-3.71,23,23,0,0,1-2.78-3.44A7.92,7.92,0,0,1,0,7.58,7.6,7.6,0,0,1,7.59,0a7.58,7.58,0,0,1,7.59,7.58.35.35,0,0,1-.11.27.36.36,0,0,1-.26.11.4.4,0,0,1-.39-.38,6.83,6.83,0,0,0-13.66,0c0,3,1.78,4.93,3.84,7.18a27.35,27.35,0,0,1,3.08,3.82.38.38,0,0,1-.12.52A.36.36,0,0,1,7.36,19.16Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M11.58,19.2a1.8,1.8,0,0,1-1.79-1.8V14l-.67.61a.46.46,0,0,1-.32.16.37.37,0,0,1-.28-.13.38.38,0,0,1-.1-.27.42.42,0,0,1,.12-.26l4-3.68a1.8,1.8,0,0,1,1.22-.48,1.79,1.79,0,0,1,1.22.48l4,3.68a.37.37,0,0,1,.12.26.34.34,0,0,1-.1.27.37.37,0,0,1-.28.13.44.44,0,0,1-.26-.1l-.76-.7V17.4A1.81,1.81,0,0,1,16,19.2Zm2.21-8.54a1.06,1.06,0,0,0-.71.28l-2.53,2.32V17.4a1,1,0,0,0,1,1H16a1,1,0,0,0,1-1V13.22l-2.5-2.28A1,1,0,0,0,13.79,10.66Z"
     }
-  })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\tMis direcciones de Envío\n\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("li", {
+  })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\tMis direcciones de Envío\n\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("li", {
     staticClass: "nav-item"
   }, [_c("a", {
     ref: "ordersLink",
@@ -11422,7 +11418,7 @@ var render = function render() {
       xmlns: "http://www.w3.org/2000/svg",
       viewBox: "0 0 21.43 19.97"
     }
-  }, [_c("title", [_vm._v("mis-pedidos-bio-mercados")]), _c("g", {
+  }, [_c("title", [_vm._v("mis-pedidos-bio-mercados")]), _vm._v(" "), _c("g", {
     attrs: {
       id: "Capa_2",
       "data-name": "Capa 2"
@@ -11436,39 +11432,39 @@ var render = function render() {
     attrs: {
       d: "M14.53,13h.32a.31.31,0,0,0,0-.61h0v-.82h.84a.27.27,0,0,0,.28.2.3.3,0,0,0,.31-.3v-.21A.31.31,0,0,0,16,11H14.53a.27.27,0,0,0-.21.09.29.29,0,0,0-.09.21v1.43a.31.31,0,0,0,.09.22.27.27,0,0,0,.21.09Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M14.53,15.76H16a.3.3,0,0,0,.3-.3V14a.3.3,0,0,0-.3-.3H14.53a.3.3,0,0,0-.3.3v1.43a.3.3,0,0,0,.3.3Zm.31-1.43h.82v.83h-.82Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M14.85,17.93h0v-.82h.82a.31.31,0,0,0,.61,0v-.29A.33.33,0,0,0,16,16.5H14.53a.32.32,0,0,0-.3.32v1.43a.29.29,0,0,0,.09.21.32.32,0,0,0,.21.08h.32a.31.31,0,0,0,0-.61Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M16.66,11.32l-.89.89-.27-.27a.3.3,0,0,0-.43.43l.49.49a.32.32,0,0,0,.43,0l1.1-1.11a.3.3,0,0,0-.43-.43Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M16.66,16.93l-.89.89-.27-.27a.3.3,0,0,0-.43.43l.49.48a.3.3,0,0,0,.43,0l1.1-1.1a.3.3,0,0,0-.43-.43Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M19.78,11.69H17.87a.3.3,0,1,0,0,.6h1.91a.3.3,0,0,0,0-.6Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M19.78,14.46H17.87a.31.31,0,0,0,0,.61h1.91a.31.31,0,0,0,0-.61Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M19.78,17.24H17.87a.31.31,0,0,0,0,.61h1.91a.31.31,0,0,0,0-.61Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     attrs: {
       d: "M20.13,8.61H19.05a1.07,1.07,0,0,0-1-.78H16.88V5a.32.32,0,0,0-.15-.26L8.59,0a.32.32,0,0,0-.3,0L.15,4.74A.32.32,0,0,0,0,5v9.4a.33.33,0,0,0,.15.27l8.14,4.7a.32.32,0,0,0,.31,0l4.29-2.47v1.78a1.25,1.25,0,0,0,.37.92,1.28,1.28,0,0,0,.92.37h5.95a1.28,1.28,0,0,0,.92-.37,1.3,1.3,0,0,0,.38-.92V9.92a1.3,1.3,0,0,0-1.3-1.31ZM18,8.43a.44.44,0,0,1,.44.44v0a.44.44,0,0,1-.44.44H16.28a.43.43,0,0,1-.44-.44v0a.44.44,0,0,1,.44-.44ZM8.44.65l3.39,2L4.29,7,.91,5ZM8.16,18.58.61,14.23V5.53L8.16,9.88Zm.28-9.23-3.54-2L12.44,3,16,5Zm4.45.57V16.2L8.76,18.58V9.88l7.51-4.35v2.3h0a1.06,1.06,0,0,0-1,.78H14.18a1.29,1.29,0,0,0-1.29,1.31Zm7.93,8.76a.68.68,0,0,1-.2.49.7.7,0,0,1-.49.2H14.18a.7.7,0,0,1-.49-.2.68.68,0,0,1-.2-.49V9.92a.7.7,0,0,1,.69-.71h1.09a1,1,0,0,0,1,.74H18a1,1,0,0,0,1-.74h1.1a.71.71,0,0,1,.69.71Z"
     }
-  })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\tMis pedidos\n\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("li", {
+  })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\tMis pedidos\n\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("li", {
     staticClass: "nav-item"
   }, [_c("a", {
     ref: "favoriteLink",
@@ -11486,7 +11482,7 @@ var render = function render() {
       xmlns: "http://www.w3.org/2000/svg",
       viewBox: "0 0 24.89 25"
     }
-  }, [_c("defs"), _c("title", [_vm._v("favoritos-bio")]), _c("g", {
+  }, [_c("defs"), _vm._v(" "), _c("title", [_vm._v("favoritos-bio")]), _vm._v(" "), _c("g", {
     attrs: {
       id: "Capa_2",
       "data-name": "Capa 2"
@@ -11501,27 +11497,27 @@ var render = function render() {
     attrs: {
       d: "M7.84,12.6a.7.7,0,0,1-.7-.7V5.84h17a.71.71,0,1,1,0,1.41H8.54V11.9A.7.7,0,0,1,7.84,12.6Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     staticClass: "cls-2",
     attrs: {
       d: "M12.81,12.4a3.9,3.9,0,0,1,1.75,1.12,4.14,4.14,0,0,1,1,3.66c-.37,2.26-2.21,4.51-5.13,6.41H24.24V12.4Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     staticClass: "cls-1",
     attrs: {
       d: "M24.89,25H12a.71.71,0,0,1,0-1.41H23.48V8.48a.71.71,0,0,1,1.41,0Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     staticClass: "cls-1",
     attrs: {
       d: "M19.22,9.93a.7.7,0,0,1-.7-.71V3.33a1.63,1.63,0,0,0-.72-1.4A3.12,3.12,0,0,0,16,1.41c-1.05,0-2.62.51-2.62,1.92V9.22a.71.71,0,1,1-1.41,0V3.33C12,1.14,14,0,16,0s3.94,1,3.94,3.33V9.22A.71.71,0,0,1,19.22,9.93Z"
     }
-  }), _c("path", {
+  }), _vm._v(" "), _c("path", {
     staticClass: "cls-1",
     attrs: {
       d: "M14.56,13.52a3.74,3.74,0,0,0-2.72-1.29,6,6,0,0,0-4,1.76,6,6,0,0,0-4-1.76,3.74,3.74,0,0,0-2.72,1.29,4.14,4.14,0,0,0-1,3.66C.53,20,3.25,22.82,7.53,24.93a.72.72,0,0,0,.62,0c4.28-2.11,7-4.94,7.46-7.75A4.14,4.14,0,0,0,14.56,13.52ZM14.22,17C14,18,13.06,20.84,7.84,23.51,2.62,20.84,1.64,18,1.46,17a2.7,2.7,0,0,1,.66-2.44l0,0a2.37,2.37,0,0,1,1.72-.84h.06a5.21,5.21,0,0,1,3.41,1.82.74.74,0,0,0,1,0,5.13,5.13,0,0,1,3.47-1.82,2.37,2.37,0,0,1,1.72.84l0,0A2.7,2.7,0,0,1,14.22,17Z"
     }
-  })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\tMis Favoritos\n\t\t\t\t\t\t\t\t\t")])])])]), _vm._v(" "), _c("div", {
+  })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\tMis Favoritos\n\t\t\t\t\t\t\t\t")])])])]), _vm._v(" "), _c("div", {
     staticClass: "col-lg-9 profile-content"
   }, [_c("div", {
     staticClass: "tab-content",
@@ -11703,7 +11699,7 @@ var render = function render() {
     attrs: {
       "for": "user-contact-phone"
     }
-  }, [_vm._v("Teléfono de Contacto:")]), _vm._v(" "), _vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("input", {
+  }, [_vm._v("Teléfono de\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tContacto:")]), _vm._v(" "), _vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -11915,7 +11911,7 @@ var render = function render() {
     attrs: {
       "for": "address-av"
     }
-  }, [_vm._v("Sector, Avenida, calles, veredas:")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Sector, Avenida, calles,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tveredas:")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -11945,7 +11941,7 @@ var render = function render() {
     attrs: {
       "for": "address-num"
     }
-  }, [_vm._v("Número de casa / Local / Apto / Piso:")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Número de casa / Local / Apto /\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPiso:")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -12005,7 +12001,7 @@ var render = function render() {
     attrs: {
       "for": "address-ref"
     }
-  }, [_vm._v("Punto de Referencia (opcional):")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Punto de Referencia\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(opcional):")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -12041,7 +12037,7 @@ var render = function render() {
         return _vm.update_profile(_vm.userData);
       }
     }
-  }, [_vm._v("GUARDAR CAMBIOS")])])])])])])]), _vm._v(" "), _vm._m(14)])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("GUARDAR\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCAMBIOS")])])])])])])]), _vm._v(" "), _vm._m(14)])]), _vm._v(" "), _c("div", {
     staticClass: "tab-pane fade",
     attrs: {
       id: "my-address",
@@ -12201,7 +12197,7 @@ var render = function render() {
       attrs: {
         "for": "address-name"
       }
-    }, [_vm._v("Dirección Corta (ejm: Mi Casa, Mi Oficina):")]), _vm._v(" "), _vm._m(16, true), _vm._v(" "), _vm._m(17, true), _vm._v(" "), _c("input", {
+    }, [_vm._v("Dirección Corta (ejm: Mi Casa,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tMi Oficina):")]), _vm._v(" "), _vm._m(16, true), _vm._v(" "), _vm._m(17, true), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -12263,7 +12259,7 @@ var render = function render() {
       attrs: {
         "for": "address-av"
       }
-    }, [_vm._v("Sector, Avenida, calles, veredas:")]), _vm._v(" "), _vm._m(20, true), _vm._v(" "), _vm._m(21, true), _vm._v(" "), _c("input", {
+    }, [_vm._v("Sector, Avenida, calles,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tveredas:")]), _vm._v(" "), _vm._m(20, true), _vm._v(" "), _vm._m(21, true), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -12294,7 +12290,7 @@ var render = function render() {
       attrs: {
         "for": "address-num"
       }
-    }, [_vm._v("Número de casa / Local / Apto / Piso:")]), _vm._v(" "), _vm._m(22, true), _vm._v(" "), _vm._m(23, true), _vm._v(" "), _c("input", {
+    }, [_vm._v("Número de casa / Local / Apto /\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPiso:")]), _vm._v(" "), _vm._m(22, true), _vm._v(" "), _vm._m(23, true), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -12356,7 +12352,7 @@ var render = function render() {
       attrs: {
         "for": "address-ref"
       }
-    }, [_vm._v("Punto de Referencia (opcional):")]), _vm._v(" "), _vm._m(26, true), _vm._v(" "), _vm._m(27, true), _vm._v(" "), _c("input", {
+    }, [_vm._v("Punto de Referencia\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(opcional):")]), _vm._v(" "), _vm._m(26, true), _vm._v(" "), _vm._m(27, true), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -12464,7 +12460,7 @@ var render = function render() {
       }
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Número de Pedido")]), _vm._v(" " + _vm._s(order.id) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Número de Pedido")]), _vm._v(" " + _vm._s(order.id) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-16"
     }, [_c("span", {
       staticClass: "order-span"
@@ -12480,11 +12476,11 @@ var render = function render() {
       }
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Dirección de entrega")]), _vm._v(" " + _vm._s(order.address) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Dirección de entrega")]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(order.address) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-16"
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Fecha de entrega")]), _vm._v(_vm._s(order.delivery_time_date))]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Fecha de\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tentrega")]), _vm._v(_vm._s(order.delivery_time_date))]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-16"
     }, [_c("span", {
       staticClass: "order-span"
@@ -12495,7 +12491,7 @@ var render = function render() {
         "data-placement": "bottom",
         title: "Su pedido se está procesando para ser enviado"
       }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(order.namestatus) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(order.namestatus) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-16"
     }, [order.namestatus == "Entregado" ? _c("div", {
       staticClass: "btn-group"
@@ -12511,7 +12507,7 @@ var render = function render() {
         "aria-haspopup": "true",
         "aria-expanded": "false"
       }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAcción\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAcción\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
       staticClass: "dropdown-menu"
     }, [_c("a", {
       staticClass: "dropdown-item",
@@ -12559,7 +12555,7 @@ var render = function render() {
         "aria-haspopup": "true",
         "aria-expanded": "false"
       }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAcción\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAcción\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
       staticClass: "dropdown-menu"
     }, [_c("a", {
       staticClass: "dropdown-item",
@@ -12611,7 +12607,7 @@ var render = function render() {
       }
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Número de Pedido")]), _vm._v(" " + _vm._s(order.id) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Número de Pedido")]), _vm._v(" " + _vm._s(order.id) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-20"
     }, [_c("span", {
       staticClass: "order-span"
@@ -12627,11 +12623,11 @@ var render = function render() {
       }
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Dirección de entrega")]), _vm._v(" " + _vm._s(order.address) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Dirección de entrega")]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(order.address) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-20"
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Fecha de entrega")]), _vm._v(_vm._s(order.delivery_time_date))]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Fecha de\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tentrega")]), _vm._v(_vm._s(order.delivery_time_date))]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-20"
     }, [_c("span", {
       staticClass: "order-span"
@@ -12642,7 +12638,7 @@ var render = function render() {
         "data-placement": "bottom",
         title: "Su pedido se está procesando para ser enviado"
       }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(order.namestatus) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])])]);
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(order.namestatus) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t")])])]);
   })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "tab-pane fade",
     attrs: {
@@ -12672,7 +12668,7 @@ var render = function render() {
       }
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Número de Pedido")]), _vm._v(" " + _vm._s(order.id) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Número de Pedido")]), _vm._v(" " + _vm._s(order.id) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-20"
     }, [_c("span", {
       staticClass: "order-span"
@@ -12688,11 +12684,11 @@ var render = function render() {
       }
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Dirección de entrega")]), _vm._v(" " + _vm._s(order.address) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Dirección de entrega")]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(order.address) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t")])]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-20"
     }, [_c("span", {
       staticClass: "order-span"
-    }, [_vm._v("Fecha de entrega")]), _vm._v(_vm._s(order.delivery_time_date))]), _vm._v(" "), _c("div", {
+    }, [_vm._v("Fecha de\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tentrega")]), _vm._v(_vm._s(order.delivery_time_date))]), _vm._v(" "), _c("div", {
       staticClass: "col-6 col-lg-20"
     }, [order.namestatus == "Entregado" ? _c("div", {
       staticClass: "btn-group"
@@ -12708,7 +12704,7 @@ var render = function render() {
         "aria-haspopup": "true",
         "aria-expanded": "false"
       }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAcción\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAcción\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
       staticClass: "dropdown-menu"
     }, [_c("a", {
       staticClass: "dropdown-item",
@@ -12908,13 +12904,13 @@ var render = function render() {
       staticClass: "product-prices"
     }, [_c("p", [_vm._v(" $" + _vm._s(_vm._f("FormatDolar")(favorite.calculado / _vm.tasadolar)) + " / Bs " + _vm._s(_vm._f("FormatNumber")(favorite.calculado)))])]) : _vm._e(), _vm._v(" "), !favorite.impuesto ? _c("div", {
       staticClass: "product-prices"
-    }, [_c("p", [_vm._v(" $" + _vm._s(_vm._f("FormatDolar")(favorite.price / _vm.tasadolar)) + " / Bs " + _vm._s(_vm._f("FormatNumber")(favorite.price)))])]) : _vm._e()]), _vm._v(" "), _c("div", {
+    }, [_c("p", [_vm._v(" $" + _vm._s(_vm._f("FormatDolar")(favorite.price / _vm.tasadolar)) + "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t/ Bs " + _vm._s(_vm._f("FormatNumber")(favorite.price)))])]) : _vm._e()]), _vm._v(" "), _c("div", {
       staticClass: "product-add"
     }, [favorite.qty_avaliable > 0 ? _c("span", {
       staticClass: "product-info"
-    }, [_vm._v("Disponibles: "), _c("b", [_vm._v(_vm._s(favorite.qty_avaliable) + " en Stock")])]) : _c("span", {
+    }, [_vm._v("Disponibles:\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"), _c("b", [_vm._v(_vm._s(favorite.qty_avaliable) + " en Stock")])]) : _c("span", {
       staticClass: "product-info"
-    }, [_vm._v("Producto"), _c("b", [_vm._v(" Agotado!")])]), _vm._v(" "), _c("form", {
+    }, [_vm._v("Producto"), _c("b", [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAgotado!")])]), _vm._v(" "), _c("form", {
       attrs: {
         action: ""
       }
@@ -13019,7 +13015,7 @@ var render = function render() {
       attrs: {
         d: "M14.21,3.33a.48.48,0,0,0-.35-.16H4V1.35A.45.45,0,0,0,3.67.92L.58,0A.45.45,0,0,0,0,.32a.45.45,0,0,0,.3.56l2.77.81v9.89H2.65a.45.45,0,0,0,0,.9h2.6a.81.81,0,1,1-.81.81.45.45,0,1,0-.9,0,1.72,1.72,0,1,0,1.71-1.71H4v-.77h8.52a.43.43,0,0,0,.22-.06.46.46,0,0,0,.22-.3L14.3,3.71A.48.48,0,0,0,14.21,3.33Zm-.9.74L13,5.39H4V4.07ZM4,9.91V8.59H10.1a.45.45,0,0,0,0-.9H4V6.29h8.87l-.72,3.62Z"
       }
-    })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t                                    Añadir al carrito\n\t\t\t\t\t\t\t\t\t\t\t                                ")]) : _vm._e(), _vm._v(" "), _c("button", {
+    })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAñadir al carrito\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t")]) : _vm._e(), _vm._v(" "), _c("button", {
       staticClass: "btn btn-addfavorite",
       attrs: {
         type: "button"
@@ -13064,7 +13060,7 @@ var render = function render() {
       attrs: {
         d: "M8.74,8.11a2.23,2.23,0,0,0-1.63-.77A3.6,3.6,0,0,0,4.7,8.39,3.58,3.58,0,0,0,2.3,7.34a2.23,2.23,0,0,0-1.63.77A2.51,2.51,0,0,0,0,10.31C.32,12,2,13.69,4.52,15a.39.39,0,0,0,.18,0,.41.41,0,0,0,.19,0c2.57-1.27,4.2-3,4.48-4.65A2.51,2.51,0,0,0,8.74,8.11Zm-.21,2.06c-.1.66-.7,2.34-3.83,3.93C1.57,12.51,1,10.83.87,10.17a1.68,1.68,0,0,1,.4-1.47h0a1.39,1.39,0,0,1,1-.51h0a3.14,3.14,0,0,1,2,1.09.44.44,0,0,0,.6,0A3.15,3.15,0,0,1,7.09,8.18a1.41,1.41,0,0,1,1,.51h0A1.63,1.63,0,0,1,8.53,10.17Z"
       }
-    })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t                                    Quitar de Favoritos\n\t\t\t\t\t\t\t\t\t\t\t                                ")]), _vm._v(" "), _c("button", {
+    })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tQuitar de Favoritos\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("button", {
       staticClass: "btn btn-view",
       attrs: {
         type: "button",
@@ -13101,7 +13097,7 @@ var render = function render() {
       attrs: {
         d: "M14.64,15a.4.4,0,0,1-.27-.11l-5.06-5a.37.37,0,0,1,0-.54.39.39,0,0,1,.55,0l5.06,5a.39.39,0,0,1,0,.55A.39.39,0,0,1,14.64,15Z"
       }
-    })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t                                    Ver Producto\n\t\t\t\t\t\t\t\t\t\t\t                                ")])])])])])]);
+    })])])]), _vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVer Producto\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t")])])])])])]);
   }), 0)])]) : _vm._e()])])])])])])])])]), _vm._v(" "), _c("ModalOrder", {
     attrs: {
       tasadolar: _vm.currency_rate,
@@ -13339,7 +13335,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "currently-password"
     }
-  }, [_vm._v("Confirma tu contraseña actual:")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Confirma tu contraseña\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tactual:")]), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
       type: "password",
@@ -13367,7 +13363,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": "new-password-confirm"
     }
-  }, [_vm._v("Repite la nueva contraseña:")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Repite la nueva\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tcontraseña:")]), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
       type: "password",
@@ -13384,7 +13380,7 @@ var staticRenderFns = [function () {
     attrs: {
       type: "button"
     }
-  }, [_vm._v("GUARDAR CAMBIOS")])])])])]);
+  }, [_vm._v("GUARDAR\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tCAMBIOS")])])])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -13406,7 +13402,7 @@ var staticRenderFns = [function () {
       "aria-controls": "address",
       "aria-selected": "true"
     }
-  }, [_vm._v("Mis direcciones de Envio")])])]);
+  }, [_vm._v("Mis direcciones de\n\t\t\t\t\t\t\t\t\t\t\tEnvio")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -98303,8 +98299,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/developftu/Documentos/practica/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/developftu/Documentos/practica/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Ansony\Desktop\ecommerce-laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Ansony\Desktop\ecommerce-laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

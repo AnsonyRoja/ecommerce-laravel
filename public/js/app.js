@@ -2343,6 +2343,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   methods: {
     filterProducts: function () {
       var _filterProducts = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _response$data;
         var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
@@ -2351,7 +2352,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return axios.get(URLSERVER + 'api/products?' + this.filtros);
             case 2:
               response = _context.sent;
-              this.products = response.data.data;
+              this.products = (_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.data;
               console.log(this.products);
             case 5:
             case "end":
@@ -3066,7 +3067,7 @@ __webpack_require__.r(__webpack_exports__);
     products: Object,
     images: Array,
     tasadolar: Number,
-    user_id: String
+    user_id: Number
   }
 });
 
@@ -3463,7 +3464,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       newDirection: 'none',
       cant_product: [],
       currency_rate: 0,
-      tmpOrder: {}
+      tmpOrder: {},
+      dataLoaded: false
     };
   },
   components: {
@@ -98317,8 +98319,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Ansony\Desktop\ecommerce-laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Ansony\Desktop\ecommerce-laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/developftu/Documentos/practica/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/developftu/Documentos/practica/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

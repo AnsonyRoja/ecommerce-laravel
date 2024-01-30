@@ -303,14 +303,6 @@ function chao(){
 
 </script>
 
-
-
-
-     
-
-
-
-
         ';
         
         return $html;

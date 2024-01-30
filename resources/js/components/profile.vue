@@ -1115,6 +1115,7 @@ export default {
 			cant_product: [],
 			currency_rate: 0,
 			tmpOrder: {},
+			dataLoaded: false,
 		}
 	},
 	components: {
@@ -1237,7 +1238,6 @@ export default {
 						.catch(function (error) {
 							console.log(error);
 						});
-<<<<<<< HEAD
 					}
 				});
 			},
@@ -1257,7 +1257,7 @@ export default {
 						nro_home: user.habDirection.nro_home,
 						zip_code: user.habDirection.zip_code,
 						reference_point: user.habDirection.reference_point
-									}
+							}
 					};
 					console.log("esto es user_data",user_data);
 				axios.post(URLSERVER+'api/update_profile', {
@@ -1265,19 +1265,6 @@ export default {
                 })
                 .then(function (response) {
                 	console.log(response.data);
-=======
-				}
-			});
-		},
-		update_profile(user) {
-			const that = this;
-			console.log(user);
-			axios.post(URLHOME + 'api/update_profile', {
-				user_data: user,
-			})
-				.then(function (response) {
-					console.log(response.data);
->>>>>>> efc684e4c9d94da6cb0e741bc3e31afaec909d58
 					that.userData = response.data;
 					fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
 					Swal.fire(
@@ -1285,7 +1272,6 @@ export default {
 						'Tus datos han sido guardado exitosamente',
 						'success'
 					);
-<<<<<<< HEAD
                 })
                 .catch(function (error) {
                 	console.log("esto es el error",error);
@@ -1295,17 +1281,6 @@ export default {
 				const response = await axios.get(URLSERVER+"api/states");
 				console.log("esto es la respuesta", response);
 				this.states.push(response.data.data);
-=======
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-		},
-		async getStates() {
-			const response = await axios.get(URLSERVER + "api/states");
-			console.log("esto es la respuesta", response);
-			this.states.push(response.data.data);
->>>>>>> efc684e4c9d94da6cb0e741bc3e31afaec909d58
 
 			const response2 = await axios.get(URLSERVER + "api/Allstates");
 			console.log("esto es la response2", response2);

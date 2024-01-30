@@ -176,7 +176,7 @@
         methods: {
 			filterProducts: async function() {
 				const response = await axios.get(URLSERVER+'api/products?'+this.filtros);
-				this.products = response.data.data;
+				this.products = response.data?.data;
 				console.log(this.products);
 			},
 			putToggle(event) {

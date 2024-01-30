@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends BaseController
 {
+
+   
+
+
     public function index(Request $request,ProductFilters $filters)
     {
         $data = $request->all();

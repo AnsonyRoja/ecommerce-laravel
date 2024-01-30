@@ -48,6 +48,12 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('reportes', ['uses' => 'Reportes@home', 'as' => 'voyager.reportes']);
     Route::get('/products', 'ProductsController@index')->name('products.index');
     Route::delete('/products/{product}', 'ProductsController@destroy')->name('products.destroy');
+    Route::get('/products', 'ProductsController@index')->name('voyager.products.index');
+    Route::get('/products/create', 'ProductsController@create')->name('products.create');
+    Route::post('products', "ProductsController@store")->name('products.store');
+
+
+
 
     Route::get('kpis/transactions-for-period','KpisController@TransactionsForPeriod');
     Route::get('kpis/sales-for-period','KpisController@SalesForPeriod');

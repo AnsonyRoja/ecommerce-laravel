@@ -180,7 +180,7 @@
             products: Object,
             images   : Array,
             tasadolar: Number,
-            user_id: String
+            user_id: Number
         }
     }
 </script>

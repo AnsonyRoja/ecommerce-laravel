@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use App\Stores;
 
 class ProductsController extends Controller
 {
@@ -23,10 +24,7 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('products.create');
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -34,10 +32,30 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
+
+     public function create()
+     {
+        
+        $stores = Stores::all(); // Obtener todas las tiendas
+        return view('products.create', compact('stores'));
+     }
+
+
     public function store(Request $request)
     {
+
+        var_dump($request->all());
+           
+    
         $request->validate([
-            // Agrega aquí las reglas de validación para los campos de Products
+            'name' => 'required|string|max:255',
+            'description_short' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'stores_id' => 'required|exists:stores,id', // Asegúrate de validar que el ID de la tienda existe en la tabla stores
+            // Agrega las reglas de validación para los demás campos según sea necesario
         ]);
 
         Product::create($request->all());

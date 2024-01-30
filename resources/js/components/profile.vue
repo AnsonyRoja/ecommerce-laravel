@@ -936,8 +936,23 @@
 			{
 				const that = this;
 				console.log(user);
-				axios.post(URLHOME+'api/update_profile', {
-                    user_data: user,
+
+				const user_data = {
+					...user,
+					habDirection: {
+						state_id: user.habDirection.state_id,
+						region_id: user.habDirection.region_id,
+						city_id: user.habDirection.city_id,
+						urb: user.habDirection.urb,
+						sector: user.habDirection.sector,
+						nro_home: user.habDirection.nro_home,
+						zip_code: user.habDirection.zip_code,
+						reference_point: user.habDirection.reference_point
+									}
+					};
+					console.log("esto es user_data",user_data);
+				axios.post(URLSERVER+'api/update_profile', {
+                    user_data: user_data ,
                 })
                 .then(function (response) {
                 	console.log(response.data);
@@ -950,7 +965,7 @@
 					);
                 })
                 .catch(function (error) {
-                	console.log(error);
+                	console.log("esto es el error",error);
                 });
 			},
 			async getStates() {

@@ -99,56 +99,75 @@ class RegisterController extends BaseController
      */
     public function update_profile(Request $request)
     {   
-        print_r($request);
-        $data_user = $request->all();
-        print_r($data_user);
-        die();
-        //USER
+
+        echo"esto es request $request";
+
+            $data_user = $request->all();
+   
+            echo "<pre>";
+            print_r($data_user["user_data"]);
+            echo "</pre>";
+        // die();
+    
+        // Actualizar datos de usuario
         DB::table('users')
-            ->where('id', $data_user['user_data']['id'])
+            ->where('id', $data_user["user_data"]['id'])
             ->update([
-                'name' => $data_user['user_data']['name'],
+                'name' => $data_user["user_data"]['name'],
             ]);
-        //PEOPLES
+    
+        // Actualizar datos de personas (peoples)
         DB::table('peoples')
-            ->where('id', $data_user['user_data']['peoples_id'])
+            ->where('id', $data_user["user_data"]['peoples_id'])
             ->update([
-                'name' => $data_user['user_data']['name'],
+                'name' => $data_user["user_data"]['name'],
                 'sex' => $data_user["user_data"]['sex'],
-                'birthdate' =>$data_user["user_data"]['birthdate'],
+                'birthdate' => $data_user["user_data"]['birthdate'],
                 'cities_id' => $data_user["user_data"]['city_id'],
                 'phone' => $data_user["user_data"]['phone'],
                 'phone_home' => $data_user["user_data"]['phone_home'],
             ]);
-        
-        //Dirección de Habitación
+    
+        // Verificar si el usuario tiene dirección de habitación existente
         $hasDirection = DB::table('order_address')
-        ->where("users_id","=",$data_user['user_data']['id'])
-        ->where("type","<>","delivery")
-        ->get();
-        if(!isset($hasDirection[0])) {
-            DB::insert("INSERT INTO order_address (cities_id,users_id,zip_code,urb,sector,nro_home,reference_point,type,address) values(?,?,?,?,?,?,?,?,?)",[$data_user['user_data']["habDirection"]["city_id"],$data_user['user_data']['id'],$data_user['user_data']["habDirection"]["zip_code"],$data_user['user_data']["habDirection"]["urb"],$data_user['user_data']["habDirection"]["sector"],$data_user['user_data']["habDirection"]["nro_home"],$data_user['user_data']["habDirection"]["reference_point"],'home','']);
-        }else {
-            DB::table('order_address')
-            ->where('users_id', $data_user['user_data']['id'])
-            ->where('type',"=","home")
-            ->update([
-                'cities_id' => $data_user['user_data']["habDirection"]["city_id"],
-                'zip_code' => $data_user['user_data']["habDirection"]["zip_code"],
-                'urb' => $data_user['user_data']["habDirection"]["urb"],
-                'sector' => $data_user['user_data']["habDirection"]["sector"],
-                'nro_home' => $data_user['user_data']["habDirection"]["nro_home"],
-                'reference_point' => $data_user['user_data']["habDirection"]["reference_point"],
-                'address' => '',
-            ]);
-        }
-
-        
-        
-        // return $this->sendResponse(["success"=>true]);
-        // return $this->sendResponse($this->getData($data_user["user_data"]["email"]));
-        echo json_encode($this->getData($data_user["user_data"]["email"]));
+            ->where("users_id", "=", $data_user["user_data"]['id'])
+            ->where("type", "<>", "delivery")
+            ->get();
+    
+            if (!isset($hasDirection[0])) {
+                // Si no tiene dirección de habitación, insertar nueva dirección
+                DB::table('order_address')->insert([
+                    'cities_id' => $data_user["user_data"]["habDirection"]["city_id"],
+                    'users_id' => $data_user["user_data"]['id'],
+                    'zip_code' => $data_user["user_data"]["habDirection"]["zip_code"],
+                    'urb' => $data_user["user_data"]["habDirection"]["urb"],
+                    'sector' => $data_user["user_data"]["habDirection"]["sector"],
+                    'nro_home' => $data_user["user_data"]["habDirection"]["nro_home"],
+                    'reference_point' => $data_user["user_data"]["habDirection"]["reference_point"],
+                    'type' => 'home',
+                    'address' => '',
+                ]);
+            } else {
+                // Si tiene dirección de habitación existente, actualizar dirección
+                DB::table('order_address')
+                    ->where('users_id', $data_user["user_data"]['id'])
+                    ->where('type', "=", "home")
+                    ->update([
+                        'cities_id' => $data_user["user_data"]["habDirection"]["city_id"],
+                        'zip_code' => $data_user["user_data"]["habDirection"]["zip_code"],
+                        'urb' => $data_user["user_data"]["habDirection"]["urb"],
+                        'sector' => $data_user["user_data"]["habDirection"]["sector"],
+                        'nro_home' => $data_user["user_data"]["habDirection"]["nro_home"],
+                        'reference_point' => $data_user["user_data"]["habDirection"]["reference_point"],
+                        'address' => '',
+                    ]);
+            }
+            
+    
+        // Retornar los datos actualizados del usuario
+        return response()->json($this->getData($data_user["user_data"]["email"]));
     }   
+    
 
     public function getData($email) {
         $datos = User::select("users.id","users.email","peoples.name","users.peoples_id","peoples.sex","peoples.birthdate","peoples.phone","peoples.phone_home","cities.id as city_id","cities.name as ciudad")

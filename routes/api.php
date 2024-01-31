@@ -60,7 +60,10 @@ Route::get('settings','API\SettingController@all')->name('settings');
 Route::resource('payment_methods', 'API\PaymentMethodsController');
 
 //FAVORITE PRODUCTS
-Route::resource('favorites', 'API\FavoritesController');
+Route::resource('favorites', 'API\FavoritesController')->only(['index']);
+
+Route::resource('favorites', 'API\FavoritesController')->only(['store']);
+
 Route::post('favorites/delete', 'API\FavoritesController@delete');
 
 //RATING PRODUCTS

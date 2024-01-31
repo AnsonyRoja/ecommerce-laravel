@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App;
 
-use Illuminate\Http\Request;
-use App\Favorites;
-use Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
-class FavoritesController extends Controller
+class Favorites extends Model
 {
-    public function index()
+    protected $fillable = ['user_id', 'product_id'];
+
+    public static function getUserFavorites()
     {
         // Obtener el ID del usuario autenticado
         $userId = Auth::id();
 
         // Buscar todos los favoritos del usuario logueado
-        $favorites = Favorites::where('user_id', $userId)->get();
-        
-        return view('profile.index', compact('favorites'));
-
+        return self::where('user_id', $userId)->get();
     }
 }
+

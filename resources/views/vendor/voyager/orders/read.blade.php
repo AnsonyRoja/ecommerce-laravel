@@ -51,16 +51,65 @@ if(!isset($_GET['minimo'])){
 
 $id=$dataTypeContent->getAttribute('id');
 
-$sql="SELECT (SELECT json_agg(
-    json_build_object(
-    'id', op.products_id, 
-    'cant', op.cant,
-    'image',p.photo,
-    'name',p.name,
-    'price',op.price
-)
+$sql="SELECT 
+    (
+        SELECT 
+            json_agg(
+                json_build_object(
+                    'id', op.products_id, 
+                    'cant', op.cant,
+                    'image', p.photo,
+                    'name', p.name,
+                    'price', op.price
+                )
+            ) 
+        FROM 
+            order_products op 
+        INNER JOIN 
+            products p ON p.id = op.products_id 
+        WHERE 
+            op.orders = o.id
+    ) AS productos,
+    oa.address,
+    p.phone,
+    p.phone_home,
+    p.name AS nombre_usuario,
+    p.rif,
+    p.name AS nombre_usuario,
+    concat_ws(', ', 'Zipcode:' || oa.zip_code, oa.urb, oa.sector, '#' || oa.nro_home, oa.reference_point) AS dir_entrega,
+    o.*,
+    TO_CHAR(o.created_at, 'dd/mm/yyyy HH12:MI AM') AS fecha,
+    TO_CHAR(o.delivery_time_date, 'dd/mm/yyyy HH12:MI AM') AS fecha_entrega,
+    os.name AS status_tracking,
+    t.orders_status_id 
+FROM 
+    (
+        SELECT 
+            o.*,
+            MAX(t.id) as t_id 
+        FROM 
+            orders o 
+        INNER JOIN 
+            trackings t ON t.orders_id = o.id 
+        GROUP BY 
+            o.id
+    ) o 
+INNER JOIN 
+    trackings t ON t.id = o.t_id 
+INNER JOIN 
+    orders_status os ON os.id = t.orders_status_id 
+LEFT JOIN 
+    order_address oa ON oa.id = o.order_address_id 
+INNER JOIN 
+    users ON o.users_id = users.id 
+INNER JOIN 
+    peoples p ON p.id = users.peoples_id 
+WHERE 
+    o.id = '$id'
+";
 
-) FROM order_products op INNER JOIN products p ON p.id=op.products_id WHERE op.orders=o.id) productos,oa.address,p.phone,p.phone_home, p.name as nombre_usuario,p.rif, p.name as nombre_usuario,concat_ws(', ', 'Zipcode:' || oa.zip_code, oa.urb,oa.sector,'#' || oa.nro_home,oa.reference_point) AS dir_entrega, o.*,TO_CHAR(o.created_at, 'dd/mm/yyyy HH12:MI AM') AS fecha,TO_CHAR(o.delivery_time_date, 'dd/mm/yyyy HH12:MI AM') AS fecha_entrega,os.name status_tracking,t.orders_status_id FROM (SELECT o.*,MAX(t.id) as t_id FROM orders o INNER JOIN trackings t ON t.orders_id=o.id GROUP BY o.id) o INNER JOIN trackings t ON t.id=o.t_id INNER JOIN orders_status os ON os.id=t.orders_status_id LEFT JOIN order_address oa ON oa.id=o.order_address_id INNER JOIN users ON o.users_id=users.id INNER JOIN peoples p ON p.id=users.peoples_id WHERE o.id='$id'";
+
+
 //exit($sql);
 $a=DB::select($sql);
 
@@ -83,6 +132,8 @@ if($transport_id != 3){
 }else{
     $fecha_entrega="Antes de 24 horas recibira su pedido";
 }
+
+
 
 
 $fac= "
@@ -225,9 +276,11 @@ echo $fac;
 function bonito($var){
 echo "<pre>".print_r($var,true)."</pre>";
 }
+
 function formato_numero($numero){
 	return "Bs ".number_format($numero, 2, ".", ",");
 	}
+    
 ?>
 
                 </div>

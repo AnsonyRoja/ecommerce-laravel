@@ -40,9 +40,10 @@
 								<span  :style="{display: gifSearch}">Cargando.....</span>
 								<ol>
 									<li v-for="ser in searched" :key="ser.id" @click="goToCatalog(ser.id)">
-										<img v-if="ser.photo != null" :style="{width: '6%'}" :src="'storage/'+JSON.parse(ser.photo)[0] | MediumImage">
-										{{ser.name}}
+										<img v-if="ser.photo" :style="{ width: '6%' }" :src="ser.photo">
+										{{ ser.name }}
 									</li>
+
 								</ol>
 							</div>
 

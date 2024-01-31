@@ -117,7 +117,11 @@ Vue.directive('lazyload',{
 
 var globalFunc = {
     addToFavorite: function(product,user_id) {
+
+        console.log(product, user_id);
+        
         let products_id = product.id;
+        
         if(!!user_id) {
             axios.post(URLHOME+'api/favorites', {
                 products_id: products_id,

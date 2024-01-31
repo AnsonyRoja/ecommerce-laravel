@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Stores;
+use App\SubCategories;
+use Illuminate\Support\Str;
+
 
 class ProductsController extends Controller
 {
@@ -39,35 +42,72 @@ class ProductsController extends Controller
      {
         
         $stores = Stores::all(); // Obtener todas las tiendas
-        return view('products.create', compact('stores'));
+        $subCategories = SubCategories::all();
+
+        return view('products.create', compact('stores', 'subCategories'));
      }
 
 
-    public function store(Request $request)
-    {
+     public function store(Request $request)
+     {
+         $request->validate([
+             'name' => 'required|string|max:255',
+             'description_short' => 'nullable|string|max:255',
+             'description' => 'nullable|string',
+             'price' => 'required|numeric',
+             'stores_id' => 'required|exists:stores,id',
+             'sub_categories_id' => 'required|exists:sub_categories,id', 
 
-        var_dump($request->all());
-           
-    
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description_short' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'stores_id' => 'required|exists:stores,id', // Asegúrate de validar que el ID de la tienda existe en la tabla stores
-            // Agrega las reglas de validación para los demás campos según sea necesario
-        ]);
+             // Agrega las reglas de validación para los demás campos según sea necesario
+         ]);
 
-        Product::create($request->all());
+          $sku = str_pad(random_int(0, 99999999), 8, '0', STR_PAD_LEFT);
 
-        return redirect()->route('products.index')
-            ->with('success', 'Product created successfully.');
-    }
+            // Validar que el SKU sea único en la tabla de productos
+            while (Product::where('sku', $sku)->exists()) {
+                // Generar un nuevo SKU si el actual ya existe en la base de datos
+                $sku = str_pad(random_int(0, 99999999), 8, '0', STR_PAD_LEFT);
+            }
+     
+         // Guardar la imagen en el directorio 'public/products' y obtener la ruta relativa
+     
+         // Obtener la URL pública de la imagen
+     
+         // Crear el producto en la base de datos y guardar la URL de la imagen
+         $product = new Product();
+         $product->name = $request->name;
+         $product->description_short = $request->description_short;
+         $product->description = $request->description;
+         $product->price = $request->price;
+         $product->stores_id = $request->stores_id;
+         $product->sub_categories_id = $request->sub_categories_id;
+         $product->qty_avaliable = $request->qty_avaliable;
+         $product->sku = $sku; // Asignar el SKU generado al objeto del producto
+
+         
+                    if ($request->hasFile('photo')) {
+
+                        $photo = $request->file('photo');
+                        $photoPath = $photo->store('public/products');
+
+                        // Obtener la URL completa del archivo almacenado
+                        $photoUrl = \Illuminate\Support\Facades\Storage::url($photoPath);
+
+                        // Guardar la URL completa en la columna 'photo' del modelo Product
+                        $product->photo = $photoUrl;
+                }
+
+         $product->save();
+     
+         return back()->with('success', 'Product deleted successfully');
+         
+        }
+     
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Products  $products
+     * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
@@ -78,7 +118,7 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Products  $products
+     * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product)
@@ -90,7 +130,7 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Products  $products
+     * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product)
@@ -114,8 +154,10 @@ class ProductsController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-
-        return redirect()->route('products.index')
-            ->with('success', 'Product deleted successfully');
+    
+        // Recargar la página actual
+        return back()->with('success', 'Product deleted successfully');
     }
+    
+    
 }

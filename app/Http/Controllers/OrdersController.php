@@ -32,4 +32,12 @@ class OrdersController extends Controller
         return view("resume",["order" => json_encode($response)]);
 
     }
+    public function showItems($id)
+    {
+        // Obtener la orden por su ID
+        $order = Orders::findOrFail($id);
+
+        // Pasar la orden a la vista
+        return view('vendor.voyager.orders.read', compact('order'));
+    }
 }

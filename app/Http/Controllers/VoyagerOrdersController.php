@@ -334,4 +334,5 @@ if($row->field=='status'){
 function bonito($var){
     echo '<pre>'.print_r($var,true).'</pre>';
 }
+
 ?>

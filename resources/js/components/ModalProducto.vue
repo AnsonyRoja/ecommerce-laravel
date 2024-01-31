@@ -8,18 +8,17 @@
                             <div class=" col-lg-4">
                                 <div :id="'modalslider' + product.id" class="carousel slide" data-ride="carousel">
                                     <!-- Indicators -->
+
                                     <ul class="carousel-indicators" v-if="product.photo != null">
-                                        <li v-for="(foto, index) in JSON.parse(product.photo)" v-bind:key="index"
-                                            :data-target="'#modalslider' + product.id" :data-slide-to="index"
-                                            :class="(index == 0) ? 'active' : ''"></li>
+                                        <li data-target="'#modalslider' + product.id" data-slide-to="0" class="active"></li>
                                     </ul>
                                     <!-- The slideshow -->
                                     <div class="carousel-inner" v-if="product.photo != null">
-                                        <div :class="(index == 0) ? 'carousel-item active' : 'carousel-item'"
-                                            v-for="(photo, index) in JSON.parse(product.photo)" v-bind:key="index">
-                                            <img :src="'storage/' + photo | BigImage">
+                                        <div class="carousel-item active">
+                                            <img :src="product.photo" class="d-block w-100" alt="Imagen del carrusel">
                                         </div>
                                     </div>
+
                                     <!-- Left and right controls -->
                                     <a class="carousel-control-prev" :href="'#modalslider' + product.id" data-slide="prev">
                                         <span class="carousel-control-prev-icon"></span>

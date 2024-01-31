@@ -789,7 +789,7 @@
 															:key="favorite.id">
 															<div class="product-block">
 																<div class="product-img"><img v-if="favorite.photo != null"
-																		:src="'storage/' + JSON.parse(favorite.photo)[0] | MediumImage">
+																		:src=favorite.photo>
 																	<div class="product-actions">
 																		<button type="button" data-toggle="modal"
 																			data-target="#ModalProd" class="btn">
@@ -1540,7 +1540,7 @@ export default {
 		this.getCities();
 		this.getPedidos();
 		console.log("esto es el userLLoger", this.userlogged);
-		this.userData = this.userlogged;
+		this.userData.push(this.userlogged);
 		console.log("esto es userData", this.userData);
 		this.getAmountBW(this.userData.id);
 		console.log("this.userData::> ", this.userData);

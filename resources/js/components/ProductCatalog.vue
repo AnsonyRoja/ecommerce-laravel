@@ -7,15 +7,18 @@
                         <div class="product-img">
                             <div :id="'slider'+product.id" class="carousel slide" data-ride="carousel">
                                 <!-- Indicators -->
-                                <ul class="carousel-indicators" >
-                                    <li v-for="(foto,index) in JSON.parse(product.photo)" v-bind:key="index" :data-target="'#slider'+product.id" :data-slide-to="index" :class="(index==0)?'active':''"></li>
-                                </ul>
-                                <!-- The slideshow -->
-                                <div class="carousel-inner">
-                                    <div :class="(index==0)?'carousel-item active':'carousel-item'" v-for="(photo,index) in JSON.parse(product.photo)" v-bind:key="index">
-                                        <LazyImg :source="'storage/'+ photo | MediumImage"></LazyImg>
-                                    </div>
+                                <ul class="carousel-indicators">
+                                <!-- Indicador del carrusel -->
+                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            </ul>
+                            <div class="carousel-inner">
+                                <!-- Contenido del carrusel -->
+                                <div class="carousel-item active">
+                                    <!-- Imagen del carrusel -->
+                                    <img :src="product.photo" class="d-block w-100" alt="Imagen del carrusel">
                                 </div>
+                            </div>
+
                                 <!-- Left and right controls -->
                                 <a class="carousel-control-prev" :href="'#slider'+product.id" data-slide="prev">
                                     <span class="carousel-control-prev-icon" ></span>

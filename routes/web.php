@@ -47,10 +47,11 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('masivo', ['uses' => 'Subscriptions@home', 'as' => 'voyager.masivo']);
     Route::get('reportes', ['uses' => 'Reportes@home', 'as' => 'voyager.reportes']);
     Route::get('/products', 'ProductsController@index')->name('products.index');
-    Route::delete('/products/{product}', 'ProductsController@destroy')->name('products.destroy');
+    Route::delete('/products/delete/{product}', 'ProductsController@destroy')->name('products.destroy');
     Route::get('/products', 'ProductsController@index')->name('voyager.products.index');
     Route::get('/products/create', 'ProductsController@create')->name('products.create');
     Route::post('products', "ProductsController@store")->name('products.store');
+    // Route::get('/orders/{id}', 'OrdersController@showItems')->name('orders.showItems');
 
 
 

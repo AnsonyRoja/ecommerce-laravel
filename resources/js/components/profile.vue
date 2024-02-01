@@ -1280,7 +1280,7 @@ export default {
 			async getStates() {
 				const response = await axios.get(URLSERVER+"api/states");
 				console.log("esto es la respuesta", response);
-				this.states.push(response.data.data);
+				this.states = response.data.data ;
 
 			const response2 = await axios.get(URLSERVER + "api/Allstates");
 			console.log("esto es la response2", response2);
@@ -1310,7 +1310,7 @@ export default {
 		async loadParroquia(event) {
 			const region_id = event.target.value;
 			const response = await axios.get(URLSERVER + "api/cities/region/" + region_id);
-			this.cities = response.data.data;
+			this.cities = response.data.data; 
 		},
 		async loadMunicipioHab(event) {
 			const state_id = event.target.value;
@@ -1492,7 +1492,7 @@ export default {
 				action: 'save',
 			});
 
-			this.userData.push(this.userlogged);
+			this.userData = this.userlogged;
 
 		},
 		increaseValue(product) {
@@ -1533,6 +1533,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.userData = this.userlogged;
 		this.getFavorites();
 		this.getTabUrl();
 		this.getStates();
@@ -1540,7 +1541,6 @@ export default {
 		this.getCities();
 		this.getPedidos();
 		console.log("esto es el userLLoger", this.userlogged);
-		this.userData.push(this.userlogged);
 		console.log("esto es userData", this.userData);
 		this.getAmountBW(this.userData.id);
 		console.log("this.userData::> ", this.userData);

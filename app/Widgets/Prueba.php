@@ -237,11 +237,16 @@ private function send_data($evento){
   var url = "'.$url.'";
   
   xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-          var myArr = JSON.parse(this.responseText);
-          datab_'.$evento.'(myArr);
-      }
-  };
+    if (this.readyState == 4 && this.status == 200) {
+        var contentType = this.getResponseHeader("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            var myArr = JSON.parse(this.responseText);
+            datab_' . $evento . '(myArr);
+        } else {
+            // Manejar el caso en que la respuesta no sea JSON
+        }
+    }
+};
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   ';

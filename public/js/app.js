@@ -3662,7 +3662,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 2:
               response = _context4.sent;
               console.log("esto es la respuesta", response);
-              _this5.states.push(response.data.data);
+              _this5.states = response.data.data;
               _context4.next = 7;
               return axios.get(URLSERVER + "api/Allstates");
             case 7:
@@ -3985,7 +3985,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         ciudad: '',
         action: 'save'
       });
-      this.userData.push(this.userlogged);
+      this.userData = this.userlogged;
     },
     increaseValue: function increaseValue(product) {
       var productID = product.id;
@@ -4041,6 +4041,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
+    this.userData = this.userlogged;
     this.getFavorites();
     this.getTabUrl();
     this.getStates();
@@ -4048,7 +4049,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getCities();
     this.getPedidos();
     console.log("esto es el userLLoger", this.userlogged);
-    this.userData.push(this.userlogged);
     console.log("esto es userData", this.userData);
     this.getAmountBW(this.userData.id);
     console.log("this.userData::> ", this.userData);

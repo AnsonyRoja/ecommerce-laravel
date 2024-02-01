@@ -53,6 +53,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('products', "ProductsController@store")->name('products.store');
     // Route::get('/orders/{id}', 'OrdersController@showItems')->name('orders.showItems');
 
+    Route::get('products/{id}', 'API\ProductController@getProduct')->name("products.detalle");
+    Route::get('products/{id}/edit','API\ProductController@edit')->name('products.edit');
 
 
 

@@ -112,7 +112,9 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
+
         return view('products.show', compact('product'));
+        
     }
 
     /**
@@ -133,17 +135,17 @@ class ProductsController extends Controller
      * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
-    {
-        $request->validate([
-            // Agrega aquí las reglas de validación para los campos de Products
-        ]);
+    // public function update(Request $request, Product $product)
+    // {
+    //     $request->validate([
+    //         // Agrega aquí las reglas de validación para los campos de Products
+    //     ]);
 
-        $product->update($request->all());
+    //     $product->update($request->all());
 
-        return redirect()->route('products.index')
-            ->with('success', 'Product updated successfully');
-    }
+    //     return redirect()->route('products.index')
+    //         ->with('success', 'Product updated successfully');
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -158,6 +160,9 @@ class ProductsController extends Controller
         // Recargar la página actual
         return back()->with('success', 'Product deleted successfully');
     }
+
+ 
+    
     
     
 }

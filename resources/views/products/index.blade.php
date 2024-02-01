@@ -38,7 +38,7 @@
                                     <td>{{ $product->subcategories->name }}</td> <!-- Cambia esto para mostrar el nombre de la subcategoría -->
 
                                     <td>
-                                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm btn-primary">Ver</a>
+                                        <a href="{{ route('products.detalle', $product->id) }}" class="btn btn-sm btn-primary">Ver</a>
                                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">Editar</a>
                                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
                                             @csrf

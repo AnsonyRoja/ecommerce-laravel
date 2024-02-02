@@ -52,10 +52,14 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/products/create', 'ProductsController@create')->name('products.create');
     Route::post('products', "ProductsController@store")->name('products.store');
     // Route::get('/orders/{id}', 'OrdersController@showItems')->name('orders.showItems');
+    Route::post('login', 'VoyagerAuthController@postLogin')->name('voyager.login');
 
     Route::get('products/{id}', 'API\ProductController@getProduct')->name("products.detalle");
     Route::get('products/{id}/edit','API\ProductController@edit')->name('products.edit');
+    Route::get('/opiniones', 'RatingProductsController@index')->name('opiniones.index');
+    Route::get('rating-products', 'API\RatingProductsController@index')->name('voyager.rating-products.index');
 
+    Route::get('/order-products', 'OrdersController@products')->name('orders.productos');
 
 
     Route::get('kpis/transactions-for-period','KpisController@TransactionsForPeriod');

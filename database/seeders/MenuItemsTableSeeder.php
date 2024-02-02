@@ -255,7 +255,7 @@ class MenuItemsTableSeeder extends Seeder
                 'order' => 2,
                 'created_at' => '2020-02-24 14:38:45',
                 'updated_at' => '2020-04-29 15:21:56',
-                'route' => 'voyager.order-products.index',
+                'route' => 'voyager.orders.index',
                 'parameters' => 'null',
             ),
             15 => 

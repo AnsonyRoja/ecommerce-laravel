@@ -64,10 +64,9 @@
                         <input readonly type="number" name="qty_avaliable" class="form-control" value="{{ $product->qty_avaliable }}" placeholder="Ingrese la cantidad disponible">
                     </div>
                     <div class="form-group">
-                        <label for="qty_sold">Cantidad Vendida:</label>
+                        <span for="qty_sold" style="font-weight: bold;">Cantidad Vendida:</span>
                         <input readonly type="number" name="qty_sold" class="form-control" value="{{ $product->qty_sold }}" placeholder="Ingrese la cantidad vendida del producto">
                     </div>
-                    
                     
                     <!-- Botones de editar y eliminar -->
                     <div class="form-group">
@@ -132,5 +131,6 @@
         });
     });
 </script>
+
 
 @endsection

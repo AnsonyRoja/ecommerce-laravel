@@ -40,4 +40,12 @@ class OrdersController extends Controller
         // Pasar la orden a la vista
         return view('vendor.voyager.orders.read', compact('order'));
     }
+
+    public function products($id)
+    {
+        $orden = Orders::findOrFail($id);
+        $productos = $orden->productos; // Suponiendo que tengas una relación "productos" en tu modelo Orden
+
+        return view('ordenes.products', compact('orden', 'productos'));
+    }
 }

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\FuncionesGenerales;
+use App\Product;
 class Orders extends Model
 {
     public function __construct(array $attributes = [])
@@ -66,5 +67,10 @@ class Orders extends Model
      public function getCurrencyRateAttribute($value){
         $fg= new FuncionesGenerales;
         return $fg->get_formato_moneda($value);
+     }
+
+     public function productos()
+     {
+         return $this->hasMany(Product::class);
      }
 }

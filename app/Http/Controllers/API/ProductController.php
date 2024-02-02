@@ -11,6 +11,9 @@ use App\Http\Resources\Product as ProductResource;
 use Illuminate\Support\Facades\DB;
 use App\Stores;
 use App\SubCategories;
+use App\Favorites;
+use App\UserVisitProducts;
+
 
 class ProductController extends BaseController
 {
@@ -184,13 +187,33 @@ class ProductController extends BaseController
             // Redireccionar de vuelta con un mensaje de éxito
             return redirect()->back()->with('success', '¡Producto actualizado exitosamente!');
         }
-        
         public function destroy(Product $product)
         {
-            $product->delete();
-        
-            // Recargar la página actual
-            return back()->with('success', 'Product deleted successfully');
-        }
+            // Verificar si el producto está agregado a favoritos
+            if ($this->isProductInFavorites($product->id)) {
+                // Mostrar un mensaje indicando que el producto está agregado a favoritos
+                return back()->with('error', 'Este producto está agregado a favoritos y no se puede eliminar');
+            } else {
+                // Intentar eliminar el producto
+                try {
 
+                    UserVisitProducts::where('user_visit_products.products_id', $product->id)->delete();
+
+                    $product->delete();
+                    
+                } catch (\Throwable $th) {
+                    
+                    return back()->with('error', 'No se puede eliminar este producto porque está asociado a órdenes existentes.');
+
+
+                }
+                // Redirigir a alguna otra página o mostrar un mensaje de éxito
+                return back()->with('success', 'Producto eliminado correctamente');
+            }
+        }
+        
+        private function isProductInFavorites($productId) {
+            // Verificar si hay registros en la tabla de favoritos que hagan referencia al producto
+            return Favorites::where('favorites.products_id', $productId)->exists();
+        }
 }

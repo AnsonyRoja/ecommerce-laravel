@@ -5,11 +5,19 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Filters\Filterable;
+use App\Orders;
 
 class Product extends Model
 {
 
     use Filterable;
+
+    public function orden()
+    {
+        
+        return $this->belongsTo(Orders::class);
+
+    }
 
     protected $table = 'products';
     protected $fillable = ['id', 'EAN', 'brands_id', 'description', 'description_short','discount','keyword','name','price','sub_categories_id','promote','qty_avaliable','qty_sold','qty_view','qty_max','qty_min','record','status','stores_id','photo'];

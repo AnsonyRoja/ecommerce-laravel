@@ -4054,7 +4054,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     console.log("this.userData::> ", this.userData);
   },
   created: function created() {
-    if (this.userlogged.habDirection === true) {
+    if (!this.userlogged.habDirection || this.userlogged.habDirection.length === 0) {
+      // Si habDirection está vacío, inicializa sus propiedades
       this.userlogged.habDirection = {
         state_id: '',
         region_id: '',
@@ -4066,6 +4067,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         reference_point: ''
       };
     } else {
+      // Si habDirection tiene datos, asigna sus propiedades al objeto userlogged.habDirection
       this.userlogged.habDirection = {
         state_id: this.userlogged.habDirection[0].state_id,
         region_id: this.userlogged.habDirection[0].region_id,
@@ -4077,11 +4079,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         reference_point: this.userlogged.habDirection[0].reference_point
       };
     }
-    console.log("this.userData::> ", this.userData);
+
+    // Asigna el objeto userlogged a userData
     this.userData = this.userlogged;
+
+    // Inicializa cant_product con valores predeterminados
     for (var i = 0; i < 2000; i++) {
       this.cant_product[i] = 1;
     }
+
+    // Verifica el resultado
+    console.log("this.userData::> ", this.userData);
   }
 });
 
@@ -98316,8 +98324,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/developftu/Documentos/practica/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/developftu/Documentos/practica/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Ansony\Desktop\ecommerce-laravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Ansony\Desktop\ecommerce-laravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

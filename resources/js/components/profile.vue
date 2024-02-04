@@ -250,6 +250,7 @@
 															</div>
 														</div>
 
+														<div class="col-lg-6"></div>
 
 														<div class="col-lg-12">
 															<h3 class="profile-title">Dirección de Habitación</h3>
@@ -262,9 +263,9 @@
 																	@change="loadMunicipioHab($event)"
 																	v-model="userData.habDirection.state_id">
 																	<option value="">Seleccione</option>
-																	<option v-for="state in Allstates" :key="state.id" :value="state.id">{{ state.name }}</option>
+																	<option v-for="state in Allstates" :key="state.id"
+																		:value="state.id">{{ state.name }}</option>
 																</select>
-
 															</div>
 														</div>
 														<div class="col-lg-4">
@@ -1094,8 +1095,7 @@ import ModalCalificacion from './ModalCalificacion.vue';
 export default {
 	data() {
 		return {
-		
-	    	oneproduct: {},
+			oneproduct: {},
 			favorites: [],
 			avatar: '',
 			cant_favorites: 0,
@@ -1245,7 +1245,6 @@ export default {
 			const that = this;
 			console.log(user);
 
-<<<<<<< HEAD
 			const user_data = {
 				...user,
 				habDirection: {
@@ -1266,35 +1265,12 @@ export default {
 				.then(function (response) {
 					console.log(response.data);
 					that.userData = response.data;
-=======
-				const user_data = {
-					...user,
-					habDirection: {
-						state_id: user.habDirection.state_id,
-						region_id: user.habDirection.region_id,
-						city_id: user.habDirection.city_id,
-						urb: user.habDirection.urb,
-						sector: user.habDirection.sector,
-						nro_home: user.habDirection.nro_home,
-						zip_code: user.habDirection.zip_code,
-						reference_point: user.habDirection?.reference_point
-							}
-					};
-					console.log("esto es user_data",user_data);
-				axios.post(URLSERVER+'api/update_profile', {
-                    user_data: user_data ,
-                })
-                .then(function (response) {
-                	console.log(response.data);
-					that.userData = response?.data;
->>>>>>> b3b3ed5531775e51fc99df8a3ba89bc576613bda
 					fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
 					Swal.fire(
 						'Perfil',
 						'Tus datos han sido guardado exitosamente',
 						'success'
 					);
-<<<<<<< HEAD
 				})
 				.catch(function (error) {
 					console.log("esto es el error", error);
@@ -1304,160 +1280,47 @@ export default {
 			const response = await axios.get(URLSERVER + "api/states");
 			console.log("esto es la respuesta", response);
 			this.states.push(response.data.data);
-=======
-                })
-                .catch(function (error) {
-                	console.log("esto es el error",error);
-                });
-			},
-			async getStates() {
-						try {
-				const [response1, response2] = await Promise.all([
-					axios.get(URLSERVER + "api/states"),
-					axios.get(URLSERVER + "api/Allstates")
-				]);
->>>>>>> b3b3ed5531775e51fc99df8a3ba89bc576613bda
 
-				if (response1.data && response1.data.data) {
-					this.states = response1.data.data;
-				} else {
-					console.error("Datos de estados no válidos:", response1.data);
-				}
-
-				if (response2.data && response2.data.data) {
-					this.Allstates = response2.data.data;
-				} else {
-					console.error("Datos de todos los estados no válidos:", response2.data);
-				}
-			} catch (error) {
-				console.error("Error al cargar los estados:", error);
-			}
+			const response2 = await axios.get(URLSERVER + "api/Allstates");
+			console.log("esto es la response2", response2);
+			this.Allstates = response2.data.data;
+			console.log("esto es this.allStates ", this.Allstates);
 		},
 		async getRegions() {
-				try {
-			const [response1, response2] = await Promise.all([
-				axios.get(URLSERVER + "api/regions"),
-				axios.get(URLSERVER + "api/Allregions")
-			]);
+			const response = await axios.get(URLSERVER + "api/regions");
+			this.regions = response.data.data;
 
-			if (response1.data && response1.data.data) {
-				this.regions = response1.data.data;
-			} else {
-				console.error("Datos de regiones no válidos:", response1.data);
-				this.regions = [];
-			}
-
-			if (response2.data && response2.data.data) {
-				this.Allregions = response2.data.data;
-			} else {
-				console.error("Datos de todas las regiones no válidos:", response2.data);
-				this.Allregions = [];
-			}
-			} catch (error) {
-				console.error("Error al cargar las regiones:", error);
-			}
+			const { data } = await axios.get(URLSERVER + "api/Allregions");
+			this.Allregions = data.data;
 		},
 		async getCities() {
 			const response = await axios.get(URLSERVER + "api/cities");
-			this.cities = response.data?.data;
+			this.cities = response.data.data;
 
 			const { data } = await axios.get(URLSERVER + "api/Allcities");
 			console.log("esto es la respon all cities", data);
-			this.Allcities = data?.data;
+			this.Allcities = data.data;
 		},
 		async loadMunicipio(event) {
-			try {
-				const state_id = event.target.value;
-				
-				// Verificar si state_id es un valor válido
-				if (!state_id) {
-					// Manejar el caso en que state_id no tiene un valor válido
-					console.error('State ID no es válido');
-					return;
-				}
-
-				const response = await axios.get(URLSERVER + "api/regions/state/" + state_id);
-
-				if (response.status === 200) {
-					this.regions = response.data?.data;
-				} else {
-					console.error('Error al obtener las regiones:', response.statusText);
-				}
-			} catch (error) {
-				// Capturar errores de la solicitud HTTP
-				console.error('Error al cargar las regiones:', error.message);
-			}
+			const state_id = event.target.value;
+			const response = await axios.get(URLSERVER + "api/regions/state/" + state_id);
+			this.regions = response.data.data;
 		},
 		async loadParroquia(event) {
-					try {
-				const region_id = event.target.value;
-				
-				// Verificar si region_id es un valor válido
-				if (!region_id) {
-					// Manejar el caso en que region_id no tiene un valor válido
-					console.error('Region ID no es válido');
-					return;
-				}
-
-				const response = await axios.get(URLSERVER + "api/cities/region/" + region_id);
-
-				if (response.status === 200) {
-					this.cities = response.data?.data;
-				} else {
-					console.error('Error al obtener las ciudades:', response.statusText);
-				}
-			} catch (error) {
-				// Capturar errores de la solicitud HTTP
-				console.error('Error al cargar las ciudades:', error.message);
-			}
+			const region_id = event.target.value;
+			const response = await axios.get(URLSERVER + "api/cities/region/" + region_id);
+			this.cities = response.data.data;
 		},
 		async loadMunicipioHab(event) {
-    try {
-        const state_id = event.target.value;
-
-        // Verificar si state_id es un valor válido
-        if (!state_id) {
-            console.error('State ID no es válido');
-            return;
-        }
-
-        const response = await axios.get(URLSERVER + "api/regions/state/" + state_id);
-
-        // Verificar si la solicitud fue exitosa y si hay datos en la respuesta
-        if (response && response.status === 200 && response.data && response.data.data) {
-            this.Allregions = response.data.data;
-        } else {
-            console.error('Error al cargar las regiones o la respuesta está incompleta.');
-        }
-    } catch (error) {
-        // Capturar y manejar errores
-        console.error('Error al cargar las regiones:', error.message);
-    }
-},
-
+			const state_id = event.target.value;
+			const response = await axios.get(URLSERVER + "api/regions/state/" + state_id);
+			this.Allregions = response.data.data;
+		},
 		async loadParroquiaHab(event) {
-    try {
-        const region_id = event.target.value;
-
-        // Verificar si region_id es un valor válido
-        if (!region_id) {
-            console.error('Region ID no es válido');
-            return;
-        }
-
-        const response = await axios.get(URLSERVER + "api/cities/region/" + region_id);
-
-        // Verificar si la solicitud fue exitosa y si hay datos en la respuesta
-        if (response && response.status === 200 && response.data && response.data.data) {
-            this.Allcities = response.data.data;
-        } else {
-            console.error('Error al cargar las ciudades o la respuesta está incompleta.');
-        }
-    } catch (error) {
-        // Capturar y manejar errores
-        console.error('Error al cargar las ciudades:', error.message);
-    }
-},
+			const region_id = event.target.value;
+			const response = await axios.get(URLSERVER + "api/cities/region/" + region_id);
+			this.Allcities = response.data.data;
+		},
 		async getPedidos() {
 			const response = await axios.get(URLSERVER + "api/orders");
 			this.orders = response.data.data;
@@ -1628,7 +1491,7 @@ export default {
 				action: 'save',
 			});
 
-			this.userData = this.userlogged;
+			this.userData.push(this.userlogged);
 
 		},
 		increaseValue(product) {
@@ -1669,11 +1532,6 @@ export default {
 		}
 	},
 	mounted() {
-		
-
-		this.userData = this.userlogged;
-	
-				// this.userData = this.userlogged;
 		this.getFavorites();
 		this.getTabUrl();
 		this.getStates();
@@ -1681,6 +1539,7 @@ export default {
 		this.getCities();
 		this.getPedidos();
 		console.log("esto es el userLLoger", this.userlogged);
+		this.userData.push(this.userlogged);
 		console.log("esto es userData", this.userData);
 		this.getAmountBW(this.userData.id);
 		console.log("this.userData::> ", this.userData);

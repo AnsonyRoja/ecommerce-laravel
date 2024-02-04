@@ -3431,12 +3431,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ModalProducto_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalProducto.vue */ "./resources/js/components/ModalProducto.vue");
 /* harmony import */ var _ModalCalificacion_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalCalificacion.vue */ "./resources/js/components/ModalCalificacion.vue");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -3630,7 +3624,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     update_profile: function update_profile(user) {
-      var _user$habDirection;
       var that = this;
       console.log(user);
       var user_data = _objectSpread(_objectSpread({}, user), {}, {
@@ -3642,7 +3635,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           sector: user.habDirection.sector,
           nro_home: user.habDirection.nro_home,
           zip_code: user.habDirection.zip_code,
-          reference_point: (_user$habDirection = user.habDirection) === null || _user$habDirection === void 0 ? void 0 : _user$habDirection.reference_point
+          reference_point: user.habDirection.reference_point
         }
       });
       console.log("esto es user_data", user_data);
@@ -3650,7 +3643,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         user_data: user_data
       }).then(function (response) {
         console.log(response.data);
-        that.userData = response === null || response === void 0 ? void 0 : response.data;
+        that.userData = response.data;
         fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
         Swal.fire('Perfil', 'Tus datos han sido guardado exitosamente', 'success');
       })["catch"](function (error) {
@@ -3660,86 +3653,59 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getStates: function getStates() {
       var _this5 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var _yield$Promise$all, _yield$Promise$all2, response1, response2;
+        var response, response2;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              _context4.prev = 0;
-              _context4.next = 3;
-              return Promise.all([axios.get(URLSERVER + "api/states"), axios.get(URLSERVER + "api/Allstates")]);
-            case 3:
-              _yield$Promise$all = _context4.sent;
-              _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 2);
-              response1 = _yield$Promise$all2[0];
-              response2 = _yield$Promise$all2[1];
-              if (response1.data && response1.data.data) {
-                _this5.states = response1.data.data;
-              } else {
-                console.error("Datos de estados no válidos:", response1.data);
-              }
-              if (response2.data && response2.data.data) {
-                _this5.Allstates = response2.data.data;
-              } else {
-                console.error("Datos de todos los estados no válidos:", response2.data);
-              }
-              _context4.next = 14;
-              break;
+              _context4.next = 2;
+              return axios.get(URLSERVER + "api/states");
+            case 2:
+              response = _context4.sent;
+              console.log("esto es la respuesta", response);
+              _this5.states.push(response.data.data);
+              _context4.next = 7;
+              return axios.get(URLSERVER + "api/Allstates");
+            case 7:
+              response2 = _context4.sent;
+              console.log("esto es la response2", response2);
+              _this5.Allstates = response2.data.data;
+              console.log("esto es this.allStates ", _this5.Allstates);
             case 11:
-              _context4.prev = 11;
-              _context4.t0 = _context4["catch"](0);
-              console.error("Error al cargar los estados:", _context4.t0);
-            case 14:
             case "end":
               return _context4.stop();
           }
-        }, _callee4, null, [[0, 11]]);
+        }, _callee4);
       }))();
     },
     getRegions: function getRegions() {
       var _this6 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var _yield$Promise$all3, _yield$Promise$all4, response1, response2;
+        var response, _yield$axios$get, data;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
-              _context5.prev = 0;
-              _context5.next = 3;
-              return Promise.all([axios.get(URLSERVER + "api/regions"), axios.get(URLSERVER + "api/Allregions")]);
-            case 3:
-              _yield$Promise$all3 = _context5.sent;
-              _yield$Promise$all4 = _slicedToArray(_yield$Promise$all3, 2);
-              response1 = _yield$Promise$all4[0];
-              response2 = _yield$Promise$all4[1];
-              if (response1.data && response1.data.data) {
-                _this6.regions = response1.data.data;
-              } else {
-                console.error("Datos de regiones no válidos:", response1.data);
-                _this6.regions = [];
-              }
-              if (response2.data && response2.data.data) {
-                _this6.Allregions = response2.data.data;
-              } else {
-                console.error("Datos de todas las regiones no válidos:", response2.data);
-                _this6.Allregions = [];
-              }
-              _context5.next = 14;
-              break;
-            case 11:
-              _context5.prev = 11;
-              _context5.t0 = _context5["catch"](0);
-              console.error("Error al cargar las regiones:", _context5.t0);
-            case 14:
+              _context5.next = 2;
+              return axios.get(URLSERVER + "api/regions");
+            case 2:
+              response = _context5.sent;
+              _this6.regions = response.data.data;
+              _context5.next = 6;
+              return axios.get(URLSERVER + "api/Allregions");
+            case 6:
+              _yield$axios$get = _context5.sent;
+              data = _yield$axios$get.data;
+              _this6.Allregions = data.data;
+            case 9:
             case "end":
               return _context5.stop();
           }
-        }, _callee5, null, [[0, 11]]);
+        }, _callee5);
       }))();
     },
     getCities: function getCities() {
       var _this7 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        var _response$data;
-        var response, _yield$axios$get, data;
+        var response, _yield$axios$get2, data;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
@@ -3747,14 +3713,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return axios.get(URLSERVER + "api/cities");
             case 2:
               response = _context6.sent;
-              _this7.cities = (_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.data;
+              _this7.cities = response.data.data;
               _context6.next = 6;
               return axios.get(URLSERVER + "api/Allcities");
             case 6:
-              _yield$axios$get = _context6.sent;
-              data = _yield$axios$get.data;
+              _yield$axios$get2 = _context6.sent;
+              data = _yield$axios$get2.data;
               console.log("esto es la respon all cities", data);
-              _this7.Allcities = data === null || data === void 0 ? void 0 : data.data;
+              _this7.Allcities = data.data;
             case 10:
             case "end":
               return _context6.stop();
@@ -3765,81 +3731,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     loadMunicipio: function loadMunicipio(event) {
       var _this8 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-        var state_id, response, _response$data2;
+        var state_id, response;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
-              _context7.prev = 0;
-              state_id = event.target.value; // Verificar si state_id es un valor válido
-              if (state_id) {
-                _context7.next = 5;
-                break;
-              }
-              // Manejar el caso en que state_id no tiene un valor válido
-              console.error('State ID no es válido');
-              return _context7.abrupt("return");
-            case 5:
-              _context7.next = 7;
+              state_id = event.target.value;
+              _context7.next = 3;
               return axios.get(URLSERVER + "api/regions/state/" + state_id);
-            case 7:
+            case 3:
               response = _context7.sent;
-              if (response.status === 200) {
-                _this8.regions = (_response$data2 = response.data) === null || _response$data2 === void 0 ? void 0 : _response$data2.data;
-              } else {
-                console.error('Error al obtener las regiones:', response.statusText);
-              }
-              _context7.next = 14;
-              break;
-            case 11:
-              _context7.prev = 11;
-              _context7.t0 = _context7["catch"](0);
-              // Capturar errores de la solicitud HTTP
-              console.error('Error al cargar las regiones:', _context7.t0.message);
-            case 14:
+              _this8.regions = response.data.data;
+            case 5:
             case "end":
               return _context7.stop();
           }
-        }, _callee7, null, [[0, 11]]);
+        }, _callee7);
       }))();
     },
     loadParroquia: function loadParroquia(event) {
       var _this9 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-        var region_id, response, _response$data3;
+        var region_id, response;
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) switch (_context8.prev = _context8.next) {
             case 0:
-              _context8.prev = 0;
-              region_id = event.target.value; // Verificar si region_id es un valor válido
-              if (region_id) {
-                _context8.next = 5;
-                break;
-              }
-              // Manejar el caso en que region_id no tiene un valor válido
-              console.error('Region ID no es válido');
-              return _context8.abrupt("return");
-            case 5:
-              _context8.next = 7;
+              region_id = event.target.value;
+              _context8.next = 3;
               return axios.get(URLSERVER + "api/cities/region/" + region_id);
-            case 7:
+            case 3:
               response = _context8.sent;
-              if (response.status === 200) {
-                _this9.cities = (_response$data3 = response.data) === null || _response$data3 === void 0 ? void 0 : _response$data3.data;
-              } else {
-                console.error('Error al obtener las ciudades:', response.statusText);
-              }
-              _context8.next = 14;
-              break;
-            case 11:
-              _context8.prev = 11;
-              _context8.t0 = _context8["catch"](0);
-              // Capturar errores de la solicitud HTTP
-              console.error('Error al cargar las ciudades:', _context8.t0.message);
-            case 14:
+              _this9.cities = response.data.data;
+            case 5:
             case "end":
               return _context8.stop();
           }
-        }, _callee8, null, [[0, 11]]);
+        }, _callee8);
       }))();
     },
     loadMunicipioHab: function loadMunicipioHab(event) {
@@ -3849,37 +3775,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _regeneratorRuntime().wrap(function _callee9$(_context9) {
           while (1) switch (_context9.prev = _context9.next) {
             case 0:
-              _context9.prev = 0;
-              state_id = event.target.value; // Verificar si state_id es un valor válido
-              if (state_id) {
-                _context9.next = 5;
-                break;
-              }
-              console.error('State ID no es válido');
-              return _context9.abrupt("return");
-            case 5:
-              _context9.next = 7;
+              state_id = event.target.value;
+              _context9.next = 3;
               return axios.get(URLSERVER + "api/regions/state/" + state_id);
-            case 7:
+            case 3:
               response = _context9.sent;
-              // Verificar si la solicitud fue exitosa y si hay datos en la respuesta
-              if (response && response.status === 200 && response.data && response.data.data) {
-                _this10.Allregions = response.data.data;
-              } else {
-                console.error('Error al cargar las regiones o la respuesta está incompleta.');
-              }
-              _context9.next = 14;
-              break;
-            case 11:
-              _context9.prev = 11;
-              _context9.t0 = _context9["catch"](0);
-              // Capturar y manejar errores
-              console.error('Error al cargar las regiones:', _context9.t0.message);
-            case 14:
+              _this10.Allregions = response.data.data;
+            case 5:
             case "end":
               return _context9.stop();
           }
-        }, _callee9, null, [[0, 11]]);
+        }, _callee9);
       }))();
     },
     loadParroquiaHab: function loadParroquiaHab(event) {
@@ -3889,37 +3795,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _regeneratorRuntime().wrap(function _callee10$(_context10) {
           while (1) switch (_context10.prev = _context10.next) {
             case 0:
-              _context10.prev = 0;
-              region_id = event.target.value; // Verificar si region_id es un valor válido
-              if (region_id) {
-                _context10.next = 5;
-                break;
-              }
-              console.error('Region ID no es válido');
-              return _context10.abrupt("return");
-            case 5:
-              _context10.next = 7;
+              region_id = event.target.value;
+              _context10.next = 3;
               return axios.get(URLSERVER + "api/cities/region/" + region_id);
-            case 7:
+            case 3:
               response = _context10.sent;
-              // Verificar si la solicitud fue exitosa y si hay datos en la respuesta
-              if (response && response.status === 200 && response.data && response.data.data) {
-                _this11.Allcities = response.data.data;
-              } else {
-                console.error('Error al cargar las ciudades o la respuesta está incompleta.');
-              }
-              _context10.next = 14;
-              break;
-            case 11:
-              _context10.prev = 11;
-              _context10.t0 = _context10["catch"](0);
-              // Capturar y manejar errores
-              console.error('Error al cargar las ciudades:', _context10.t0.message);
-            case 14:
+              _this11.Allcities = response.data.data;
+            case 5:
             case "end":
               return _context10.stop();
           }
-        }, _callee10, null, [[0, 11]]);
+        }, _callee10);
       }))();
     },
     getPedidos: function getPedidos() {
@@ -4099,7 +3985,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         ciudad: '',
         action: 'save'
       });
-      this.userData = this.userlogged;
+      this.userData.push(this.userlogged);
     },
     increaseValue: function increaseValue(product) {
       var productID = product.id;
@@ -4155,9 +4041,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
-    this.userData = this.userlogged;
-
-    // this.userData = this.userlogged;
     this.getFavorites();
     this.getTabUrl();
     this.getStates();
@@ -4165,6 +4048,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getCities();
     this.getPedidos();
     console.log("esto es el userLLoger", this.userlogged);
+    this.userData.push(this.userlogged);
     console.log("esto es userData", this.userData);
     this.getAmountBW(this.userData.id);
     console.log("this.userData::> ", this.userData);
@@ -11893,7 +11777,9 @@ var render = function render() {
         _vm.$set(_vm.userData, "phone_home", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _vm._m(13), _vm._v(" "), _c("div", {
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-lg-6"
+  }), _vm._v(" "), _vm._m(13), _vm._v(" "), _c("div", {
     staticClass: "col-lg-4"
   }, [_c("div", {
     staticClass: "form-group"

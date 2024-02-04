@@ -9,6 +9,11 @@ use App\Filters\ProductFilters;
 use Validator;
 use App\Http\Resources\Product as ProductResource;
 use Illuminate\Support\Facades\DB;
+use App\Stores;
+use App\SubCategories;
+use App\Favorites;
+use App\UserVisitProducts;
+
 
 class ProductController extends BaseController
 {
@@ -122,4 +127,93 @@ class ProductController extends BaseController
 
         return response()->json($data);
     }
+
+            public function getProduct($id)
+        {
+            $product = Product::findOrFail($id);
+            $stores = Stores::all();
+            $subCategories = SubCategories::all();
+            return view('products.detalle', compact('product','stores','subCategories'));
+        }
+
+        public function edit($id)
+        {
+            // Buscar el producto por su ID
+            $product = Product::findOrFail($id);
+    
+            // Obtener todas las tiendas y subcategorías para el formulario de edición
+            $stores = Stores::all();
+            $subCategories = SubCategories::all();
+    
+            // Cargar la vista de edición con los datos del producto y las opciones de tiendas y subcategorías
+            return view('products.edit', compact('product', 'stores', 'subCategories'));
+        }
+
+        public function update(Request $request, $id)
+        {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description_short' => 'nullable|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric',
+                'stores_id' => 'required|exists:stores,id',
+                'sub_categories_id' => 'required|exists:sub_categories,id', 
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Regla de validación para la foto
+            ]);
+        
+            // Encontrar el producto a actualizar por su ID
+            $product = Product::findOrFail($id);
+        
+            // Actualizar los campos del producto
+            $product->name = $request->name;
+            $product->description_short = $request->description_short;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->stores_id = $request->stores_id;
+            $product->sub_categories_id = $request->sub_categories_id;
+            $product->qty_avaliable = $request->qty_avaliable;
+        
+            // Actualizar la foto si se proporciona una nueva
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $photoPath = $photo->store('public/products');
+                $photoUrl = \Illuminate\Support\Facades\Storage::url($photoPath);
+                $product->photo = $photoUrl;
+            }
+        
+            // Guardar los cambios en la base de datos
+            $product->save();
+        
+            // Redireccionar de vuelta con un mensaje de éxito
+            return redirect()->back()->with('success', '¡Producto actualizado exitosamente!');
+        }
+        public function destroy(Product $product)
+        {
+            // Verificar si el producto está agregado a favoritos
+            if ($this->isProductInFavorites($product->id)) {
+                // Mostrar un mensaje indicando que el producto está agregado a favoritos
+                return back()->with('error', 'Este producto está agregado a favoritos y no se puede eliminar');
+            } else {
+                // Intentar eliminar el producto
+                try {
+
+                    UserVisitProducts::where('user_visit_products.products_id', $product->id)->delete();
+
+                    $product->delete();
+                    
+                } catch (\Throwable $th) {
+                    
+                    return back()->with('error', 'No se puede eliminar este producto porque está asociado a órdenes existentes.');
+
+
+                }
+                // Redirigir a alguna otra página o mostrar un mensaje de éxito
+                return back()->with('success', 'Producto eliminado correctamente');
+            }
+        }
+        
+        private function isProductInFavorites($productId) {
+            // Verificar si hay registros en la tabla de favoritos que hagan referencia al producto
+            return Favorites::where('favorites.products_id', $productId)->exists();
+        }
 }

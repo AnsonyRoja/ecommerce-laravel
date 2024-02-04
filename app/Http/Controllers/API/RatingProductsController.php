@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use App\RatingProducts;
+use App\User;
+use App\Product;
 use Illuminate\Http\Request;
 
 class RatingProductsController extends BaseController
@@ -12,12 +13,37 @@ class RatingProductsController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    
-    public function index()
-    {
-        
-    }
 
+  
+
+     public function index(Request $request)
+     {
+         $query = RatingProducts::query();
+     
+         // Filtrar por nombre de producto
+         if ($request->has('product_name')) {
+             $query->whereHas('product', function ($query) use ($request) {
+                 $query->where('name', 'like', '%' . $request->input('product_name') . '%');
+             });
+         }
+     
+         // Aplicar algoritmo de ordenamiento
+         if ($request->has('sort')) {
+             $sort = $request->input('sort');
+             if ($sort === 'rating_asc') {
+                 $query->orderBy('rating', 'asc');
+             } elseif ($sort === 'rating_desc') {
+                 $query->orderBy('rating', 'desc');
+             }
+             // Agregar más algoritmos de ordenamiento según sea necesario
+         }
+     
+         $opiniones = $query->with('user', 'product')->get();
+         
+         // Pasar los datos a la vista y mostrarla
+         return view('opiniones.index', ['opiniones' => $opiniones]);
+     }
+  
     /**
      * Show the form for creating a new resource.
      *

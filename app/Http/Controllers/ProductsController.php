@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Stores;
+use App\Favorites;
 use App\SubCategories;
+use App\UserVisitProducts;
 use Illuminate\Support\Str;
 
 
@@ -99,7 +101,7 @@ class ProductsController extends Controller
 
          $product->save();
      
-         return back()->with('success', 'Product deleted successfully');
+         return back()->with('success', 'Product Created successfully');
          
         }
      
@@ -112,7 +114,9 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
+
         return view('products.show', compact('product'));
+        
     }
 
     /**
@@ -133,17 +137,17 @@ class ProductsController extends Controller
      * @param  \App\Product  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
-    {
-        $request->validate([
-            // Agrega aquí las reglas de validación para los campos de Products
-        ]);
+    // public function update(Request $request, Product $product)
+    // {
+    //     $request->validate([
+    //         // Agrega aquí las reglas de validación para los campos de Products
+    //     ]);
 
-        $product->update($request->all());
+    //     $product->update($request->all());
 
-        return redirect()->route('products.index')
-            ->with('success', 'Product updated successfully');
-    }
+    //     return redirect()->route('products.index')
+    //         ->with('success', 'Product updated successfully');
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -153,11 +157,39 @@ class ProductsController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->delete();
-    
-        // Recargar la página actual
-        return back()->with('success', 'Product deleted successfully');
+        // Verificar si el producto está agregado a favoritos
+        if ($this->isProductInFavorites($product->id)) {
+            // Mostrar un mensaje indicando que el producto está agregado a favoritos
+            return back()->with('error', 'Este producto está agregado a favoritos y no se puede eliminar');
+        } else {
+            // Intentar eliminar el producto
+                
+                try {
+
+                    UserVisitProducts::where('user_visit_products.products_id', $product->id)->delete();
+
+                    $product->delete();
+                    
+                } catch (\Throwable $th) {
+                    
+                    return back()->with('error', 'No se puede eliminar este producto porque está asociado a órdenes existentes.');
+
+
+                }
+
+           
+            
+            // Redirigir a alguna otra página o mostrar un mensaje de éxito
+            return back()->with('success', 'Producto eliminado correctamente');
+        }
     }
+    
+    private function isProductInFavorites($productId) {
+        // Verificar si hay registros en la tabla de favoritos que hagan referencia al producto
+        return Favorites::where('favorites.products_id', $productId)->exists();
+    }
+ 
+    
     
     
 }

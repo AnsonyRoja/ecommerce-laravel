@@ -1,4 +1,4 @@
-<!-- resources/views/products/create.blade.php -->
+<!-- resources/views/products/edit.blade.php -->
 @extends('voyager::master')
 
 @section('content')
@@ -7,43 +7,38 @@
         <div class="panel panel-bordered">
             <div class="panel-heading">
                 <h1 class="page-title">
-                    <i class="voyager-basket"></i> Crear Nuevo Producto
+                    <i class="voyager-edit"></i> Editar Producto
                 </h1>
             </div>
             <div class="panel-body">
-              
-                @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-
-                <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
+
                     <div class="form-group">
                         <label for="name">Nombre:</label>
-                        <input type="text" name="name" class="form-control" placeholder="Ingrese el nombre del producto">
+                        <input type="text" name="name" class="form-control" value="{{ $product->name }}" placeholder="Ingrese el nombre del producto">
                     </div>
 
                     <div class="form-group">
                         <label for="description_short">Descripción Corta:</label>
-                        <input type="text" name="description_short" class="form-control" placeholder="Ingrese la descripción corta del producto">
+                        <input type="text" name="description_short" class="form-control" value="{{ $product->description_short }}" placeholder="Ingrese la descripción corta del producto">
                     </div>
 
                     <div class="form-group">
                         <label for="description">Descripción:</label>
-                        <textarea name="description" class="form-control" placeholder="Ingrese la descripción completa del producto"></textarea>
+                        <textarea name="description" class="form-control" placeholder="Ingrese la descripción completa del producto">{{ $product->description }}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="price">Precio:</label>
-                        <input type="number" name="price" class="form-control" placeholder="Ingrese el precio del producto">
+                        <input type="number" name="price" class="form-control" value="{{ $product->price }}" placeholder="Ingrese el precio del producto">
                     </div>
                     <div class="form-group">
                         <label for="stores_id">Tienda:</label>
                         <select name="stores_id" class="form-control">
                             @foreach($stores as $store)
-                            <option value="{{ $store->id }}">{{ $store->name }}</option>
+                            <option value="{{ $store->id }}" {{ $store->id == $product->stores_id ? 'selected' : '' }}>{{ $store->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -51,27 +46,30 @@
                         <label for="sub_categories_id">Subcategoría:</label>
                         <select name="sub_categories_id" class="form-control">
                             @foreach($subCategories as $subCategory)
-                                <option value="{{ $subCategory->id }}">{{ $subCategory->name }}</option>
+                                <option value="{{ $subCategory->id }}" {{ $subCategory->id == $product->sub_categories_id ? 'selected' : '' }}>{{ $subCategory->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="photo">Imagen:</label>
-                        <input  type="file" id="photo" name="photo" class="form-control-file">
-                        <div id="imagePreviewContainer" class="mt-2"></div>
-
+                        <input type="file" id="photo" name="photo" class="form-control-file">
+                        <div id="imagePreviewContainer" class="mt-2">
+                            @if ($product->photo)
+                            <img src="{{ $product->photo }}" alt="Producto Imagen" class="img-fluid" width="250px" height="250px">
+                            @endif
+                        </div>
                     </div>
               
                   
                     <div class="form-group">
                         <label for="qty_avaliable">Cantidad Disponible:</label>
-                        <input type="number" name="qty_avaliable" class="form-control" placeholder="Ingrese la cantidad disponible">
+                        <input type="number" name="qty_avaliable" class="form-control" value="{{ $product->qty_avaliable }}" placeholder="Ingrese la cantidad disponible">
                     </div>
                     
                     
                     <!-- Agrega los campos restantes según los requerimientos de tu aplicación -->
 
-                    <button type="submit" class="btn btn-primary">Crear Producto</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
             </div>
         </div>
@@ -112,11 +110,7 @@
     // Función para utilizar la URL de la imagen
   
 </script>
-<script>
-    // Cerrar automáticamente el mensaje de éxito después de 3 segundos
-    setTimeout(function() {
-        document.querySelector('.alert').style.display = 'none';
-    }, 3000);
-</script>
+
+
 
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Packages;
 use Illuminate\Http\Request;
 
+
 class PackagesController extends VoyagerBreadController
 {
     /**
@@ -75,8 +76,13 @@ class PackagesController extends VoyagerBreadController
      * @param  \App\Packages  $packages
      * @return \Illuminate\Http\Response
      */
+
+     
     public function destroy(Packages $packages)
     {
         //
     }
+
+
+
 }

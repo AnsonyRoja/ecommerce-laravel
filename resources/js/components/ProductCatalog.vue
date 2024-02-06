@@ -174,10 +174,15 @@
             }
         },
         created() {
-            let products = JSON.parse(window.localStorage.getItem("productos")).data;
-            for(let i = 0;i<products.length;i++) {
-                this.cant_product[products[i].id] = 1;
-            }
+                    const storedProducts = window.localStorage.getItem("productos");
+            if (storedProducts) {
+                let products = JSON.parse(storedProducts).data;
+                for(let i = 0; i < products.length; i++) {
+                    this.cant_product[products[i].id] = 1;
+                }
+            } else {
+                // Manejar el caso en el que no hay productos almacenados en el local storage
+         }
         },
         props: {
             products: Object,

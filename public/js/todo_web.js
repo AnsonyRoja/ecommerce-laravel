@@ -7,7 +7,7 @@ var precioMax=50;
 var palabrasClaves="";
 var arrPalabrasClaves=[];
 var islogin=false;
-get("login");
+get("web_no_login");
 verificarSesion();
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()

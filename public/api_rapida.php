@@ -1076,7 +1076,10 @@ function crearOrden($json){
     
     //$json='{"estado":16,"productos":{"20":3,"21":4},"direccion":"3","hora_entrega":"1585872508"}';
     
+
     $orden=json_decode($json,true);
+    
+ 
     $users_id   =$_SESSION['usuario']['id'];
     $order_address_id=$orden['direccion'] ?? "NULL";
     $delivery_type = $orden['delivery_type'];
@@ -1112,20 +1115,25 @@ function crearOrden($json){
         $transports_id=1;
         $order_address_id="NULL";
     }*/
-    
+
     $where=armarWhereProductos($arrProductos);
+
+
     $sql="SELECT p.peso,p.qty_min, p.qty_max,p.qty_avaliable,p.name, ((coalesce(SUM(t.value),0.000000)*p.price)/100) total_impuesto,coalesce(((p.price*SUM(t.value)/100)+p.price),p.price) total_precio, p.id, p.price FROM products p LEFT JOIN det_product_taxes dpt ON dpt.products_id=p.id  LEFT JOIN taxes t ON t.id=dpt.taxes_id and t.status='A' WHERE p.status='A' $where GROUP BY p.id";
 
-   
+
     $arrs=q($sql);
+
+
 
     //Validaciones
     if(!is_array($arrs)){
-        salidaNueva(null,"Disculpe intente mas tarde.",false);
+        salidaNueva(null,"Disculpe intente mas tarde.2",false);
     }
 
     $pesoTotal=0.00;
     foreach($arrs as $pro){
+  
         $cant=$arrProductos[$pro['id']];
         $pesoTotal+=($pro['peso']*$cant);
         $impuesto=$pro['total_impuesto']*$cant;
@@ -1155,6 +1163,9 @@ function crearOrden($json){
 
     $arr=q($sql);
 
+        // Parsear el arreglo a JSON
+
+
     if(is_array($arr)){
 
         //--------PESO-----
@@ -1183,7 +1194,10 @@ function crearOrden($json){
     //GUARDAR
    
     $sql="INSERT INTO orders (users_id,delivery_time_date,transports_id,rate_json,order_address_id,created_at,updated_at,coins_id,packagings_id,total_transport,total_packaging,total_tax,sub_total,total_pay,bi,exento, delivery_type)  VALUES ('$users_id','$delivery_time_date','$transports_id','$rate_json',$order_address_id,NOW(),NOW(),$coins_id,$packagings_id,$total_transport,(SELECT value FROM packagings WHERE id=$packagings_id),$total_tax,$sub_total,$total_pay,$base_imponible,$exento,'$delivery_type_text') RETURNING id";
-//EXIT($sql);
+    
+   
+
+    //EXIT($sql);
 q("BEGIN");
     $res=q($sql);
     $orders=$res[0]['id'];
@@ -1198,10 +1212,15 @@ q("BEGIN");
         $arr=q($sql);
     }
     //if($order_address_id=="NULL") $orders_status_id=5; else 
+    
+    // Imprimir el JSON resultante
+  
+
     $orders_status_id=1;
     $sql="INSERT INTO trackings (orders_id,orders_status_id,users_id,created_at,tiempo_min) VALUES ($orders,$orders_status_id,$users_id,NOW(),0)";
     q($sql);
     q("COMMIT");
+
   salidaNueva($res,"Su orden ha sido procesada!");
 
 }
@@ -1210,14 +1229,19 @@ function getRateJson(){
     return json_encode($arr);
 }
 function armarWhereProductos($arrProductos){
-    foreach($arrProductos as $id=>$cant){
-        if($cant>0){
-        $where.=' p.id='.$id.' OR';
+$where = '';
+    
+    foreach($arrProductos as $id => $cant){
+        if($cant > 0){
+            $where .= ' p.id=' . $id . ' OR';
         }
     }
-    $where='AND ('.rtrim($where,' OR').')';
+    $where = 'AND (' . rtrim($where, ' OR') . ')';
     return trim($where);
+
 }
+
+
 function set_formato_moneda($value){
     $listo=null;
     $patróna = '/[\s]/';
@@ -1504,11 +1528,13 @@ function eliminarDireccion(){
 function getAdreess($tipo_salida,$type='delivery'){
     $users_id=$_SESSION['usuario']['id'];
     $arr=q("SELECT oa.*, st.id states_id, re.id regions_id, st.name st_name,ci.name ci_name,re.name re_name FROM order_address oa INNER JOIN cities ci ON ci.id=oa.cities_id INNER JOIN regions re ON re.id=ci.regions_id INNER JOIN states st ON st.id=re.states_id WHERE oa.users_id='$users_id' AND oa.status='A' AND oa.type='$type'");
+    
     if(is_array($arr)){
-        return salidaNueva($arr,'Listando direcciones',true,$tipo_salida);
+        return salida($arr,'Listando direcciones',true,$tipo_salida);
     }else{
-        return salidaNueva(null,"Disculpe no hay direcciones.",false,$tipo_salida);
+        return salida(null,"Disculpe no hay direcciones.",false,$tipo_salida);
     }
+    
 }
 function guardarDireccion($type='delivery'){
     $users_id=$_SESSION['usuario']['id'];
@@ -1955,7 +1981,7 @@ function q($sql) {
 
     try {
         // Crear una conexión PDO a la base de datos
-        $dsn = "pgsql:host=localhost;dbname=laravel";
+        $dsn = "pgsql:host=127.0.0.1;dbname=laravel";
         $username = "postgres";
         $password = "1234";
         $pdo = new PDO($dsn, $username, $password);
@@ -1974,6 +2000,10 @@ function q($sql) {
         }
     } catch (PDOException $e) {
         // Manejar errores de PDO
+        $errorMessage = $e->getMessage(); // Obtener el mensaje completo de la excepción
+
+        salidaNueva(null, "Error de PDO: $errorMessage", false);
+
         switch ($e->getCode()) {
             case '23505': // El registro ya existe
                 salidaNueva(null, "El registro ya existe.", false);

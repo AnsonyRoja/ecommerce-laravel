@@ -294,6 +294,9 @@ export default {
             });
             console.error('Error en la solicitud:', error);
         });
+
+
+
 },
 
 		logout()

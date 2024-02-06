@@ -249,101 +249,12 @@
 																	disabled="disabled" v-model="userData.phone_home">
 															</div>
 														</div>
+														<DireccionHabitacion :userDataProp="userData" :Allregions="Allregions" :Allstates="Allstates" :Allcities="Allcities"></DireccionHabitacion>
+														
 
 														<div class="col-lg-6"></div>
 
-														<div class="col-lg-12">
-															<h3 class="profile-title">Dirección de Habitación</h3>
-														</div>
-
-														<div class="col-lg-4">
-															<div class="form-group">
-																<label for="address-1-state">Estado:</label>
-																<select class="form-control"
-																	@change="loadMunicipioHab($event)"
-																	v-model="userData.habDirection.state_id">
-																	<option value="">Seleccione</option>
-																	<option v-for="state in Allstates" :key="state.id"
-																		:value="state.id">{{ state.name }}</option>
-																</select>
-															</div>
-														</div>
-														<div class="col-lg-4">
-															<div class="form-group">
-																<label for="address-prov">Municipio:</label>
-																<select class="form-control"
-																	@change="loadParroquiaHab($event)"
-																	v-model="userData.habDirection.region_id">
-																	<option value="">Seleccione</option>
-																	<option v-for="region in Allregions" :key="region.id"
-																		:value="region.id">{{ region.name }}</option>
-																</select>
-															</div>
-														</div>
-
-														<div class="col-lg-4">
-															<div class="form-group">
-																<label for="address-prov">Parroquia:</label>
-																<select class="form-control"
-																	v-model="userData.habDirection.city_id">
-																	<option value="">Seleccione</option>
-																	<option v-for="city in Allcities" :key="city.id"
-																		:value="city.id">{{ city.name }}</option>
-																</select>
-															</div>
-														</div>
-
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label for="address-urb">Urbanización / Empresa:</label>
-																<input type="text" class="form-control" id="address-urb"
-																	name="address-urb" v-model="userData.habDirection.urb">
-															</div>
-														</div>
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label for="address-av">Sector, Avenida, calles,
-																	veredas:</label>
-																<input type="text" class="form-control" id="address-av"
-																	name="address-av"
-																	v-model="userData.habDirection.sector">
-															</div>
-														</div>
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label for="address-num">Número de casa / Local / Apto /
-																	Piso:</label>
-																<input type="text" class="form-control" id="address-num"
-																	name="address-num"
-																	v-model="userData.habDirection.nro_home">
-															</div>
-														</div>
-
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label for="address-post">Código postal:</label>
-																<input type="text" class="form-control" id="address-post"
-																	name="address-post"
-																	v-model="userData.habDirection.zip_code">
-															</div>
-														</div>
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label for="address-ref">Punto de Referencia
-																	(opcional):</label>
-																<input type="text" class="form-control" id="address-ref"
-																	name="address-ref"
-																	v-model="userData.habDirection.reference_point">
-															</div>
-														</div>
-
-														<div class="col-lg-12">
-															<div class="form-group">
-																<button class="btn btn-submit"
-																	@click="update_profile(userData)" type="button">GUARDAR
-																	CAMBIOS</button>
-															</div>
-														</div>
+														
 													</div>
 												</div>
 											</form>
@@ -865,7 +776,7 @@
 																		v-if="favorite.impuesto > 0">
 																		<p> ${{ (favorite.calculado / tasadolar) |
 																			FormatDolar }} / Bs {{ favorite.calculado |
-		FormatNumber }}</p>
+																											FormatNumber }}</p>
 																	</div>
 																	<div class="product-prices" v-if="!favorite.impuesto">
 																		<p> ${{ (favorite.price / tasadolar) | FormatDolar
@@ -1092,6 +1003,7 @@
 import ModalOrder from './ModalOrder.vue';
 import ModalProducto from './ModalProducto.vue';
 import ModalCalificacion from './ModalCalificacion.vue';
+import DireccionHabitacion from './DireccionHabitacion.vue';
 export default {
 	data() {
 		return {
@@ -1121,7 +1033,8 @@ export default {
 	components: {
 		ModalOrder,
 		ModalProducto,
-		ModalCalificacion
+		ModalCalificacion,
+		DireccionHabitacion,
 	},
 	props: {
 		userlogged: Object,
@@ -1491,7 +1404,7 @@ export default {
 				action: 'save',
 			});
 
-			this.userData.push(this.userlogged);
+			this.userData = this.userlogged;
 
 		},
 		increaseValue(product) {
@@ -1532,6 +1445,7 @@ export default {
 		}
 	},
 	mounted() {
+
 		this.getFavorites();
 		this.getTabUrl();
 		this.getStates();
@@ -1539,49 +1453,71 @@ export default {
 		this.getCities();
 		this.getPedidos();
 		console.log("esto es el userLLoger", this.userlogged);
-		this.userData.push(this.userlogged);
+		this.userData = this.userlogged;
 		console.log("esto es userData", this.userData);
 		this.getAmountBW(this.userData.id);
 		console.log("this.userData::> ", this.userData);
 	},
-	created() {
-		if (!this.userlogged.habDirection || this.userlogged.habDirection.length === 0) {
-			// Si habDirection está vacío, inicializa sus propiedades
-			this.userlogged.habDirection = {
-				state_id: '',
-				region_id: '',
-				city_id: '',
-				urb: '',
-				sector: '',
-				nro_home: '',
-				zip_code: '',
-				reference_point: ''
-			};
-		} else {
-			// Si habDirection tiene datos, asigna sus propiedades al objeto userlogged.habDirection
-			this.userlogged.habDirection = {
-				state_id: this.userlogged.habDirection[0].state_id,
-				region_id: this.userlogged.habDirection[0].region_id,
-				city_id: this.userlogged.habDirection[0].city_id,
-				urb: this.userlogged.habDirection[0].urb,
-				sector: this.userlogged.habDirection[0].sector,
-				nro_home: this.userlogged.habDirection[0].nro_home,
-				zip_code: this.userlogged.habDirection[0].zip_code,
-				reference_point: this.userlogged.habDirection[0].reference_point
-			};
-		}
+	async created() {
+  try {
+    // Realizar la petición para obtener los datos y esperar la respuesta
+    const response = await fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
+	if(response.ok){
 
-		// Asigna el objeto userlogged a userData
-		this.userData = this.userlogged;
+			this.dataLoaded = true;
 
-		// Inicializa cant_product con valores predeterminados
-		for (let i = 0; i < 2000; i++) {
-			this.cant_product[i] = 1;
-		}
-
-		// Verifica el resultado
-		console.log("this.userData::> ", this.userData);
 	}
+    // Convertir la respuesta a formato JSON
+    const data = await response.json();
+
+	
+
+	console.log("esto es data", data);
+
+    // Verificar si habDirection está vacío
+    if (!this.userlogged.habDirection) {
+      // Si habDirection está vacío, inicializa sus propiedades
+      this.userlogged.habDirection = {
+        state_id: '',
+        region_id: '',
+        city_id: '',
+        urb: '',
+        sector: '',
+        nro_home: '',
+        zip_code: '',
+        reference_point: ''
+      };
+
+    } else {
+      // Si habDirection tiene datos, asigna sus propiedades al objeto userlogged.habDirection
+      this.userlogged.habDirection = {
+        state_id: data.habDirection[0].state_id,
+        region_id: data.habDirection[0].region_id,
+        city_id: data.habDirection[0].city_id,
+        urb: data.habDirection[0].urb,
+        sector: data.habDirection[0].sector,
+        nro_home: data.habDirection[0].nro_home,
+        zip_code: data.habDirection[0].zip_code,
+        reference_point: data.habDirection[0].reference_point
+      };
+
+    }
+
+
+    // Asigna el objeto userlogged a userData
+    this.userData = this.userlogged;
+
+    // Inicializa cant_product con valores predeterminados
+    for (let i = 0; i < 2000; i++) {
+      this.cant_product[i] = 1;
+    }
+
+    // Verifica el resultado
+    console.log("this.userData::> ", this.userData);
+  } catch (error) {
+    console.error("Error al obtener datos:", error);
+  }
+}
 
 
 }

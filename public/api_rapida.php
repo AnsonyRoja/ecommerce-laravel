@@ -744,8 +744,13 @@ function getPerfil($tipo_salida){
 
 function listarBancosdelMetododePago($tipo_salida){
     $payment_methods_id=$_GET['payment_methods_id'];
+    
+    echo"esto es payment $payment_methods_id";
+    
     $sql="SELECT c.name c_name,b.name b_name,bd.titular,bd.description,bd.id,c.id coins_id,c.rate FROM bank_datas bd INNER JOIN banks b ON b.id=bd.banks_id INNER JOIN coins c ON c.id=bd.coins_id WHERE payment_methods_id=$payment_methods_id";
+    
     $arr=q($sql);
+
     if(is_array($arr)){
         return salidaNueva($arr,"Listando datos bancarios",true,$tipo_salida);
    }else{
@@ -1320,25 +1325,61 @@ function guardarOpinion(){
     $products_id=$_GET['products_id'];
     $opinion=$_GET['opinion'];
     $arr=q("UPDATE rating_products SET opinion='$opinion' WHERE users_id='$users_id' AND products_id='$products_id' RETURNING id");
-if(is_array($arr)){
+
+    if(is_array($arr)){
     salidaNueva(null,"Gracias por su comentario.");
 }
 salidaNueva(null,"Disculpe, intente nuevamente.",false);
 }
-function guardarOpinionOrden(){
-    $users_id       =$_SESSION['usuario']['id'];
-    $orders_id      =$_GET['orders_id'];
-    $opinion        =$_GET['opinion'];
-    $user_rating    =intval($_GET['user_rating']);
-    $sql="UPDATE orders SET opinion='$opinion',user_rating='$user_rating' WHERE users_id='$users_id' AND id='$orders_id' RETURNING id";
- 
-    $arr=q($sql);
-   
-    if(is_array($arr)){
-        salidaNueva(null,"Gracias por su opinión.");
+function guardarOpinionOrden() {
+    // Obtener valores de $_SESSION y $_GET
+    $users_id       = $_SESSION['usuario']['id'];
+    $orders_id      = $_GET['orders_id'];
+    $opinion        = $_GET['opinion'];
+    $user_rating    = intval($_GET['user_rating']);
+
+    try {   
+        $dsn = "pgsql:host=localhost;dbname=laravel";
+        $username = "postgres";
+        $password = 1234;
+
+        // Establecer conexión PDO
+        $pdo = new PDO($dsn, $username, $password);
+        
+        // Comenzar transacción
+        $pdo->beginTransaction();
+
+        // Preparar y ejecutar la primera sentencia SQL
+        $stmt = $pdo->prepare("UPDATE orders SET opinion = :opinion, user_rating = :user_rating WHERE users_id = :users_id AND id = :orders_id");
+        $stmt->bindParam(':opinion', $opinion);
+        $stmt->bindParam(':user_rating', $user_rating);
+        $stmt->bindParam(':users_id', $users_id);
+        $stmt->bindParam(':orders_id', $orders_id);
+        $stmt->execute();
+
+        // Obtener el número de filas afectadas por la operación UPDATE
+        $num_rows_affected = $stmt->rowCount();
+
+        // Confirmar la transacción
+        $pdo->commit();
+        
+        if ($num_rows_affected > 0) {
+            echo "Actualización exitosa. ID de orden actualizada: $orders_id";
+            salidaNueva(null, "Gracias por su opinión.");
+        } else {
+            echo "No se pudo actualizar la orden.";
+            salidaNueva(null, "Disculpe, intente nuevamente.", false);
+        }
+    } catch (PDOException $e) {
+        // Revertir la transacción si ocurre un error
+        $pdo->rollBack();
+        echo "Error de PDO: " . $e->getMessage();
+        salidaNueva(null, "Disculpe, intente nuevamente.", false);
     }
-    salidaNueva(null,"Disculpe, intente nuevamente.",false);
+
 }
+
+
 function guardarCalificacion(){
     $users_id   =$_SESSION['usuario']['id'];
     $products_id=$_GET['products_id'];
@@ -2001,6 +2042,7 @@ function q($sql) {
     } catch (PDOException $e) {
         // Manejar errores de PDO
         $errorMessage = $e->getMessage(); // Obtener el mensaje completo de la excepción
+        
 
         salidaNueva(null, "Error de PDO: $errorMessage", false);
 

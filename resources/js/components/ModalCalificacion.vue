@@ -54,10 +54,15 @@
         },
         methods: {
             async guardar() {
-                const url = `${URLSERVER}api_rapida.php?evento=guardarOpinionOrden&orders_id=${this.order.num_order}&opinion=${this.comentario}&user_rating=${this.stars}`;
-                await axios.get(url);
-                Swal.fire("Orden "+this.order.num_order+" calificada exitosamente");
-                jQuery("#ModalOrderRating").modal('hide');
+                try {
+            const url = `${URLSERVER}api_rapida.php?evento=guardarOpinionOrden&orders_id=${this.order.num_order}&opinion=${this.comentario}&user_rating=${this.stars}`;
+            const response = await axios.get(url);
+            console.log("Respuesta de Axios:", response);
+            Swal.fire("Orden " + this.order.num_order + " calificada exitosamente");
+            jQuery("#ModalOrderRating").modal('hide');
+        } catch (error) {
+            console.error("Error al realizar la solicitud:", error);
+        }
             }
         }
         

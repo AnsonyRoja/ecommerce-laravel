@@ -2988,21 +2988,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     guardar: function guardar() {
       var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var url;
+        var url, response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
+              _context.prev = 0;
               url = "".concat(URLSERVER, "api_rapida.php?evento=guardarOpinionOrden&orders_id=").concat(_this.order.num_order, "&opinion=").concat(_this.comentario, "&user_rating=").concat(_this.stars);
-              _context.next = 3;
+              _context.next = 4;
               return axios.get(url);
-            case 3:
+            case 4:
+              response = _context.sent;
+              console.log("Respuesta de Axios:", response);
               Swal.fire("Orden " + _this.order.num_order + " calificada exitosamente");
               jQuery("#ModalOrderRating").modal('hide');
-            case 5:
+              _context.next = 13;
+              break;
+            case 10:
+              _context.prev = 10;
+              _context.t0 = _context["catch"](0);
+              console.error("Error al realizar la solicitud:", _context.t0);
+            case 13:
             case "end":
               return _context.stop();
           }
-        }, _callee);
+        }, _callee, null, [[0, 10]]);
       }))();
     }
   }

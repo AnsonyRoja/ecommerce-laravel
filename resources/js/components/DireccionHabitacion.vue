@@ -14,7 +14,7 @@
         <div class="col-lg-4">
           <div class="form-group">
             <label for="address-1-state">Estado:</label>
-            <select  class="form-control" @change="loadMunicipioHab($event)" v-model="userDataProp.habDirection.state_id">
+            <select  class="form-control" @change="loadMunicipioHab($event)" v-model="userData.habDirection[0].state_id">
               <option value="">Seleccione</option>
               <option v-for="state in Allstates" :key="state.id" :value="state.id">{{ state.name }}</option>
             </select>
@@ -23,7 +23,7 @@
         <div class="col-lg-4">
           <div class="form-group">
             <label for="address-prov">Municipio:</label>
-            <select  class="form-control" @change="loadParroquiaHab($event)" v-model="userDataProp.habDirection.region_id">
+            <select  class="form-control" @change="loadParroquiaHab($event)" v-model="userData.habDirection[0].region_id">
               <option value="">Seleccione</option>
               <option v-for="region in Allregions" :key="region.id" :value="region.id">{{ region.name }}</option>
             </select>
@@ -32,7 +32,7 @@
         <div class="col-lg-4">
           <div class="form-group">
             <label for="address-prov">Parroquia:</label>
-            <select  class="form-control" v-model="userDataProp.habDirection.city_id">
+            <select  class="form-control" v-model="userData.habDirection[0].city_id">
               <option value="">Seleccione</option>
               <option v-for="city in Allcities" :key="city.id" :value="city.id">{{ city.name }}</option>
             </select>
@@ -45,38 +45,38 @@
         <div class="col-lg-6">
           <div class="form-group">
             <label for="address-urb">Urbanización / Empresa:</label>
-            <input  type="text" class="form-control" id="address-urb" name="address-urb" v-model="userDataProp.habDirection.urb">
+            <input  type="text" class="form-control" id="address-urb" name="address-urb" v-model="userData.habDirection[0].urb">
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label for="address-av">Sector, Avenida, calles, veredas:</label>
-            <input  type="text" class="form-control" id="address-av" name="address-av" v-model="userDataProp.habDirection.sector">
+            <input  type="text" class="form-control" id="address-av" name="address-av" v-model="userData.habDirection[0].sector">
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label for="address-num">Número de casa / Local / Apto / Piso:</label>
-            <input  type="text" class="form-control" id="address-num" name="address-num" v-model="userDataProp.habDirection.nro_home">
+            <input  type="text" class="form-control" id="address-num" name="address-num" v-model="userData.habDirection[0].nro_home">
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label for="address-post">Código postal:</label>
-            <input  type="text" class="form-control" id="address-post" name="address-post" v-model="userDataProp.habDirection.zip_code">
+            <input  type="text" class="form-control" id="address-post" name="address-post" v-model="userData.habDirection[0].zip_code">
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label for="address-ref">Punto de Referencia (opcional):</label>
-            <input  type="text" class="form-control" id="address-ref" name="address-ref" v-model="userDataProp.habDirection.reference_point">
+            <input  type="text" class="form-control" id="address-ref" name="address-ref" v-model="userData.habDirection[0].reference_point">
           </div>
         </div>
       </div>
   
       <div class="col-lg-14">
         <div class="form-group">
-          <button  class="btn btn-submit" @click="update_profile(userDataProp)" type="button">GUARDAR CAMBIOS</button>
+          <button  class="btn btn-submit" @click="update_profile(userData)" type="button">GUARDAR CAMBIOS</button>
         </div>
       </div>
       
@@ -97,33 +97,29 @@ export default {
   data() {
     return {
         propsLoaded: false,
-      userData: {
-        habDirection: {
-          state_id: '',
-          region_id: '',
-          city_id: '',
-          urb: '',
-          sector: '',
-          nro_home: '',
-          zip_code: '',
-          reference_point: ''
-        }
-      },
+        userData: null,
      
     };
   },
   props:{
-    userlogged: Object,
-    userDataProp: Object,
     Allregions: Array,
     Allstates:Array,
     Allcities:Array,
   },
-  created() {
+  async created() {
     // Verificar si todas las props están cargadas
-    if ( this.userDataProp && this.Allregions && this.Allstates && this.Allcities) {
+    const response = await fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
+      const data = await response.json();
+      
+      // Asignar los datos del usuario a la propiedad userData
+      this.userData = data;
+   
+    if ( this.userData && this.Allregions && this.Allstates && this.Allcities) {
       this.propsLoaded = true;
     }
+
+
+    
   },
   methods: {
     async loadMunicipioHab(event) {

@@ -116,7 +116,7 @@
 													<div class="row">
 														<div class="col-lg-12">
 															<h3 class="order-number order-text">Resumen de la compra</h3>
-															<div class="order-content" id="div_resumen_compra">
+															<div class="order-content" id="div_resumen_compra2">
 																<div class="order-description">
 																	<div class="row"  v-for="product_cart in products_cart" :key="product_cart.id">
 																		<p>{{product_cart.product.name}} ({{product_cart.cant}} Articulos)</p>

@@ -838,7 +838,7 @@ function actualizarResumenOrden() {
 		console.log("se actualizo el resumen de orden");
 		var h = '';
 		var productos = getLocal('productosb');
-		var d_envio = getLocal('envio').data[0];
+		// var d_envio = getLocal('envio').data[0];
 		// console.log(d_envio);
 
 		var detalle = '';
@@ -849,10 +849,26 @@ function actualizarResumenOrden() {
 		var totalEnvioD = 0.00;
 		var datos = getLocal('cartNew');
 		console.log("Estos son los datos del cartNew", datos);
+		
+		function encontrarProducto(id) {
+			console.log(productos);
+			console.log("estos son los productos dentro de la funcion",productos[0]);
+			for (let i = 0; i < 18; i++) {
+				console.log("estos son los productos",productos[i].id, id);
+				if (productos[i].id === id) {
+					console.log("este es el producto que encontro",productos[i]);
+					return productos[i];
+				}
+			}
+			return null; // Si no se encuentra el producto
+		}
+
 		if (datos) {
 			for (var [key, value] of Object.entries(datos)) {
-				var p = productos[value.product.id];
+				var p = encontrarProducto(value.product.id);
+				console.log("esto es el producto",p);
 				if (p != null) {
+					console.log("esto son los productos",p);
 					var cant = value.cant;
 					var peso = p.peso;
 					var precio_con_iva = (p.total_precio * cant);
@@ -866,10 +882,10 @@ function actualizarResumenOrden() {
 				}
 			}
 
-			var peso_max = d_envio.peso_max;
-			var precioEnvioB = d_envio.precio_b;
-			var precioEnvioD = d_envio.precio_d;
-			var peso_cargado = peso_max;
+			var peso_max = 23;
+			var precioEnvioB = 14;
+			var precioEnvioD = 18;
+			var peso_cargado = 15;
 			var multiplo_peso = 1;
 
 			while (totalPeso > peso_cargado) {

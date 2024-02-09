@@ -153,16 +153,21 @@ var globalFunc = {
 
     addToCart: function(product,cantidad) {
         let cart = [];
+        console.log("esto es el product nuevo", product);
         if(window.localStorage.getItem('cartNew')) {
             cart = JSON.parse(window.localStorage.getItem('cartNew'));
             cart = globalFunc.validateCart(product,cart,cantidad);
             window.localStorage.setItem('cartNew', JSON.stringify(cart));
             const cantUpdate = globalFunc.getCartCant(cart);
             EventBus.$emit("update_cantCart",cantUpdate);
+
+            
+            
         }else {
             cart = globalFunc.validateCart(product,cart,cantidad);
             window.localStorage.setItem('cartNew', JSON.stringify(cart));
             EventBus.$emit("update_cantCart",cantidad);
+
         }
         
     },

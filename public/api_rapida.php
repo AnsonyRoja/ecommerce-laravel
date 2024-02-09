@@ -166,6 +166,9 @@ switch($evento) {
     case 'listarFavoritos':
        listarFavoritos();
     break;
+    case 'listarProductosAll':
+        listarProductosAll();
+        break;
     case 'saldo':
         saldo();
     break;
@@ -975,8 +978,9 @@ function guardarPago(){
     if(is_array($arr)){
         $order_status_id=4;
         $arr=q("INSERT INTO trackings (orders_id,orders_status_id,users_id,created_at,updated_at) VALUES ($orders_id,$order_status_id,$users_id,NOW(),NOW()) RETURNING id");
-        //primera compra
-        if($_SESSION['usuario']['purchase_quantity']==0){
+    
+        // Verificar si la clave 'purchase_quantity' está definida en $_SESSION['usuario']
+        if(isset($_SESSION['usuario']['purchase_quantity']) && $_SESSION['usuario']['purchase_quantity']==0){
             $_SESSION['usuario']['purchase_quantity']=1;
             enviarPaginaCorreo(4,$_SESSION['usuario']['email']);
         }
@@ -987,8 +991,9 @@ function guardarPago(){
         if(is_array($arr)){
             $order_status_id=2;
             $arr=q("INSERT INTO trackings (orders_id,orders_status_id,users_id,created_at,updated_at) VALUES ($orders_id,$order_status_id,$users_id,NOW(),NOW()) RETURNING id");
-            //primera compra
-            if($_SESSION['usuario']['purchase_quantity']==0){
+    
+            // Verificar si la clave 'purchase_quantity' está definida en $_SESSION['usuario']
+            if(isset($_SESSION['usuario']['purchase_quantity']) && $_SESSION['usuario']['purchase_quantity']==0){
                 $_SESSION['usuario']['purchase_quantity']=1;
                 enviarPaginaCorreo(4,$_SESSION['usuario']['email']);
             }
@@ -1395,15 +1400,37 @@ function guardarCalificacion(){
         salidaNueva(null,"Ha fallado la calificación",false);
     }
 }
+
+function listarProductosAll(){
+    try {
+        // Realizar la consulta SQL para seleccionar todos los productos
+        $sql = "SELECT * FROM products";
+        $result = q($sql); // Ejecutar la consulta y obtener el resultado
+
+        if (is_array($result) && !empty($result)) {
+            // Si se encontraron resultados, devolverlos en formato JSON
+            return salida($result, "Listando todos los productos", true);
+        } else {
+            // Si no se encontraron resultados, devolver un mensaje de error
+            return salida(null, "No se encontraron productos.", false);
+        }
+    } catch (\Exception $e) {
+        // Manejar cualquier excepción y devolver un mensaje de error
+        return salida(null, "Disculpe, ocurrió un error al listar los productos. Por favor, intente nuevamente.", false);
+    }
+    
+}
+
+
 function listarProductosIA($tipo_salida=false,$simple=false){
     $users_id=$_SESSION['usuario']['id'];
     //$users_id=1;
-    $cant_mostrar=20;
-    //para no repetir las palabras
-$nameUnico=array();
-$description_short=array();
-$keyword=array();
-//
+        $cant_mostrar=20;
+            //para no repetir las palabras
+        $nameUnico=array();
+        $description_short=array();
+        $keyword=array();
+        //
     try{
         $arr=q('SELECT p.name, p.description_short, initcap(p.keyword) keyword, products_id FROM user_visit_products uvp INNER JOIN products p ON p.id=uvp.products_id WHERE uvp.updated_at > NOW() - interval \'1 month\' AND uvp.users_id='.$users_id.' LIMIT 20');
         $string="";
@@ -1505,7 +1532,6 @@ function listarProductos($sql,$agregarCantidad=false,$tipo_salida=false,$comprim
         $row=recortar_imagen($row,$agregarCantidad);
         }
 
-                
             
         
         return salidaNueva($row,"Listando productos",true,$tipo_salida,$comprimido);

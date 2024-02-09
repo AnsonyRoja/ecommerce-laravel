@@ -13067,6 +13067,9 @@ var render = function render() {
     }
   }, [_vm._m(15), _vm._v(" "), _c("div", {
     staticClass: "tab-content",
+    staticStyle: {
+      position: "relative"
+    },
     attrs: {
       id: "orders-content"
     }
@@ -97139,6 +97142,7 @@ var globalFunc = {
   },
   addToCart: function addToCart(product, cantidad) {
     var cart = [];
+    console.log("esto es el product nuevo", product);
     if (window.localStorage.getItem('cartNew')) {
       cart = JSON.parse(window.localStorage.getItem('cartNew'));
       cart = globalFunc.validateCart(product, cart, cantidad);

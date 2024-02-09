@@ -329,7 +329,7 @@
 												aria-selected="false">Completados</a>
 										</li>
 									</ul>
-									<div class="tab-content" id="orders-content">
+									<div class="tab-content" id="orders-content" style="position: relative;">
 										<div class="tab-pane fade show active" id="all-orders" role="tabpanel"
 											aria-labelledby="all-orders-tab" >
 											<img src="../../assets/recargas.png" alt="Refresh Icon" class="btn-refresh"

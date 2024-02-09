@@ -232,17 +232,49 @@ Titular: `+ titular + `
 
 function procesar(data, evento) {
 	console.log("esto es lo que hay en data", data);
+	console.log("esto es el evento", evento);
+	
 	switch (evento) {
 		case 'guardarPago':
+
+			console.log("entre aqui en Guardar Pago")
 			// var data = JSON.parse(data);
+
+				var datas = data;
+
+		// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
+		var regex = /{.*}/;
+
+		// Buscar el objeto JSON utilizando la expresión regular
+		var match = datas.match(regex);
+
+		// Verificar si se encontró un objeto JSON
+		if (match) {
+			try {
+				// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
+				var objetoJSON = JSON.parse(match[0]);
+				
+				// Ahora puedes utilizar objetoJSON como un objeto JavaScript
+				data = objetoJSON
+				console.log("esto es el onjeto",objetoJSON);
+			} catch (error) {
+				console.error("Error al parsear el objeto JSON:", error);
+			}
+		} else {
+			console.error("No se encontró ningún objeto JSON en la cadena de texto.");
+		}
+		console.log(data);
 		
+
+
 			if (data.success == true) {
 				Swal.fire("Bio en casa", "Su pago ha sido procesado", "success");
 				location.reload();
 
 			} else {
-				Swal.fire("Bio en casa", data.msj_general, "danger");
+				Swal.fire("Bio en casa", data.msj_general, "success");
 				div_btn_guardar_pago.innerHTML = '<button class="btn btn-success">Pagar</button>';
+				
 			}
 
 
@@ -328,6 +360,8 @@ function procesar(data, evento) {
 					var ultimo = "";
 
 					for (var [key, value] of Object.entries(datos)) {
+
+						console.log("Esto es el valor ", value);
 
 						if (key == 0) {
 							ultimo = "id='utlimo_metodo_pago'";
@@ -714,8 +748,8 @@ console.log("Esto es el jsonData", jsonData);
 
 }
 function procesarOrden() {
-	
 	if (document.getElementById("direccion_selected")) {
+		console.log("esto es apagar usd",aPagarUsd);
 		if (checkDeliveryType == 2 && aPagarUsd < 3) {
 			Swal.fire("Bio en Línea", "Para este tipo de delivery el monto debe ser al menos de 3$", "error");
 		} else {
@@ -777,6 +811,7 @@ function procesarOrden() {
 	}
 
 }
+
 function activarEnvio(a) {
 
 	var dataOption = document.getElementById("direccion_selected").value;
@@ -795,85 +830,86 @@ function activarEnvio(a) {
 }
 function getOrder(id) {
 	window.location = "/profile?orders_id=" + id.value;
+	
 }
 
 function actualizarResumenOrden() {
+	try {
+		console.log("se actualizo el resumen de orden");
+		var h = '';
+		var productos = getLocal('productosb');
+		var d_envio = getLocal('envio').data[0];
+		// console.log(d_envio);
 
-	var h = '';
-	var productos = getLocal('productosb');
-	var d_envio = getLocal('envio').data[0];
-	// console.log(d_envio);
+		var detalle = '';
+		var totalB = 0.00;
+		var totalD = 0.00;
+		var totalPeso = 0.00;
+		var totalEnvioB = 0.00;
+		var totalEnvioD = 0.00;
+		var datos = getLocal('cartNew');
+		console.log("Estos son los datos del cartNew", datos);
+		if (datos) {
+			for (var [key, value] of Object.entries(datos)) {
+				var p = productos[value.product.id];
+				if (p != null) {
+					var cant = value.cant;
+					var peso = p.peso;
+					var precio_con_iva = (p.total_precio * cant);
+					var precio_dolar = (p.total_precio_dolar * cant);
+					var nombre = p.name;
+					totalB += precio_con_iva;
+					totalD += precio_dolar;
+					totalPeso += peso;
 
-
-
-	var detalle = '';
-	var totalB = 0.00;
-	var totalD = 0.00;
-	var totalPeso = 0.00;
-	var totalEnvioB = 0.00;
-	var totalEnvioD = 0.00;
-	var datos = getLocal('cartNew');
-	// console.log(datos);
-	if (datos) {
-		for (var [key, value] of Object.entries(datos)) {
-			var p = productos[value.product.id];
-			if (p != null) {
-				var cant = value.cant;
-				var peso = p.peso;
-				var precio_con_iva = (p.total_precio * cant);
-				var precio_dolar = (p.total_precio_dolar * cant);
-				var nombre = p.name;
-				totalB += precio_con_iva;
-				totalD += precio_dolar;
-				totalPeso += peso;
-
-				detalle += '<div class="row" style="margin-bottom:5px; border-bottom:1px solid #ddd "><div class="col-md-1" style="margin:0"><img width="30px" src="storage/' + p.image + '"></div><div class="col-md-5" style="font-size:13px">' + nombre + ' <span style="color:red"> X ' + cant + '</span></div><div class="col-md-5" style="text-align:right">' + formatB(precio_con_iva) + '<br>' + formatD(up(precio_dolar, 2)) + '</div></div>';
+					detalle += '<div class="row" style="margin-bottom:5px; border-bottom:1px solid #ddd "><div class="col-md-1" style="margin:0"><img width="30px" src="storage/' + p.image + '"></div><div class="col-md-5" style="font-size:13px">' + nombre + ' <span style="color:red"> X ' + cant + '</span></div><div class="col-md-5" style="text-align:right">' + formatB(precio_con_iva) + '<br>' + formatD(up(precio_dolar, 2)) + '</div></div>';
+				}
 			}
+
+			var peso_max = d_envio.peso_max;
+			var precioEnvioB = d_envio.precio_b;
+			var precioEnvioD = d_envio.precio_d;
+			var peso_cargado = peso_max;
+			var multiplo_peso = 1;
+
+			while (totalPeso > peso_cargado) {
+				multiplo_peso++;
+				peso_cargado += (peso_max + peso_cargado);
+			}
+
+			if (activar_envio == false) {
+				multiplo_peso = 0;
+			}
+
+			totalEnvioB = precioEnvioB * multiplo_peso;
+			totalEnvioD = precioEnvioD * multiplo_peso;
+			totalPagarB = totalEnvioB + totalB;
+			totalPagarD = totalEnvioD + totalD;
+
+			aPagarUsd = totalPagarD;
+
+			console.log("esto es el total a pagar", aPagarUsd);
+
+			h = '<div class="detalleOrdenProducts">' + detalle + '</div><br>' +
+				'<div class="row"><div class="col-md-4">Sub total:</div><div class="col-md-8" style="text-align:right">' + formatB(totalB) + ' / ' + formatD(up(totalD, 2)) + '</div></div>' +
+				'<div class="row"><div class="col-md-4">Envío:</div><div class="col-md-8" style="text-align:right">' + formatB(totalEnvioB) + ' / ' + formatD(up(totalEnvioD, 2)) + '</div></div>' +
+				'<div class="row"><div class="col-md-4" style="font-size:17px">TOTAL:</div><div class="col-md-8" style="font-size:17px; text-align:right">' + formatB(totalPagarB) + ' / ' + formatD(up(totalPagarD, 2)) + '</div></div>' +
+				'<div class="row"><div class="col-md-12" style="color:red; text-align:right">(impuestos incluidos)</div></div><br>';
 		}
 
-
-		var peso_max = d_envio.peso_max;
-		var precioEnvioB = d_envio.precio_b;
-		var precioEnvioD = d_envio.precio_d;
-		var peso_cargado = peso_max;
-		var multiplo_peso = 1;
-
-		while (totalPeso > peso_cargado) {
-			multiplo_peso++;
-
-			peso_cargado += (peso_max + peso_cargado);
-
+		if (document.getElementById("div_resumen_compra")) {
+			div_resumen_compra.innerHTML = h;
 		}
-		if (activar_envio == false) {
-			multiplo_peso = 0;
+
+		if (document.getElementById("div_resumen_compra2")) {
+			div_resumen_compra2.innerHTML = h;
 		}
-		totalEnvioB = precioEnvioB * multiplo_peso;
-		totalEnvioD = precioEnvioD * multiplo_peso;
-		totalPagarB = totalEnvioB + totalB;
-		totalPagarD = totalEnvioD + totalD;
-
-
-
-		aPagarUsd = totalPagarD;
-
-
-
-		h = '<div class="detalleOrdenProducts">' + detalle + '</div><br>' +
-			'<div class="row"><div class="col-md-4">Sub total:</div><div class="col-md-8" style="text-align:right">' + formatB(totalB) + ' / ' + formatD(up(totalD, 2)) + '</div></div>' +
-			'<div class="row"><div class="col-md-4">Envío:</div><div class="col-md-8" style="text-align:right">' + formatB(totalEnvioB) + ' / ' + formatD(up(totalEnvioD, 2)) + '</div></div>' +
-			'<div class="row"><div class="col-md-4" style="font-size:17px">TOTAL:</div><div class="col-md-8" style="font-size:17px; text-align:right">' + formatB(totalPagarB) + ' / ' + formatD(up(totalPagarD, 2)) + '</div></div>' +
-			'<div class="row"><div class="col-md-12" style="color:red; text-align:right">(impuestos incluidos)</div></div><br>' +
-			'' +
-			'';
+	} catch (error) {
+		console.error("Error al actualizar el resumen de la orden:", error);
+		// Puedes agregar aquí código adicional para manejar el error, como mostrar un mensaje al usuario o realizar acciones de recuperación.
 	}
-	if (document.getElementById("div_resumen_compra")) {
-		div_resumen_compra.innerHTML = h;
-	}
-	if (document.getElementById("div_resumen_compra2")) {
-		div_resumen_compra2.innerHTML = h;
-	}
-
 }
+
 function actualizarStore() {
 	get('web_no_login');
 }

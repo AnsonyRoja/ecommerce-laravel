@@ -1406,10 +1406,16 @@ function listarProductosAll(){
         // Realizar la consulta SQL para seleccionar todos los productos
         $sql = "SELECT * FROM products";
         $result = q($sql); // Ejecutar la consulta y obtener el resultado
-
+    
         if (is_array($result) && !empty($result)) {
-            // Si se encontraron resultados, devolverlos en formato JSON
-            return salida($result, "Listando todos los productos", true);
+            // Crear un nuevo array donde cada elemento tenga como clave el ID del producto
+            $formattedResult = [];
+            foreach ($result as $product) {
+                $formattedResult[$product['id']] = $product;
+            }
+    
+            // Devolver el resultado formateado como JSON
+            return salida($formattedResult, "Listando todos los productos", true);
         } else {
             // Si no se encontraron resultados, devolver un mensaje de error
             return salida(null, "No se encontraron productos.", false);
@@ -1418,6 +1424,7 @@ function listarProductosAll(){
         // Manejar cualquier excepción y devolver un mensaje de error
         return salida(null, "Disculpe, ocurrió un error al listar los productos. Por favor, intente nuevamente.", false);
     }
+    
     
 }
 

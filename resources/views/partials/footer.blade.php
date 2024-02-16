@@ -377,9 +377,9 @@
 			});
 		});
 		<?php if(isset($_SESSION['usuario']) && !empty($_SESSION['usuario'])): ?>
-			setInterval(() => {
-				axios.get(URLSERVER+"api_rapida.php?evento=obtenerTodo");
-			},120000);
+			// setInterval(() => {
+			// 	axios.get(URLSERVER+"api_rapida.php?evento=obtenerTodo");
+			// },120000);
 		<?php endif; ?>
 	</script>
 </body>

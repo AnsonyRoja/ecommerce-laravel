@@ -14,6 +14,7 @@ if (document.getElementById("div_direccion_entrega")) {
 
 	div_direccion_entrega.innerHTML = "Cargando...";
 	get('getAdreess');
+
 }
 
 if (document.getElementById("div_resumen_compra")) {
@@ -327,6 +328,7 @@ function procesar(data, evento) {
 
 			break;
 		case 'listarMetodosDePago':
+
 			if (limite_max_pagos_alcanzado == true) {
 				metodosPago.innerHTML = "<div class='text-danger center'><br>Disculpe, ya agoto sus 2 pagos máximos, deber ir a nuestra tienda biomercados más cercana para reportar su situación.</div>";
 			} else {
@@ -599,6 +601,7 @@ function procesar(data, evento) {
 					get('totalPagar', '&orders_id=' + id_orders);
 				}
 				if (document.getElementById("metodosPago")) {
+
 					cuadroPagado.innerHTML = "<div class='loaderb'><div>";
 
 					get('listarMetodosDePago');
@@ -718,12 +721,17 @@ console.log("Esto es el jsonData", jsonData);
 			}
 			break;
 		case 'getAdreess':
+
 			var data = JSON.parse(data);
-		console.log("data getAddress::> ", data);
-		var options = '';
+
+			console.log("data getAddress::> ", data);
+
+			var options = '';
 
 		if (data.success) {
+
 			var datos = data;
+
 			options += "<option value='0' id='one_value'>Pick - Up</option>";
 
 			for (var key in datos) {
@@ -732,13 +740,18 @@ console.log("Esto es el jsonData", jsonData);
 				}
 				
 				var value = datos[key];
+
 				options += "<option value=" + value.id + ">" + value.address + " - " + value.st_name + ", " + value.re_name + ", " + value.urb + ", " + value.sector + ", #" + value.nro_home + "</option>";
+			
 			}
 
-			div_direccion_entrega.innerHTML = "<select onchange='activarEnvio(this)' class='form-control' id='direccion_selected' name='direccion' v-model='selectedDirection' >" + options + "</select><br><a href='/profile'>Agregar nueva dirección</a>";
+			div_direccion_entrega.innerHTML = "<select style='pointer-events: none;' onchange='activarEnvio(this)' class='form-control' id='direccion_selected' name='direccion' v-model='selectedDirection'  >" +  options + "</select><br><a href='/profile'>Agregar nueva dirección</a>";
+		
 		} else {
+
 			div_direccion_entrega.innerHTML = "<select class='form-control' id='direccion_selected' name='direccion' v-model='selectedDirection'><option value='0'>Pick - Up</option></select><br><a href='/profile?tab=my-address'>Agregar nueva dirección</a>";
 			//alert(data.msj_general);
+
 			return false;
 		}
 
@@ -838,7 +851,8 @@ function actualizarResumenOrden() {
 		console.log("se actualizo el resumen de orden");
 		var h = '';
 		var productos = getLocal('productosb');
-		// var d_envio = getLocal('envio').data[0];
+		var d_envio = getLocal('envio').data[0];
+		console.log("esto es lo que hay en envio",d_envio);
 		// console.log(d_envio);
 
 		var detalle = '';
@@ -850,43 +864,42 @@ function actualizarResumenOrden() {
 		var datos = getLocal('cartNew');
 		console.log("Estos son los datos del cartNew", datos);
 		
-		function encontrarProducto(id) {
-			console.log(productos);
-			console.log("estos son los productos dentro de la funcion",productos[0]);
-			for (let i = 0; i < 18; i++) {
-				console.log("estos son los productos",productos[i].id, id);
-				if (productos[i].id === id) {
-					console.log("este es el producto que encontro",productos[i]);
-					return productos[i];
-				}
-			}
-			return null; // Si no se encuentra el producto
-		}
+		console.log(productos);
 
 		if (datos) {
 			for (var [key, value] of Object.entries(datos)) {
-				var p = encontrarProducto(value.product.id);
+				console.log("Estos son los valores de value en carnew", value);
+				var p = productos[value.product.id];
 				console.log("esto es el producto",p);
 				if (p != null) {
-					console.log("esto son los productos",p);
 					var cant = value.cant;
 					var peso = p.peso;
-					var precio_con_iva = (p.total_precio * cant);
-					var precio_dolar = (p.total_precio_dolar * cant);
+					// var precio_con_iva = (p.total_precio * cant);
+					// var precio_dolar = (p.total_precio_dolar * cant);
+					var precio_con_iva = (p.price * cant);
+					var precio_dolar = ((p.price * cant) / productos.tasadolar );
 					var nombre = p.name;
 					totalB += precio_con_iva;
 					totalD += precio_dolar;
 					totalPeso += peso;
+					console.log("Esto es el peso total", totalPeso);
 
 					detalle += '<div class="row" style="margin-bottom:5px; border-bottom:1px solid #ddd "><div class="col-md-1" style="margin:0"><img width="30px" src="storage/' + p.image + '"></div><div class="col-md-5" style="font-size:13px">' + nombre + ' <span style="color:red"> X ' + cant + '</span></div><div class="col-md-5" style="text-align:right">' + formatB(precio_con_iva) + '<br>' + formatD(up(precio_dolar, 2)) + '</div></div>';
 				}
 			}
 
-			var peso_max = 23;
-			var precioEnvioB = 14;
-			var precioEnvioD = 18;
-			var peso_cargado = 15;
+
+			var peso_max = d_envio.peso_max;
+			var precioEnvioB = d_envio.precio_b;
+			var precioEnvioD = d_envio.precio_d;
+			var peso_cargado = peso_max;
 			var multiplo_peso = 1;
+
+			// var peso_max = 23;
+			// var precioEnvioB = 14;
+			// var precioEnvioD = 18;
+			// var peso_cargado = 15;
+			// var multiplo_peso = 1;
 
 			while (totalPeso > peso_cargado) {
 				multiplo_peso++;
@@ -897,12 +910,15 @@ function actualizarResumenOrden() {
 				multiplo_peso = 0;
 			}
 
+
+
 			totalEnvioB = precioEnvioB * multiplo_peso;
 			totalEnvioD = precioEnvioD * multiplo_peso;
 			totalPagarB = totalEnvioB + totalB;
 			totalPagarD = totalEnvioD + totalD;
-
+				
 			aPagarUsd = totalPagarD;
+
 
 			console.log("esto es el total a pagar", aPagarUsd);
 
@@ -957,6 +973,7 @@ function get(evento, variables="") {
 
 	xmlhttp.open("GET", protocol + "//" + host + "/api_rapida.php?evento=" + evento + variables, true);
 	xmlhttp.send();
+
 }
 
 
@@ -1071,24 +1088,70 @@ function successPayment() {
 	location.reload();
 }
 
+var optionZero = document.createElement('option');
+optionZero.value = '0';
+optionZero.id = 'one_value';
+optionZero.textContent = 'Pick - Up';
+selectDireccion.add(optionZero); 
+
 function deli_type(e) {
 	var column = document.getElementById('select_address');
+	var divDireccionEntrega = document.getElementById('div_direccion_entrega');
+	var selectDireccion = document.getElementById('direccion_selected');
+	
 	checkDeliveryType = e.value;
 	if (parseInt(e.value) > 0) {
+		// Mostrar el select y otros elementos
+		console.log("entre auqi en E VALUE", )
+		column.style.display = 'block';
+		
+		var oneValueElement = document.getElementById('one_value');
+		if (oneValueElement) {
+			oneValueElement.style.display = 'block';
+		}
+			selectDireccion.style.pointerEvents = 'auto';
+	
+		// Guardar una copia de la opción con valor 0 si aún no se ha guardado
+		
+	
+		// Eliminar la opción con valor 0 del select si existe
+		for (var i = 0; i < selectDireccion.options.length; i++) {
+			if (selectDireccion.options[i].value == '0') {
+				selectDireccion.remove(i);
+				break;
+			}
+		}
+	
+		// Seleccionar la primera opción después de eliminar la opción con valor 0
+		selectDireccion.selectedIndex = 0;
+	
+	} else {
+		if (optionZero === null) {
+			optionZero = document.createElement('option');
+			optionZero.value = '0';
+			optionZero.id = 'one_value';
+			optionZero.textContent = 'Pick - Up';
+		}
+		if (optionZero !== null) {
+			selectDireccion.add(optionZero); // Agregar la opción al final del select
+		}
+		// Ocultar el select y otros elementos si el valor de e es 0 o menor
+		console.log("esto es optionZero", optionZero);
 		column.style.display = 'block';
 		document.getElementById('one_value').style.display = 'block';
-		document.getElementById('direccion_selected').selectedIndex = 1;
-	} else {
-		column.style.display = 'none';
+		selectDireccion.style.pointerEvents = 'none';
+		selectDireccion.selectedIndex = selectDireccion.options.length - 1;
 
-		document.getElementById('one_value').style.display = 'block';
-		document.getElementById('direccion_selected').selectedIndex = 0;
+		// Agregar la opción con valor 0 si se ha guardado
+		
 	}
+	
 
 	if (parseInt(e.value) == 2 || parseInt(e.value) == 1) {
+		console.log("Entre en Contenedor de fechas");
 		document.getElementById("div_contenedor_fecha").style.display = 'block';
 	} else {
-		document.getElementById("div_contenedor_fecha").style.display = 'block';
+		document.getElementById("div_contenedor_fecha").style.display = 'none';
 	}
 
 	document.getElementById('dvy_type').value = e.value;

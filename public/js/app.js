@@ -2006,6 +2006,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     delivery: Number
   },
   methods: {
+    envio: function envio() {
+      var data = [];
+      var envioData = {
+        precio_b: this.delivery,
+        precio_d: this.delivery / this.tasadolar,
+        peso_max: this.peso_max
+      };
+      data[0] = envioData;
+      window.localStorage.setItem('envio', JSON.stringify({
+        "data": data
+      }));
+    },
     up: function up(v, n) {
       return Math.ceil(v * Math.pow(10, n)) / Math.pow(10, n);
     },
@@ -2266,6 +2278,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       payment: this.selectedPayment,
       payment_ref: this.payment_ref
     };
+    this.envio();
   },
   computed: {
     objDirection: function objDirection() {
@@ -3952,29 +3965,67 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     tasadolar: Number
   },
   methods: {
+    fetchData: function fetchData() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return axios.get('http://127.0.0.1:8000/api_rapida.php?evento=listarProductosAll');
+            case 3:
+              response = _context.sent;
+              // Verificar si la solicitud fue exitosa y si hay datos recibidos
+              console.log(response);
+              if (response.data) {
+                console.log("Esto es reponse", response.data);
+                response.data.tasadolar = _this2.tasadolar;
+
+                // Convertir el texto JSON en un objeto
+                // Guardar los datos de productos en el local storage con la clave 'productosb'
+                window.localStorage.setItem('productosb', JSON.stringify(response.data));
+                console.log('Datos de productos guardados en el local storage:', response);
+              } else {
+                console.error('No se pudo obtener los datos de productos o la solicitud fue fallida:', response.data.message);
+              }
+              _context.next = 11;
+              break;
+            case 8:
+              _context.prev = 8;
+              _context.t0 = _context["catch"](0);
+              console.error('Error al realizar la solicitud:', _context.t0);
+            case 11:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, null, [[0, 8]]);
+      }))();
+    },
     refreshOrders: function refreshOrders() {
       this.getPedidos();
     },
     getAmountBW: function getAmountBW(user_id) {
-      var _this2 = this;
+      var _this3 = this;
       axios.get(URLHOME + 'api/getAmountBW/' + user_id).then(function (datos) {
-        _this2.userData.saldo = datos.data;
-        console.log("userData:", _this2.userData);
+        _this3.userData.saldo = datos.data;
+        console.log("userData:", _this3.userData);
       });
     },
     getProduct: function getProduct(objP) {
       this.oneproduct = objP;
     },
     getOrder: function () {
-      var _getOrder = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
-        var _this3 = this;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
+      var _getOrder = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(id) {
+        var _this4 = this;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
             case 0:
               axios.get(URLHOME + 'api/orders/' + id).then(function (datos) {
                 var order = datos.data.data.order[0];
                 var products = datos.data.data.products;
-                _this3.tmpOrder = {
+                _this4.tmpOrder = {
                   id: order.id,
                   num_order: order.id,
                   products: products,
@@ -3985,15 +4036,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 };
                 JSON.parse(order.rate_json).forEach(function (a) {
                   if (a.id == 1) {
-                    _this3.currency_rate = Number(a.rate);
+                    _this4.currency_rate = Number(a.rate);
                   }
                 });
               });
             case 1:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
-        }, _callee);
+        }, _callee2);
       }));
       function getOrder(_x) {
         return _getOrder.apply(this, arguments);
@@ -4004,9 +4055,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       window.location.href = location.href + "?orders_id=" + id;
     },
     cancelOrder: function cancelOrder(id) {
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
             case 0:
               Swal.fire({
                 title: 'Bio en Línea',
@@ -4030,28 +4081,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               });
             case 1:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
-        }, _callee2);
+        }, _callee3);
       }))();
     },
     getFavorites: function () {
-      var _getFavorites = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      var _getFavorites = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var response;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              _context3.next = 2;
+              _context4.next = 2;
               return axios.get(URLHOME + 'api/favorites');
             case 2:
-              response = _context3.sent;
+              response = _context4.sent;
               this.favorites = response.data.data;
               this.cant_favorites = response.data.data.length;
             case 5:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
       function getFavorites() {
         return _getFavorites.apply(this, arguments);
@@ -4072,7 +4123,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     removeToFavorite: function removeToFavorite(id, user_id, index) {
-      var _this4 = this;
+      var _this5 = this;
       Swal.fire({
         title: 'Eliminar Favorito',
         text: "¿Desea eliminar su producto de Favoritos?",
@@ -4085,9 +4136,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (result) {
         if (result.value) {
           var products_id = id;
-          var users_id = _this4.userData.id;
-          _this4.favorites.splice(index, 1);
-          _this4.cant_favorites = _this4.favorites.length;
+          var users_id = _this5.userData.id;
+          _this5.favorites.splice(index, 1);
+          _this5.cant_favorites = _this5.favorites.length;
           axios.post(URLHOME + 'api/favorites/delete', {
             products_id: products_id,
             user_id: users_id
@@ -4128,116 +4179,96 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     getStates: function getStates() {
-      var _this5 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var response, response2;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
-            case 0:
-              _context4.next = 2;
-              return axios.get(URLSERVER + "api/states");
-            case 2:
-              response = _context4.sent;
-              console.log("esto es la respuesta", response);
-              _this5.states.push(response.data.data);
-              _context4.next = 7;
-              return axios.get(URLSERVER + "api/Allstates");
-            case 7:
-              response2 = _context4.sent;
-              console.log("esto es la response2", response2);
-              _this5.Allstates = response2.data.data;
-              console.log("esto es this.allStates ", _this5.Allstates);
-            case 11:
-            case "end":
-              return _context4.stop();
-          }
-        }, _callee4);
-      }))();
-    },
-    getRegions: function getRegions() {
       var _this6 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var response, _yield$axios$get, data;
+        var response, response2;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
               _context5.next = 2;
-              return axios.get(URLSERVER + "api/regions");
+              return axios.get(URLSERVER + "api/states");
             case 2:
               response = _context5.sent;
-              _this6.regions = response.data.data;
-              _context5.next = 6;
-              return axios.get(URLSERVER + "api/Allregions");
-            case 6:
-              _yield$axios$get = _context5.sent;
-              data = _yield$axios$get.data;
-              _this6.Allregions = data.data;
-            case 9:
+              console.log("esto es la respuesta", response);
+              _this6.states.push(response.data.data);
+              _context5.next = 7;
+              return axios.get(URLSERVER + "api/Allstates");
+            case 7:
+              response2 = _context5.sent;
+              console.log("esto es la response2", response2);
+              _this6.Allstates = response2.data.data;
+              console.log("esto es this.allStates ", _this6.Allstates);
+            case 11:
             case "end":
               return _context5.stop();
           }
         }, _callee5);
       }))();
     },
-    getCities: function getCities() {
+    getRegions: function getRegions() {
       var _this7 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        var response, _yield$axios$get2, data;
+        var response, _yield$axios$get, data;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
               _context6.next = 2;
-              return axios.get(URLSERVER + "api/cities");
+              return axios.get(URLSERVER + "api/regions");
             case 2:
               response = _context6.sent;
-              _this7.cities = response.data.data;
+              _this7.regions = response.data.data;
               _context6.next = 6;
-              return axios.get(URLSERVER + "api/Allcities");
+              return axios.get(URLSERVER + "api/Allregions");
             case 6:
-              _yield$axios$get2 = _context6.sent;
-              data = _yield$axios$get2.data;
-              console.log("esto es la respon all cities", data);
-              _this7.Allcities = data.data;
-            case 10:
+              _yield$axios$get = _context6.sent;
+              data = _yield$axios$get.data;
+              _this7.Allregions = data.data;
+            case 9:
             case "end":
               return _context6.stop();
           }
         }, _callee6);
       }))();
     },
-    loadMunicipioHab: function loadMunicipioHab(event) {
+    getCities: function getCities() {
       var _this8 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-        var state_id, response;
+        var response, _yield$axios$get2, data;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
-              state_id = event.target.value;
-              _context7.next = 3;
-              return axios.get(URLSERVER + "api/regions/state/" + state_id);
-            case 3:
+              _context7.next = 2;
+              return axios.get(URLSERVER + "api/cities");
+            case 2:
               response = _context7.sent;
-              _this8.Allregions = response.data.data;
-            case 5:
+              _this8.cities = response.data.data;
+              _context7.next = 6;
+              return axios.get(URLSERVER + "api/Allcities");
+            case 6:
+              _yield$axios$get2 = _context7.sent;
+              data = _yield$axios$get2.data;
+              console.log("esto es la respon all cities", data);
+              _this8.Allcities = data.data;
+            case 10:
             case "end":
               return _context7.stop();
           }
         }, _callee7);
       }))();
     },
-    loadParroquiaHab: function loadParroquiaHab(event) {
+    loadMunicipioHab: function loadMunicipioHab(event) {
       var _this9 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-        var region_id, response;
+        var state_id, response;
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) switch (_context8.prev = _context8.next) {
             case 0:
-              region_id = event.target.value;
+              state_id = event.target.value;
               _context8.next = 3;
-              return axios.get(URLSERVER + "api/cities/region/" + region_id);
+              return axios.get(URLSERVER + "api/regions/state/" + state_id);
             case 3:
               response = _context8.sent;
-              _this9.Allcities = response.data.data;
+              _this9.Allregions = response.data.data;
             case 5:
             case "end":
               return _context8.stop();
@@ -4245,29 +4276,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee8);
       }))();
     },
-    getPedidos: function getPedidos() {
+    loadParroquiaHab: function loadParroquiaHab(event) {
       var _this10 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
-        var response;
+        var region_id, response;
         return _regeneratorRuntime().wrap(function _callee9$(_context9) {
           while (1) switch (_context9.prev = _context9.next) {
             case 0:
-              _context9.next = 2;
-              return axios.get(URLSERVER + "api/orders");
-            case 2:
+              region_id = event.target.value;
+              _context9.next = 3;
+              return axios.get(URLSERVER + "api/cities/region/" + region_id);
+            case 3:
               response = _context9.sent;
-              _this10.orders = response.data.data;
-              _this10.completos = _this10.orders.filter(function (lista) {
-                return lista.namestatus == "Entregado";
-              });
-              _this10.en_proceso = _this10.orders.filter(function (lista) {
-                return lista.namestatus != "Entregado";
-              });
-            case 6:
+              _this10.Allcities = response.data.data;
+            case 5:
             case "end":
               return _context9.stop();
           }
         }, _callee9);
+      }))();
+    },
+    getPedidos: function getPedidos() {
+      var _this11 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+          while (1) switch (_context10.prev = _context10.next) {
+            case 0:
+              _context10.next = 2;
+              return axios.get(URLSERVER + "api/orders");
+            case 2:
+              response = _context10.sent;
+              _this11.orders = response.data.data;
+              _this11.completos = _this11.orders.filter(function (lista) {
+                return lista.namestatus == "Entregado";
+              });
+              _this11.en_proceso = _this11.orders.filter(function (lista) {
+                return lista.namestatus != "Entregado";
+              });
+            case 6:
+            case "end":
+              return _context10.stop();
+          }
+        }, _callee10);
       }))();
     },
     repeatOrder: function repeatOrder(id) {
@@ -4293,34 +4344,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     devolucion: function devolucion(id) {
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
-        var response;
-        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
-          while (1) switch (_context10.prev = _context10.next) {
-            case 0:
-              _context10.next = 2;
-              return axios.get(URLSERVER + "api_rapida.php?evento=devolucion&orders_id" + id);
-            case 2:
-              response = _context10.sent;
-              Swal.fire('Devolución!', 'Su solicitud de devolución ha sido procesada. Será contactado muy pronto', 'success');
-            case 4:
-            case "end":
-              return _context10.stop();
-          }
-        }, _callee10);
-      }))();
-    },
-    calificar: function calificar(id) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+        var response;
         return _regeneratorRuntime().wrap(function _callee11$(_context11) {
           while (1) switch (_context11.prev = _context11.next) {
             case 0:
-              console.log("funciona");
-            case 1:
+              _context11.next = 2;
+              return axios.get(URLSERVER + "api_rapida.php?evento=devolucion&orders_id" + id);
+            case 2:
+              response = _context11.sent;
+              Swal.fire('Devolución!', 'Su solicitud de devolución ha sido procesada. Será contactado muy pronto', 'success');
+            case 4:
             case "end":
               return _context11.stop();
           }
         }, _callee11);
+      }))();
+    },
+    calificar: function calificar(id) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
+        return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+          while (1) switch (_context12.prev = _context12.next) {
+            case 0:
+              console.log("funciona");
+            case 1:
+            case "end":
+              return _context12.stop();
+          }
+        }, _callee12);
       }))();
     },
     increaseValue: function increaseValue(product) {
@@ -4346,37 +4397,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.base64Image(image);
     },
     base64Image: function base64Image(fileObject) {
-      var _this11 = this;
+      var _this12 = this;
       var reader = new FileReader();
       reader.onload = function (e) {
-        _this11.avatar = e.target.result;
-        _this11.sendPhoto();
+        _this12.avatar = e.target.result;
+        _this12.sendPhoto();
       };
       reader.readAsDataURL(fileObject);
     },
     sendPhoto: function sendPhoto() {
-      var _this12 = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
+      var _this13 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
         var avatar, data, response;
-        return _regeneratorRuntime().wrap(function _callee12$(_context12) {
-          while (1) switch (_context12.prev = _context12.next) {
+        return _regeneratorRuntime().wrap(function _callee13$(_context13) {
+          while (1) switch (_context13.prev = _context13.next) {
             case 0:
-              avatar = _this12.avatar;
+              avatar = _this13.avatar;
               data = new FormData();
               data.append("image", avatar);
-              _context12.next = 5;
+              _context13.next = 5;
               return axios.post(URLSERVER + "api_rapida.php?evento=actualizarFotoPerfil&from=web", data);
             case 5:
-              response = _context12.sent;
+              response = _context13.sent;
             case 6:
             case "end":
-              return _context12.stop();
+              return _context13.stop();
           }
-        }, _callee12);
+        }, _callee13);
       }))();
     }
   },
   mounted: function mounted() {
+    this.fetchData();
     this.getFavorites();
     this.getTabUrl();
     this.getStates();
@@ -4390,31 +4442,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     console.log("this.userData::> ", this.userData);
   },
   created: function created() {
-    var _this13 = this;
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
+    var _this14 = this;
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
       var response, data, i;
-      return _regeneratorRuntime().wrap(function _callee13$(_context13) {
-        while (1) switch (_context13.prev = _context13.next) {
+      return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+        while (1) switch (_context14.prev = _context14.next) {
           case 0:
-            _context13.prev = 0;
-            _context13.next = 3;
+            _context14.prev = 0;
+            _context14.next = 3;
             return fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
           case 3:
-            response = _context13.sent;
+            response = _context14.sent;
             if (response.ok) {
-              _this13.dataLoaded = true;
+              _this14.dataLoaded = true;
             }
             // Convertir la respuesta a formato JSON
-            _context13.next = 7;
+            _context14.next = 7;
             return response.json();
           case 7:
-            data = _context13.sent;
+            data = _context14.sent;
             console.log("esto es data", data);
 
             // Verificar si habDirection está vacío
-            if (!_this13.userlogged.habDirection) {
+            if (!_this14.userlogged.habDirection) {
               // Si habDirection está vacío, inicializa sus propiedades
-              _this13.userlogged.habDirection = {
+              _this14.userlogged.habDirection = {
                 state_id: '',
                 region_id: '',
                 city_id: '',
@@ -4426,7 +4478,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               };
             } else {
               // Si habDirection tiene datos, asigna sus propiedades al objeto userlogged.habDirection
-              _this13.userlogged.habDirection = {
+              _this14.userlogged.habDirection = {
                 state_id: data.habDirection[0].state_id,
                 region_id: data.habDirection[0].region_id,
                 city_id: data.habDirection[0].city_id,
@@ -4439,26 +4491,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
 
             // Asigna el objeto userlogged a userData
-            _this13.userData = _this13.userlogged;
+            _this14.userData = _this14.userlogged;
 
             // Inicializa cant_product con valores predeterminados
             for (i = 0; i < 2000; i++) {
-              _this13.cant_product[i] = 1;
+              _this14.cant_product[i] = 1;
             }
 
             // Verifica el resultado
-            console.log("this.userData::> ", _this13.userData);
-            _context13.next = 18;
+            console.log("this.userData::> ", _this14.userData);
+            _context14.next = 18;
             break;
           case 15:
-            _context13.prev = 15;
-            _context13.t0 = _context13["catch"](0);
-            console.error("Error al obtener datos:", _context13.t0);
+            _context14.prev = 15;
+            _context14.t0 = _context14["catch"](0);
+            console.error("Error al obtener datos:", _context14.t0);
           case 18:
           case "end":
-            return _context13.stop();
+            return _context14.stop();
         }
-      }, _callee13, null, [[0, 15]]);
+      }, _callee14, null, [[0, 15]]);
     }))();
   }
 });
@@ -5694,6 +5746,9 @@ var render = function render() {
     staticClass: "row"
   }, [_vm._m(2), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm.selectedDirection == 0 ? _c("div", {
     staticClass: "col-lg-6",
+    staticStyle: {
+      display: "none"
+    },
     attrs: {
       id: "div_contenedor_fecha"
     }
@@ -6314,7 +6369,7 @@ var staticRenderFns = [function () {
   return _c("div", {
     staticClass: "col-lg-6",
     staticStyle: {
-      display: "none"
+      display: "block"
     },
     attrs: {
       id: "select_address"

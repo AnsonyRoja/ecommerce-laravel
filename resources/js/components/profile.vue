@@ -886,6 +886,27 @@ export default {
 		tasadolar: Number
 	},
 	methods: {
+	 async fetchData() {
+    try {
+
+        const response = await axios.get('http://127.0.0.1:8000/api_rapida.php?evento=listarProductosAll');
+        // Verificar si la solicitud fue exitosa y si hay datos recibidos
+		console.log(response);
+        if (response.data) {
+			console.log("Esto es reponse",response.data);
+			response.data.tasadolar = this.tasadolar;
+
+            // Convertir el texto JSON en un objeto
+            // Guardar los datos de productos en el local storage con la clave 'productosb'
+            window.localStorage.setItem('productosb', JSON.stringify(response.data));
+            console.log('Datos de productos guardados en el local storage:', response);
+        } else {
+            console.error('No se pudo obtener los datos de productos o la solicitud fue fallida:', response.data.message);
+        }
+    } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+    }
+},
 		refreshOrders() {
 	this.getPedidos();
   },
@@ -1169,7 +1190,7 @@ export default {
 	mounted() {
 
 	
-
+		this.fetchData();
 		this.getFavorites();
 		this.getTabUrl();
 		this.getStates();

@@ -225,13 +225,13 @@
 													<div class="col-12">
 														<h5>Dirección de Envío</h5>
 													</div>
-													<div class="col-lg-6" id="select_address" style="display: none;">
+													<div class="col-lg-6" id="select_address" style="display: block;">
 														<div class="form-group">
 															<label for="address-name">Elegir Dirección:</label>
-															<div id="div_direccion_entrega"></div>
+															<div id="div_direccion_entrega" ></div>
 														</div>
 													</div>
-													<div class="col-lg-6" id="div_contenedor_fecha" v-if="selectedDirection == 0">
+													<div class="col-lg-6" id="div_contenedor_fecha" v-if="selectedDirection == 0" style="display: none">
 														<div class="form-group">
 															<label for="address-urb">Fecha y hora aprox. para su entrega:</label>
 
@@ -573,6 +573,7 @@
 				tmpOrder: {},
 				banks:[],
 				payButton: true
+
 			}
 		},
 		components:{
@@ -585,6 +586,25 @@
 			delivery: Number
 		},
 		methods:{
+
+			envio(){
+
+				var data = [];
+
+				var envioData = {
+					precio_b: this.delivery,
+					precio_d: this.delivery / this.tasadolar,
+					peso_max: this.peso_max
+				};
+				data[0] = envioData
+			
+					
+					window.localStorage.setItem('envio', JSON.stringify({"data":data}));
+					
+		
+
+
+			},
 		
             up(v, n){
                 return Math.ceil(v * Math.pow(10, n)) / Math.pow(10, n);
@@ -768,6 +788,7 @@
 			this.getPayments();
 		},
 		mounted()
+
 		{
 
 			const _this = this;
@@ -814,6 +835,8 @@
 				payment     : this.selectedPayment,
 				payment_ref : this.payment_ref
 			};
+
+			this.envio();
 		},
 		computed: {
 			objDirection: function() {

@@ -51,7 +51,10 @@
         // Verificar si la solicitud fue exitosa y si hay datos recibidos
 		console.log(response);
         if (response.data) {
+			
 			console.log("Esto es reponse",response.data);
+			response.data.tasaDolar = {{ $tasa_dolar }};
+
             // Convertir el texto JSON en un objeto
             // Guardar los datos de productos en el local storage con la clave 'productosb'
             window.localStorage.setItem('productosb', JSON.stringify(response.data));
@@ -63,6 +66,8 @@
         console.error('Error al realizar la solicitud:', error);
     }
 }
+
+
 
 fetchData();
 

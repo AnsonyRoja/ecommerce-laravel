@@ -94,7 +94,7 @@
 							<!-- loggeado -->
 							
 							<li id="nav-cart" data-toggle="tooltip" data-placement="bottom" title="Haga click para ver el carrito">
-								<a href="/cart"><img src="/assets/img/carrito-de-compras-bio.png" alt="Cart"><span class="quantity-span">{{cant_cart}}</span></a>
+								<a href="/cart"><img src="/assets/img/carrito-de-compras-bio.png" alt="Cart"><span class="quantity-span">{{ cant_cart }}</span></a>
 							</li>
 
 							<li id="nav-fav" v-if="userlogged" data-toggle="tooltip" data-placement="bottom" title="Haga click para ver sus favoritos">
@@ -318,6 +318,7 @@ export default {
         });
     },
     mounted() {
+		console.log("esto es la cantidad de cant_cart", this.cant_cart);
 		this.getCategories();
 		this.getFavorites();
 		this.getAmountBW();

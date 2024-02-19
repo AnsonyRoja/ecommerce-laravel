@@ -761,6 +761,7 @@ console.log("Esto es el jsonData", jsonData);
 
 }
 function procesarOrden() {
+
 	if (document.getElementById("direccion_selected")) {
 		console.log("esto es apagar usd",aPagarUsd);
 		if (checkDeliveryType == 2 && aPagarUsd < 3) {
@@ -1036,7 +1037,8 @@ function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
 	}
 }
 function vaciarCarrito() {
-	localStorage.clear();
+	// localStorage.clear();
+	localStorage.removeItem('cartNew');
 	localStorage.setItem('ModalPrincipal', 'visto');
 }
 
@@ -1092,7 +1094,7 @@ function successPayment() {
 
 
 	var selectDireccion = document.getElementById('direccion_selected');
-	
+
 	if(selectDireccion !== null){
 
 		var optionZero = document.createElement('option');

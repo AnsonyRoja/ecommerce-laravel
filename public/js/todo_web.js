@@ -133,13 +133,10 @@ function procesar(data,evento){
                 alert(data.msj_general);
                 return false;
             }
-        break;
         case 'logout':
             alert("Vuelve pronto");
             delLocal('usuario');
             location.reload();
-
-
         break;
         case 'actualizarPerfil':
             var data = JSON.parse(data);

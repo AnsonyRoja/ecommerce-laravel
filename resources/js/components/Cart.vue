@@ -69,7 +69,7 @@
 															<div class="col-md-3 align-self-center">
 																			<div class="input-group mt-1">
 																																		
-																		<input style="width:20px" id="quantity2" class="form-control" type="text" name="quantity" v-model="product_cart.cant">
+																		<input style="width:20px" id="quantity2" class="form-control" type="text" name="quantity" v-model="product_cart.cant" @input="handleInputChange(product_cart,product_cart.product.id,index)">
 																			<div style="width:30px; margin-top:-5px; margin-left:2px">
 																				<button style="padding:0; margin:0"  type="button" class="btn" @click="increaseValue(product_cart.cant,product_cart.product.id,index)">
 																					<img width="15px" src="assets/img/increase.png" alt="Increase">
@@ -587,6 +587,40 @@
 		},
 		methods:{
 
+					handleInputChange(product_cart, product_id, index) {
+			// Obtener el valor actual del campo de entrada como un número
+			console.log("Entre aqui en maxStock");
+			console.log("Esto es el valor de product_cart", this.products_cart[index].product.qty_avaliable);
+			console.log("esto es product_cart sin el this", product_cart.cant)
+			console.log("esto el product_id", product_id);
+			console.log("Este es el index del producto tal", index);
+			let inputValue = parseInt(product_cart.cant);
+			// Verificar si el valor es un número y mayor que 0
+			if (!isNaN(inputValue) && inputValue > 0) {
+				// Obtener la cantidad máxima disponible en stock para el producto
+				const maxStock = this.products_cart[index].product.qty_avaliable;
+				// Verificar si el valor ingresado es mayor que el stock disponible
+				if (inputValue > maxStock) {
+					// Si es mayor, establecer el valor del campo de entrada como la cantidad máxima disponible
+					console.log("ESto es this product cart",this.products_cart);
+					product_cart.cant = maxStock;
+					this.increaseValue(parseInt(product_cart.cant), product_id, index);
+
+				} else {
+
+					console.log("esto es product_cart antes de ser  invokada en la function", product_cart.cant);
+					// Si no es mayor, llamar a increaseValue con el nuevo valor
+					this.increaseValues(parseInt(product_cart.cant), product_id, index);
+				}
+			}else{
+
+				this.increaseValues(1, product_id, index);
+
+			}
+
+
+		},
+
 			envio(){
 
 				var data = [];
@@ -657,7 +691,30 @@
 			{
 				return typeof o == "object"
 			},
-			increaseValue(value,product_id,index)
+			increaseValues(newValue, product_id, index) {
+			// Buscar el índice del producto en this.products_cart
+			const productIndex = this.products_cart.findIndex(item => item.product.id === product_id);
+			if (productIndex === -1) {
+				// Si no se encuentra el producto, salir de la función
+				return;
+			}
+
+			// Obtener la cantidad máxima disponible en stock para el producto
+			const maxStock = this.products_cart[productIndex].product.qty_avaliable;
+
+			// Verificar si el nuevo valor no excede la cantidad máxima disponible en stock
+			if (newValue <= maxStock) {
+				// Establecer el nuevo valor del campo de entrada
+				this.products_cart[productIndex].cant = newValue;
+
+				// Actualizar el carro en el localStorage y otros cálculos relacionados con el carro
+				window.localStorage.setItem("cartNew", JSON.stringify(this.products_cart));
+				this.updateCartTotal();
+				this.getCartCant();
+			}
+		},
+
+		increaseValue(value,product_id,index)
 			{
 				// for(let i = 0; i<this.cant_cart; i++)
 				// {
@@ -675,6 +732,7 @@
 				this.getCartCant();
             	
 			},
+
 			decreaseValue(value,product_id,index)
 			{
 				if(value>1)

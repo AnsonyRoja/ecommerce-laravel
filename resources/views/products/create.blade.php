@@ -36,6 +36,10 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="peso">Peso:</label>
+                        <input type="integer" name="peso" class="form-control" placeholder="Ingrese el peso del producto">
+                    </div>
+                    <div class="form-group">
                         <label for="price">Precio:</label>
                         <input type="number" name="price" class="form-control" placeholder="Ingrese el precio del producto">
                     </div>

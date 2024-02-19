@@ -169,6 +169,7 @@ class ProductController extends BaseController
             $product->description_short = $request->description_short;
             $product->description = $request->description;
             $product->price = $request->price;
+            $product->peso = $request->peso;
             $product->stores_id = $request->stores_id;
             $product->sub_categories_id = $request->sub_categories_id;
             $product->qty_avaliable = $request->qty_avaliable;

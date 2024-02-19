@@ -867,13 +867,16 @@ function actualizarResumenOrden() {
 		console.log(productos);
 
 		if (datos) {
+
+			var contador = 0;
 			for (var [key, value] of Object.entries(datos)) {
 				console.log("Estos son los valores de value en carnew", value);
 				var p = productos[value.product.id];
 				console.log("esto es el producto",p);
 				if (p != null) {
+					var peso = parseFloat(p.peso);
+					contador++;
 					var cant = value.cant;
-					var peso = p.peso;
 					// var precio_con_iva = (p.total_precio * cant);
 					// var precio_dolar = (p.total_precio_dolar * cant);
 					var precio_con_iva = (p.price * cant);
@@ -881,13 +884,12 @@ function actualizarResumenOrden() {
 					var nombre = p.name;
 					totalB += precio_con_iva;
 					totalD += precio_dolar;
-					totalPeso += peso;
-					console.log("Esto es el peso total", totalPeso);
-
+					totalPeso += peso * cant;
+					
 					detalle += '<div class="row" style="margin-bottom:5px; border-bottom:1px solid #ddd "><div class="col-md-1" style="margin:0"><img width="30px" src="storage/' + p.image + '"></div><div class="col-md-5" style="font-size:13px">' + nombre + ' <span style="color:red"> X ' + cant + '</span></div><div class="col-md-5" style="text-align:right">' + formatB(precio_con_iva) + '<br>' + formatD(up(precio_dolar, 2)) + '</div></div>';
 				}
 			}
-
+	
 
 			var peso_max = d_envio.peso_max;
 			var precioEnvioB = d_envio.precio_b;
@@ -1088,11 +1090,21 @@ function successPayment() {
 	location.reload();
 }
 
-var optionZero = document.createElement('option');
-optionZero.value = '0';
-optionZero.id = 'one_value';
-optionZero.textContent = 'Pick - Up';
-selectDireccion.add(optionZero); 
+
+	var selectDireccion = document.getElementById('direccion_selected');
+	
+	if(selectDireccion !== null){
+
+		var optionZero = document.createElement('option');
+		optionZero.value = '0';
+		optionZero.id = 'one_value';
+		optionZero.textContent = 'Pick - Up';
+		selectDireccion.add(optionZero); 
+	
+
+	}
+ 
+
 
 function deli_type(e) {
 	var column = document.getElementById('select_address');

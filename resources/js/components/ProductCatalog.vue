@@ -140,6 +140,7 @@
 			ModalProducto,
             LazyImg
         },
+    
         methods: {
             getProduct: function(objP) {
                 console.log(objP);
@@ -174,16 +175,28 @@
             }
         },
         created() {
+                 
                     const storedProducts = window.localStorage.getItem("productos");
-            if (storedProducts) {
-                let products = JSON.parse(storedProducts).data;
-                for(let i = 0; i < products.length; i++) {
-                    this.cant_product[products[i].id] = 1;
-                }
+                    console.log("esto es productosB", storedProducts);
+                    let products = JSON.parse(storedProducts);
+
+                    console.log("esto es el valor de products", products);
+            if (products.success) {
+
+                console.log("entre aqui");
+
+                Object.values(products).forEach(product => {
+    // Acceder a cada producto y establecer su cantidad a 1
+                    this.cant_product[product.id] = 1;
+
+                    // Aquí puedes realizar cualquier otra operación necesaria con el producto
+                    console.log("estos son los productos", product);
+                });
             } else {
                 // Manejar el caso en el que no hay productos almacenados en el local storage
          }
         },
+
         props: {
             products: Object,
             images   : Array,

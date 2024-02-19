@@ -28,6 +28,10 @@
                         <label for="description" >Descripción:</label>
                         <textarea name="description" readonly class="form-control" placeholder="Ingrese la descripción completa del producto">{{ $product->description }}</textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="price">Peso:</label>
+                        <input type="integer" readonly name="peso" class="form-control" value="{{ $product->peso }}" placeholder="Ingrese el precio del producto">
+                    </div>
 
                     <div class="form-group">
                         <label for="price">Precio:</label>

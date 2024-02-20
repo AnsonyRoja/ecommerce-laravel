@@ -234,38 +234,38 @@ Titular: `+ titular + `
 function procesar(data, evento) {
 	console.log("esto es lo que hay en data", data);
 	console.log("esto es el evento", evento);
-	
+
 	switch (evento) {
 		case 'guardarPago':
 
 			console.log("entre aqui en Guardar Pago")
 			// var data = JSON.parse(data);
 
-				var datas = data;
+			var datas = data;
 
-		// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
-		var regex = /{.*}/;
+			// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
+			var regex = /{.*}/;
 
-		// Buscar el objeto JSON utilizando la expresión regular
-		var match = datas.match(regex);
+			// Buscar el objeto JSON utilizando la expresión regular
+			var match = datas.match(regex);
 
-		// Verificar si se encontró un objeto JSON
-		if (match) {
-			try {
-				// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
-				var objetoJSON = JSON.parse(match[0]);
-				
-				// Ahora puedes utilizar objetoJSON como un objeto JavaScript
-				data = objetoJSON
-				console.log("esto es el onjeto",objetoJSON);
-			} catch (error) {
-				console.error("Error al parsear el objeto JSON:", error);
+			// Verificar si se encontró un objeto JSON
+			if (match) {
+				try {
+					// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
+					var objetoJSON = JSON.parse(match[0]);
+
+					// Ahora puedes utilizar objetoJSON como un objeto JavaScript
+					data = objetoJSON
+					console.log("esto es el onjeto", objetoJSON);
+				} catch (error) {
+					console.error("Error al parsear el objeto JSON:", error);
+				}
+			} else {
+				console.error("No se encontró ningún objeto JSON en la cadena de texto.");
 			}
-		} else {
-			console.error("No se encontró ningún objeto JSON en la cadena de texto.");
-		}
-		console.log(data);
-		
+			console.log(data);
+
 
 
 			if (data.success == true) {
@@ -275,7 +275,7 @@ function procesar(data, evento) {
 			} else {
 				Swal.fire("Bio en casa", data.msj_general, "success");
 				div_btn_guardar_pago.innerHTML = '<button class="btn btn-success">Pagar</button>';
-				
+
 			}
 
 
@@ -284,30 +284,30 @@ function procesar(data, evento) {
 		case 'listarBancosdelMetododePago':
 
 
-				var datas = data;
+			var datas = data;
 
-				// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
-				var regex = /{.*}/;
-		
-				// Buscar el objeto JSON utilizando la expresión regular
-				var match = datas.match(regex);
-		
-				// Verificar si se encontró un objeto JSON
-				if (match) {
-					try {
-						// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
-						var objetoJSON = JSON.parse(match[0]);
-						
-						// Ahora puedes utilizar objetoJSON como un objeto JavaScript
-						data = objetoJSON
-						console.log("esto es el onjeto",objetoJSON);
-					} catch (error) {
-						console.error("Error al parsear el objeto JSON:", error);
-					}
-				} else {
-					console.error("No se encontró ningún objeto JSON en la cadena de texto.");
+			// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
+			var regex = /{.*}/;
+
+			// Buscar el objeto JSON utilizando la expresión regular
+			var match = datas.match(regex);
+
+			// Verificar si se encontró un objeto JSON
+			if (match) {
+				try {
+					// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
+					var objetoJSON = JSON.parse(match[0]);
+
+					// Ahora puedes utilizar objetoJSON como un objeto JavaScript
+					data = objetoJSON
+					console.log("esto es el onjeto", objetoJSON);
+				} catch (error) {
+					console.error("Error al parsear el objeto JSON:", error);
 				}
-				console.log(data);
+			} else {
+				console.error("No se encontró ningún objeto JSON en la cadena de texto.");
+			}
+			console.log(data);
 
 
 			if (data.success == true) {
@@ -334,27 +334,27 @@ function procesar(data, evento) {
 			} else {
 				var datas = data;
 
-		// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
-		var regex = /{.*}/;
+				// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
+				var regex = /{.*}/;
 
-		// Buscar el objeto JSON utilizando la expresión regular
-		var match = datas.match(regex);
+				// Buscar el objeto JSON utilizando la expresión regular
+				var match = datas.match(regex);
 
-		// Verificar si se encontró un objeto JSON
-		if (match) {
-			try {
-				// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
-				var objetoJSON = JSON.parse(match[0]);
-				
-				// Ahora puedes utilizar objetoJSON como un objeto JavaScript
-				data = objetoJSON
-				console.log("esto es el onjeto",objetoJSON);
-			} catch (error) {
-				console.error("Error al parsear el objeto JSON:", error);
-			}
-		} else {
-			console.error("No se encontró ningún objeto JSON en la cadena de texto.");
-		}
+				// Verificar si se encontró un objeto JSON
+				if (match) {
+					try {
+						// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
+						var objetoJSON = JSON.parse(match[0]);
+
+						// Ahora puedes utilizar objetoJSON como un objeto JavaScript
+						data = objetoJSON
+						console.log("esto es el onjeto", objetoJSON);
+					} catch (error) {
+						console.error("Error al parsear el objeto JSON:", error);
+					}
+				} else {
+					console.error("No se encontró ningún objeto JSON en la cadena de texto.");
+				}
 				// var data = JSON.parse(data);
 				if (data.success == true) {
 					var h = '<hr>';
@@ -378,29 +378,29 @@ function procesar(data, evento) {
 			break;
 		case 'totalPagar':
 
-		var datas = data;
+			var datas = data;
 
-		// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
-		var regex = /{.*}/;
+			// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
+			var regex = /{.*}/;
 
-		// Buscar el objeto JSON utilizando la expresión regular
-		var match = datas.match(regex);
+			// Buscar el objeto JSON utilizando la expresión regular
+			var match = datas.match(regex);
 
-		// Verificar si se encontró un objeto JSON
-		if (match) {
-			try {
-				// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
-				var objetoJSON = JSON.parse(match[0]);
-				
-				// Ahora puedes utilizar objetoJSON como un objeto JavaScript
-				data = objetoJSON
-				console.log("esto es el onjeto",objetoJSON);
-			} catch (error) {
-				console.error("Error al parsear el objeto JSON:", error);
+			// Verificar si se encontró un objeto JSON
+			if (match) {
+				try {
+					// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
+					var objetoJSON = JSON.parse(match[0]);
+
+					// Ahora puedes utilizar objetoJSON como un objeto JavaScript
+					data = objetoJSON
+					console.log("esto es el onjeto", objetoJSON);
+				} catch (error) {
+					console.error("Error al parsear el objeto JSON:", error);
+				}
+			} else {
+				console.error("No se encontró ningún objeto JSON en la cadena de texto.");
 			}
-		} else {
-			console.error("No se encontró ningún objeto JSON en la cadena de texto.");
-		}
 
 			// var data = JSON.parse(data);
 
@@ -484,29 +484,29 @@ function procesar(data, evento) {
 		case 'consultarOrden':
 
 
-		var datas = data;
+			var datas = data;
 
-		// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
-		var regex = /{.*}/;
+			// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
+			var regex = /{.*}/;
 
-		// Buscar el objeto JSON utilizando la expresión regular
-		var match = datas.match(regex);
+			// Buscar el objeto JSON utilizando la expresión regular
+			var match = datas.match(regex);
 
-		// Verificar si se encontró un objeto JSON
-		if (match) {
-			try {
-				// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
-				var objetoJSON = JSON.parse(match[0]);
-				
-				// Ahora puedes utilizar objetoJSON como un objeto JavaScript
-				data = objetoJSON
-				console.log("esto es el onjeto",objetoJSON);
-			} catch (error) {
-				console.error("Error al parsear el objeto JSON:", error);
+			// Verificar si se encontró un objeto JSON
+			if (match) {
+				try {
+					// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
+					var objetoJSON = JSON.parse(match[0]);
+
+					// Ahora puedes utilizar objetoJSON como un objeto JavaScript
+					data = objetoJSON
+					console.log("esto es el onjeto", objetoJSON);
+				} catch (error) {
+					console.error("Error al parsear el objeto JSON:", error);
+				}
+			} else {
+				console.error("No se encontró ningún objeto JSON en la cadena de texto.");
 			}
-		} else {
-			console.error("No se encontró ningún objeto JSON en la cadena de texto.");
-		}
 
 			// var data = JSON.parse(data);
 
@@ -614,42 +614,42 @@ function procesar(data, evento) {
 
 		case 'crearOrden':
 
-					// Cadena de texto que contiene el objeto JSON y las etiquetas <script>
-			
+			// Cadena de texto que contiene el objeto JSON y las etiquetas <script>
 
-		
-		
-					console.log("Esto es el Data", data);
 
-		// Cadena de texto que contiene el objeto JSON dentro de un script
-		var datas = data;
 
-		// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
-		var regex = /{.*}/;
 
-		// Buscar el objeto JSON utilizando la expresión regular
-		var match = datas.match(regex);
+			console.log("Esto es el Data", data);
 
-		// Verificar si se encontró un objeto JSON
-		if (match) {
-			try {
-				// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
-				var objetoJSON = JSON.parse(match[0]);
-				
-				// Ahora puedes utilizar objetoJSON como un objeto JavaScript
-				data = objetoJSON
-				console.log("esto es el onjeto",objetoJSON);
-			} catch (error) {
-				console.error("Error al parsear el objeto JSON:", error);
+			// Cadena de texto que contiene el objeto JSON dentro de un script
+			var datas = data;
+
+			// Expresión regular para extraer el objeto JSON dentro de la cadena de texto
+			var regex = /{.*}/;
+
+			// Buscar el objeto JSON utilizando la expresión regular
+			var match = datas.match(regex);
+
+			// Verificar si se encontró un objeto JSON
+			if (match) {
+				try {
+					// Parsear el objeto JSON encontrado en la cadena de texto a un objeto JavaScript
+					var objetoJSON = JSON.parse(match[0]);
+
+					// Ahora puedes utilizar objetoJSON como un objeto JavaScript
+					data = objetoJSON
+					console.log("esto es el onjeto", objetoJSON);
+				} catch (error) {
+					console.error("Error al parsear el objeto JSON:", error);
+				}
+			} else {
+				console.error("No se encontró ningún objeto JSON en la cadena de texto.");
 			}
-		} else {
-			console.error("No se encontró ningún objeto JSON en la cadena de texto.");
-		}
 
-		console.log("esto es data en objeto", data);
+			console.log("esto es data en objeto", data);
 
 			// var data = JSON.parse(data);
-			
+
 
 			if (data.success == true) {
 				var orders_id = data.data[0].id;
@@ -663,7 +663,7 @@ function procesar(data, evento) {
 
 			break;
 		case 'web_no_login':
-			console.log('Esto es lo que hay en data en el case web no login1',jsonData);
+			console.log('Esto es lo que hay en data en el case web no login1', jsonData);
 
 			// var data = JSON.parse(JXG.decompress(data));
 
@@ -678,31 +678,31 @@ function procesar(data, evento) {
 
 			break;
 		case 'web_no_logina':
-			console.log('Esto es lo que hay en data en el case web no login2',data);
+			console.log('Esto es lo que hay en data en el case web no login2', data);
 			var data = JSON.parse(JXG.decompress(data));
 			break;
 		case 'horasDisponiblesEntrega':
 			// var data = JSON.parse(JXG.decompress(data));
-var cadena = `<script>console.log(' Entre aqui ');</script><script>console.log([{"id":1,"day":"1","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:42:12","updated_at":"2020-04-03 23:42:12"},{"id":2,"day":"2","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:42:31","updated_at":"2020-04-03 23:42:31"},{"id":3,"day":"3","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:43:24","updated_at":"2020-04-03 23:43:24"},{"id":4,"day":"4","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:43:45","updated_at":"2020-04-03 23:43:45"},{"id":5,"day":"5","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:44:04","updated_at":"2020-04-03 23:44:04"}]);</script><script>console.log([{"id":0,"time":1707222090,"name":"Martes - 08:21AM"},{"id":1,"time":1707225690,"name":"Martes - 09:21AM"},{"id":2,"time":1707229290,"name":"Martes - 10:21AM"},{"id":3,"time":1707232890,"name":"Martes - 11:21AM"},{"id":4,"time":1707236490,"name":"Martes - 12:21PM"},{"id":5,"time":1707240090,"name":"Martes - 01:21PM"},{"id":6,"time":1707243690,"name":"Martes - 02:21PM"},{"id":7,"time":1707247290,"name":"Martes - 03:21PM"},{"id":8,"time":1707250890,"name":"Martes - 04:21PM"},{"id":9,"time":1707254490,"name":"Martes - 05:21PM"},{"id":10,"time":1707308490,"name":"Miercoles - 08:21AM"},{"id":11,"time":1707312090,"name":"Miercoles - 09:21AM"}]);</script><script>console.log({"success":true,"msj_general":"Listando horas disponible para entrega","data":[{"id":0,"time":1707222090,"name":"Martes - 08:21AM"},{"id":1,"time":1707225690,"name":"Martes - 09:21AM"},{"id":2,"time":1707229290,"name":"Martes - 10:21AM"},{"id":3,"time":1707232890,"name":"Martes - 11:21AM"},{"id":4,"time":1707236490,"name":"Martes - 12:21PM"},{"id":5,"time":1707240090,"name":"Martes - 01:21PM"},{"id":6,"time":1707243690,"name":"Martes - 02:21PM"},{"id":7,"time":1707247290,"name":"Martes - 03:21PM"},{"id":8,"time":1707250890,"name":"Martes - 04:21PM"},{"id":9,"time":1707254490,"name":"Martes - 05:21PM"},{"id":10,"time":1707308490,"name":"Miercoles - 08:21AM"},{"id":11,"time":1707312090,"name":"Miercoles - 09:21AM"}],"login":true});</script>`;
+			var cadena = `<script>console.log(' Entre aqui ');</script><script>console.log([{"id":1,"day":"1","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:42:12","updated_at":"2020-04-03 23:42:12"},{"id":2,"day":"2","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:42:31","updated_at":"2020-04-03 23:42:31"},{"id":3,"day":"3","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:43:24","updated_at":"2020-04-03 23:43:24"},{"id":4,"day":"4","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:43:45","updated_at":"2020-04-03 23:43:45"},{"id":5,"day":"5","hours_start":"08:00","hours_end":"18:00","status":"A","created_at":"2020-04-03 23:44:04","updated_at":"2020-04-03 23:44:04"}]);</script><script>console.log([{"id":0,"time":1707222090,"name":"Martes - 08:21AM"},{"id":1,"time":1707225690,"name":"Martes - 09:21AM"},{"id":2,"time":1707229290,"name":"Martes - 10:21AM"},{"id":3,"time":1707232890,"name":"Martes - 11:21AM"},{"id":4,"time":1707236490,"name":"Martes - 12:21PM"},{"id":5,"time":1707240090,"name":"Martes - 01:21PM"},{"id":6,"time":1707243690,"name":"Martes - 02:21PM"},{"id":7,"time":1707247290,"name":"Martes - 03:21PM"},{"id":8,"time":1707250890,"name":"Martes - 04:21PM"},{"id":9,"time":1707254490,"name":"Martes - 05:21PM"},{"id":10,"time":1707308490,"name":"Miercoles - 08:21AM"},{"id":11,"time":1707312090,"name":"Miercoles - 09:21AM"}]);</script><script>console.log({"success":true,"msj_general":"Listando horas disponible para entrega","data":[{"id":0,"time":1707222090,"name":"Martes - 08:21AM"},{"id":1,"time":1707225690,"name":"Martes - 09:21AM"},{"id":2,"time":1707229290,"name":"Martes - 10:21AM"},{"id":3,"time":1707232890,"name":"Martes - 11:21AM"},{"id":4,"time":1707236490,"name":"Martes - 12:21PM"},{"id":5,"time":1707240090,"name":"Martes - 01:21PM"},{"id":6,"time":1707243690,"name":"Martes - 02:21PM"},{"id":7,"time":1707247290,"name":"Martes - 03:21PM"},{"id":8,"time":1707250890,"name":"Martes - 04:21PM"},{"id":9,"time":1707254490,"name":"Martes - 05:21PM"},{"id":10,"time":1707308490,"name":"Miercoles - 08:21AM"},{"id":11,"time":1707312090,"name":"Miercoles - 09:21AM"}],"login":true});</script>`;
 
-var parser = new DOMParser();
-var doc = parser.parseFromString(data, 'text/html');
+			var parser = new DOMParser();
+			var doc = parser.parseFromString(data, 'text/html');
 
-var jsonData;
-var scripts = doc.querySelectorAll('script');
-scripts.forEach(script => {
-    var content = script.textContent.trim();
-    if (content.startsWith('console.log(') && content.endsWith(');')) {
-        var jsonContent = content.substring(content.indexOf('(') + 1, content.lastIndexOf(')'));
-        try {
-            jsonData = JSON.parse(jsonContent);
-        } catch (error) {
-            // JSON no válido en este script
-        }
-    }
-});
+			var jsonData;
+			var scripts = doc.querySelectorAll('script');
+			scripts.forEach(script => {
+				var content = script.textContent.trim();
+				if (content.startsWith('console.log(') && content.endsWith(');')) {
+					var jsonContent = content.substring(content.indexOf('(') + 1, content.lastIndexOf(')'));
+					try {
+						jsonData = JSON.parse(jsonContent);
+					} catch (error) {
+						// JSON no válido en este script
+					}
+				}
+			});
 
-console.log("Esto es el jsonData", jsonData);
+			console.log("Esto es el jsonData", jsonData);
 
 			console.log("esto es data horas Disponibles de entrega", data);
 
@@ -712,7 +712,7 @@ console.log("Esto es el jsonData", jsonData);
 				var datos = jsonData.data;
 				for (var [key, value] of Object.entries(datos)) {
 					options += "<option value=" + value.time + ">" + value.name + "</option>";
-					console.log(key+" Esto es un espacio "+value.name);
+					console.log(key + " Esto es un espacio " + value.name);
 				}
 				div_fecha.innerHTML = "<select class='form-control' id='fecha_hora_entrega' name='timepick' v-model='datetime' name='fecha_hora_entrega'>" + options + "</select>";
 			} else {
@@ -728,32 +728,32 @@ console.log("Esto es el jsonData", jsonData);
 
 			var options = '';
 
-		if (data.success) {
+			if (data.success) {
 
-			var datos = data;
+				var datos = data;
 
-			options += "<option value='0' id='one_value'>Pick - Up</option>";
+				options += "<option value='0' id='one_value'>Pick - Up</option>";
 
-			for (var key in datos) {
-				if (key === "success" || key === "msj_general") {
-					continue; // Saltar las claves "success" y "msj_general"
+				for (var key in datos) {
+					if (key === "success" || key === "msj_general") {
+						continue; // Saltar las claves "success" y "msj_general"
+					}
+
+					var value = datos[key];
+
+					options += "<option value=" + value.id + ">" + value.address + " - " + value.st_name + ", " + value.re_name + ", " + value.urb + ", " + value.sector + ", #" + value.nro_home + "</option>";
+
 				}
-				
-				var value = datos[key];
 
-				options += "<option value=" + value.id + ">" + value.address + " - " + value.st_name + ", " + value.re_name + ", " + value.urb + ", " + value.sector + ", #" + value.nro_home + "</option>";
-			
+				div_direccion_entrega.innerHTML = "<select style='pointer-events: none;' onchange='activarEnvio(this)' class='form-control' id='direccion_selected' name='direccion' v-model='selectedDirection'  >" + options + "</select><br><a href='/profile'>Agregar nueva dirección</a>";
+
+			} else {
+
+				div_direccion_entrega.innerHTML = "<select class='form-control' id='direccion_selected' name='direccion' v-model='selectedDirection'><option value='0'>Pick - Up</option></select><br><a href='/profile?tab=my-address'>Agregar nueva dirección</a>";
+				//alert(data.msj_general);
+
+				return false;
 			}
-
-			div_direccion_entrega.innerHTML = "<select style='pointer-events: none;' onchange='activarEnvio(this)' class='form-control' id='direccion_selected' name='direccion' v-model='selectedDirection'  >" +  options + "</select><br><a href='/profile'>Agregar nueva dirección</a>";
-		
-		} else {
-
-			div_direccion_entrega.innerHTML = "<select class='form-control' id='direccion_selected' name='direccion' v-model='selectedDirection'><option value='0'>Pick - Up</option></select><br><a href='/profile?tab=my-address'>Agregar nueva dirección</a>";
-			//alert(data.msj_general);
-
-			return false;
-		}
 
 			break;
 
@@ -763,7 +763,7 @@ console.log("Esto es el jsonData", jsonData);
 function procesarOrden() {
 
 	if (document.getElementById("direccion_selected")) {
-		console.log("esto es apagar usd",aPagarUsd);
+		console.log("esto es apagar usd", aPagarUsd);
 		if (checkDeliveryType == 2 && aPagarUsd < 3) {
 			Swal.fire("Bio en Línea", "Para este tipo de delivery el monto debe ser al menos de 3$", "error");
 		} else {
@@ -844,7 +844,7 @@ function activarEnvio(a) {
 }
 function getOrder(id) {
 	window.location = "/profile?orders_id=" + id.value;
-	
+
 }
 
 function actualizarResumenOrden() {
@@ -853,7 +853,7 @@ function actualizarResumenOrden() {
 		var h = '';
 		var productos = getLocal('productosb');
 		var d_envio = getLocal('envio').data[0];
-		console.log("esto es lo que hay en envio",d_envio);
+		console.log("esto es lo que hay en envio", d_envio);
 		// console.log(d_envio);
 
 		var detalle = '';
@@ -864,7 +864,7 @@ function actualizarResumenOrden() {
 		var totalEnvioD = 0.00;
 		var datos = getLocal('cartNew');
 		console.log("Estos son los datos del cartNew", datos);
-		
+
 		console.log(productos);
 
 		if (datos) {
@@ -873,7 +873,7 @@ function actualizarResumenOrden() {
 			for (var [key, value] of Object.entries(datos)) {
 				console.log("Estos son los valores de value en carnew", value);
 				var p = productos[value.product.id];
-				console.log("esto es el producto",p);
+				console.log("esto es el producto", p);
 				if (p != null) {
 					var peso = parseFloat(p.peso);
 					contador++;
@@ -881,16 +881,16 @@ function actualizarResumenOrden() {
 					// var precio_con_iva = (p.total_precio * cant);
 					// var precio_dolar = (p.total_precio_dolar * cant);
 					var precio_con_iva = (p.price * cant);
-					var precio_dolar = ((p.price * cant) / productos.tasadolar );
+					var precio_dolar = ((p.price * cant) / productos.tasadolar);
 					var nombre = p.name;
 					totalB += precio_con_iva;
 					totalD += precio_dolar;
 					totalPeso += peso * cant;
-					
+
 					detalle += '<div class="row" style="margin-bottom:5px; border-bottom:1px solid #ddd "><div class="col-md-1" style="margin:0"><img width="30px" src="storage/' + p.image + '"></div><div class="col-md-5" style="font-size:13px">' + nombre + ' <span style="color:red"> X ' + cant + '</span></div><div class="col-md-5" style="text-align:right">' + formatB(precio_con_iva) + '<br>' + formatD(up(precio_dolar, 2)) + '</div></div>';
 				}
 			}
-	
+
 
 			var peso_max = d_envio.peso_max;
 			var precioEnvioB = d_envio.precio_b;
@@ -919,7 +919,7 @@ function actualizarResumenOrden() {
 			totalEnvioD = precioEnvioD * multiplo_peso;
 			totalPagarB = totalEnvioB + totalB;
 			totalPagarD = totalEnvioD + totalD;
-				
+
 			aPagarUsd = totalPagarD;
 
 
@@ -953,11 +953,11 @@ window.onload = function () {
 	// setInterval('actualizarStore()',1500);
 }
 
-function get(evento, variables="") {
+function get(evento, variables = "") {
 	var host = window.location.host;
 	var protocol = window.location.protocol;
 	var xmlhttp = new XMLHttpRequest();
-	console.log("esto es el evento",evento);
+	console.log("esto es el evento", evento);
 	let data = new Map();
 	data['success'] = false;
 	data['msj_general'] = "Intente mas tarde";
@@ -1093,41 +1093,41 @@ function successPayment() {
 }
 
 
-	var selectDireccion = document.getElementById('direccion_selected');
+var selectDireccion = document.getElementById('direccion_selected');
 
-	if(selectDireccion !== null){
+if (selectDireccion !== null) {
 
-		var optionZero = document.createElement('option');
-		optionZero.value = '0';
-		optionZero.id = 'one_value';
-		optionZero.textContent = 'Pick - Up';
-		selectDireccion.add(optionZero); 
-	
+	var optionZero = document.createElement('option');
+	optionZero.value = '0';
+	optionZero.id = 'one_value';
+	optionZero.textContent = 'Pick - Up';
+	selectDireccion.add(optionZero);
 
-	}
- 
+
+}
+
 
 
 function deli_type(e) {
 	var column = document.getElementById('select_address');
 	var divDireccionEntrega = document.getElementById('div_direccion_entrega');
 	var selectDireccion = document.getElementById('direccion_selected');
-	
+
 	checkDeliveryType = e.value;
 	if (parseInt(e.value) > 0) {
 		// Mostrar el select y otros elementos
-		console.log("entre auqi en E VALUE", )
+		console.log("entre auqi en E VALUE",)
 		column.style.display = 'block';
-		
+
 		var oneValueElement = document.getElementById('one_value');
 		if (oneValueElement) {
 			oneValueElement.style.display = 'block';
 		}
-			selectDireccion.style.pointerEvents = 'auto';
-	
+		selectDireccion.style.pointerEvents = 'auto';
+
 		// Guardar una copia de la opción con valor 0 si aún no se ha guardado
-		
-	
+
+
 		// Eliminar la opción con valor 0 del select si existe
 		for (var i = 0; i < selectDireccion.options.length; i++) {
 			if (selectDireccion.options[i].value == '0') {
@@ -1135,10 +1135,10 @@ function deli_type(e) {
 				break;
 			}
 		}
-	
+
 		// Seleccionar la primera opción después de eliminar la opción con valor 0
 		selectDireccion.selectedIndex = 0;
-	
+
 	} else {
 		if (optionZero === null) {
 			optionZero = document.createElement('option');
@@ -1157,9 +1157,9 @@ function deli_type(e) {
 		selectDireccion.selectedIndex = selectDireccion.options.length - 1;
 
 		// Agregar la opción con valor 0 si se ha guardado
-		
+
 	}
-	
+
 
 	if (parseInt(e.value) == 2 || parseInt(e.value) == 1) {
 		console.log("Entre en Contenedor de fechas");

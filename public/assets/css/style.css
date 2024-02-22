@@ -944,6 +944,13 @@ header .dropdown-menu a:focus {
     display: none;
 }
 
+.contenedor {
+    display: flex;
+    align-items: center;
+    height: 100%; /* Asegura que el contenedor ocupe todo el espacio vertical */
+    justify-content: center;
+}
+
 .carousel-item .container {
     display: flex;
     align-items: center;

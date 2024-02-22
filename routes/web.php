@@ -54,11 +54,16 @@ Route::group(['prefix' => 'admin'], function () {
     // Route::get('/orders/{id}', 'OrdersController@showItems')->name('orders.showItems');
     Route::post('login', 'VoyagerAuthController@postLogin')->name('voyager.login');
     Route::get('voyager/order-products', 'ProductsController@index')->name('voyager.order-products.index');
+    Route::put('packages/{id}', 'PackagesController@update')->name('voyager.packages.update');
+    Route::post('packages', 'PackagesController@store')->name('voyager.packages.store');
+
+
 
     Route::get('products/{id}', 'API\ProductController@getProduct')->name("products.detalle");
     Route::get('products/{id}/edit','API\ProductController@edit')->name('products.edit');
     Route::get('/opiniones', 'RatingProductsController@index')->name('opiniones.index');
     Route::get('rating-products', 'API\RatingProductsController@index')->name('voyager.rating-products.index');
+    
 
     Route::get('/order-products', 'OrdersController@products')->name('orders.productos');
 

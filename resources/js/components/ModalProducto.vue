@@ -59,7 +59,7 @@
                                             <label>Cantidad</label>
                                             <div class="product-quantity-group">
                                                 <input id="quantity" class="form-control" type="number" name="quantity"
-                                                    v-model="cantModal" value="1">
+                                                    v-model="cantModal" value="1" :min="1" @input="handleInput(product)">
                                                 <div class="product-quantity-buttons">
                                                     <button type="button" class="btn" @click="increaseValue()">
                                                         <img src="assets/img/increase.png" alt="Increase">
@@ -118,6 +118,13 @@ export default {
         tasadolar: Number
     },
     methods: {
+        handleInput(product) {
+            if (this.cantModal < 1) {
+                this.cantModal = 1; // Establece el valor mínimo como 1 si el usuario intenta ingresar un valor negativo o 0
+            } else if (this.cantModal > product.qty_avaliable) {
+                this.cantModal = product.qty_avaliable; // Establece el valor máximo como el máximo disponible del producto
+            }
+        },
         increaseValue() {
             const productID = this.product.id;
             const qty_avaliable = this.product.qty_avaliable;

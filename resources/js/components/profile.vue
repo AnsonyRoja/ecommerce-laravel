@@ -643,7 +643,7 @@
 																				<input :class="'cantidad_' + favorite.id"
 																					type="text" name="quantity" value="1"
 																					class="form-control"
-																					v-model="cant_product[favorite.id]">
+																					v-model="cant_product[favorite.id]" @input="updateQuantity(favorite)">
 																				<div class="product-quantity-buttons"><span
 																						class="max-stock"
 																						style="display: none;">{{
@@ -886,6 +886,20 @@ export default {
 		tasadolar: Number
 	},
 	methods: {
+
+		updateQuantity(favorite) {
+            console.log("esto es product", favorite);
+            const maxStock = favorite.qty_avaliable;
+            const minStock = 1; // Valor mínimo permitido
+            const enteredQuantity = this.cant_product[favorite.id];
+
+                if (enteredQuantity < minStock) {
+                    this.cant_product[favorite.id] = minStock;
+                } else if (enteredQuantity > maxStock) {
+                    this.cant_product[favorite.id] = maxStock;
+                }
+        }, 
+		
 	 async fetchData() {
     try {
 

@@ -1918,12 +1918,13 @@ __webpack_require__.r(__webpack_exports__);
     getcategories: function getcategories() {
       var _this = this;
       this.categories.forEach(function (a, b) {
-        _this.backgrounds.push('url(storage/' + a.image + ')');
+        _this.backgrounds.push('url(http://127.0.0.1:8000/storage/' + a.image + ')');
       });
     }
   },
   mounted: function mounted() {
     this.getcategories();
+    console.log("Esta son las categorias", this.categories);
   },
   props: {
     categories: Array
@@ -2544,7 +2545,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return Math.ceil(v * Math.pow(10, n)) / Math.pow(10, n);
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    console.log("Esto es el combo_product", this.combo_product);
+  }
 });
 
 /***/ }),
@@ -3464,6 +3467,13 @@ __webpack_require__.r(__webpack_exports__);
     tasadolar: Number
   },
   methods: {
+    handleInput: function handleInput(product) {
+      if (this.cantModal < 1) {
+        this.cantModal = 1; // Establece el valor mínimo como 1 si el usuario intenta ingresar un valor negativo o 0
+      } else if (this.cantModal > product.qty_avaliable) {
+        this.cantModal = product.qty_avaliable; // Establece el valor máximo como el máximo disponible del producto
+      }
+    },
     increaseValue: function increaseValue() {
       var productID = this.product.id;
       var qty_avaliable = this.product.qty_avaliable;
@@ -3561,6 +3571,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.fetchDataArray();
   },
   methods: {
+    updateQuantity: function updateQuantity(product) {
+      console.log("esto es product", product);
+      var maxStock = product.qty_avaliable;
+      var minStock = 1; // Valor mínimo permitido
+      var enteredQuantity = this.cant_product[product.id];
+      if (enteredQuantity < minStock) {
+        this.cant_product[product.id] = minStock;
+      } else if (enteredQuantity > maxStock) {
+        this.cant_product[product.id] = maxStock;
+      }
+    },
     fetchDataArray: function fetchDataArray() {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response;
@@ -3975,7 +3996,7 @@ __webpack_require__.r(__webpack_exports__);
     LazyImg: _LazyImg_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   mounted: function mounted() {
-    // console.log("this.sliders::> ",this.sliders);
+    console.log("this.sliders::> ", this.sliders);
   }
 });
 
@@ -4068,6 +4089,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     tasadolar: Number
   },
   methods: {
+    updateQuantity: function updateQuantity(favorite) {
+      console.log("esto es product", favorite);
+      var maxStock = favorite.qty_avaliable;
+      var minStock = 1; // Valor mínimo permitido
+      var enteredQuantity = this.cant_product[favorite.id];
+      if (enteredQuantity < minStock) {
+        this.cant_product[favorite.id] = minStock;
+      } else if (enteredQuantity > maxStock) {
+        this.cant_product[favorite.id] = maxStock;
+      }
+    },
     fetchData: function fetchData() {
       var _this2 = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -7076,7 +7108,7 @@ var render = function render() {
       staticClass: "product-img"
     }, [com.image != null ? _c("LazyImg", {
       attrs: {
-        source: _vm._f("BigImage")("storage/" + com.image)
+        source: "http://127.0.0.1:8000/storage/" + com.image
       }
     }) : _vm._e(), _vm._v(" "), _c("div", {
       staticClass: "product-actions"
@@ -7159,7 +7191,7 @@ var render = function render() {
       }
     }, [_vm._v(_vm._s(com.name))]), _vm._v(" "), _c("span", {
       staticClass: "product-info"
-    }, [_vm._v(_vm._s(com.cantTotal) + " Productos")])])]);
+    }, [_vm._v(_vm._s(com.cantTotal) + " Articulos")])])]);
   }), 0)])]), _vm._v(" "), _c("div", {
     staticClass: "col-lg-12",
     attrs: {
@@ -7182,7 +7214,7 @@ var render = function render() {
       staticClass: "product-img"
     }, [com.image != null ? _c("LazyImg", {
       attrs: {
-        source: _vm._f("BigImage")("storage/" + com.image)
+        source: "http://127.0.0.1:8000/storage/" + com.image
       }
     }) : _vm._e(), _vm._v(" "), _c("div", {
       staticClass: "product-actions"
@@ -7265,7 +7297,7 @@ var render = function render() {
       }
     }, [_vm._v(_vm._s(com.name))]), _vm._v(" "), _c("span", {
       staticClass: "product-info"
-    }, [_vm._v(_vm._s(com.cantTotal) + " Productos")])])]);
+    }, [_vm._v(_vm._s(com.cantTotal) + " Articulos")])])]);
   }), 0), _vm._v(" "), _c("div", {
     staticClass: "combo-group",
     attrs: {
@@ -7281,7 +7313,7 @@ var render = function render() {
       staticClass: "product-img"
     }, [com.image != null ? _c("LazyImg", {
       attrs: {
-        source: _vm._f("BigImage")("storage/" + com.image)
+        source: "http://127.0.0.1:8000/storage/" + com.image
       }
     }) : _vm._e(), _vm._v(" "), _c("div", {
       staticClass: "product-actions"
@@ -7364,7 +7396,7 @@ var render = function render() {
       }
     }, [_vm._v(_vm._s(com.name))]), _vm._v(" "), _c("span", {
       staticClass: "product-info"
-    }, [_vm._v(_vm._s(com.cantTotal) + " Productos")])])]);
+    }, [_vm._v(_vm._s(com.cantTotal) + " Articulos")])])]);
   }), 0)])])])])]), _vm._v(" "), _c("ModalCombo", {
     attrs: {
       tasadolar: _vm.tasadolar,
@@ -7885,11 +7917,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 var render = function render() {
+  var _vm$userData;
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "col-12"
-  }, [_vm._l(_vm.userData.directions, function (direction, index) {
+  }, [_vm._l((_vm$userData = _vm.userData) === null || _vm$userData === void 0 ? void 0 : _vm$userData.directions, function (direction, index) {
     return _c("div", {
       key: direction.id,
       staticClass: "address-section",
@@ -9596,16 +9629,19 @@ var render = function render() {
       id: "quantity",
       type: "number",
       name: "quantity",
-      value: "1"
+      value: "1",
+      min: 1
     },
     domProps: {
       value: _vm.cantModal
     },
     on: {
-      input: function input($event) {
+      input: [function ($event) {
         if ($event.target.composing) return;
         _vm.cantModal = $event.target.value;
-      }
+      }, function ($event) {
+        return _vm.handleInput(_vm.product);
+      }]
     }
   }), _vm._v(" "), _c("div", {
     staticClass: "product-quantity-buttons"
@@ -9979,16 +10015,19 @@ var render = function render() {
       "class": "cantidad_" + product.id,
       attrs: {
         type: "text",
-        name: "quantity"
+        name: "quantity",
+        max: product.stock
       },
       domProps: {
         value: _vm.cant_product[product.id]
       },
       on: {
-        input: function input($event) {
+        input: [function ($event) {
           if ($event.target.composing) return;
           _vm.$set(_vm.cant_product, product.id, $event.target.value);
-        }
+        }, function ($event) {
+          return _vm.updateQuantity(product);
+        }]
       }
     }), _vm._v(" "), _c("div", {
       staticClass: "product-quantity-buttons"
@@ -13750,10 +13789,12 @@ var render = function render() {
         value: _vm.cant_product[favorite.id]
       },
       on: {
-        input: function input($event) {
+        input: [function ($event) {
           if ($event.target.composing) return;
           _vm.$set(_vm.cant_product, favorite.id, $event.target.value);
-        }
+        }, function ($event) {
+          return _vm.updateQuantity(favorite);
+        }]
       }
     }), _vm._v(" "), _c("div", {
       staticClass: "product-quantity-buttons"
@@ -99100,8 +99141,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Ansony\Desktop\ecommerce-laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Ansony\Desktop\ecommerce-laravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/developftu/Documentos/practica/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/developftu/Documentos/practica/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

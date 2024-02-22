@@ -53,6 +53,8 @@ Route::resource('packages', 'API\PackageCotroller');
 //PACKAGING
 Route::resource('packaging', 'API\DetProductPackagesController');
 
+
+
 //SETINGS
 Route::get('settings','API\SettingController@all')->name('settings');
 

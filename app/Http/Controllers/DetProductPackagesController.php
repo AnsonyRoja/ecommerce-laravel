@@ -67,11 +67,18 @@ class DetProductPackagesController extends Controller
      * @param  \App\DetProductPackages  $detProductPackages
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DetProductPackages $detProductPackages)
+    public function update(Request $request, $id)
     {
-        //
-    }
+    
+        var_dump($request);
+        // Lógica para actualizar los datos en la base de datos
+        $detProductPackage = DetProductPackages::findOrFail($id);
+        $detProductPackage->cant = $request->input('cant');
+        // Otros campos que desees actualizar
+        $detProductPackage->save();
 
+        return response()->json(['message' => 'Datos actualizados correctamente'], 200);
+    }
     /**
      * Remove the specified resource from storage.
      *

@@ -97,10 +97,9 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="over toggle-menu"></div>
-
 </main>
+
 	<script id="aaa" type="text/javascript" src="{{ mix('js/app.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/js/bio-forms.js') }}?ver=1.0.0"></script>
 	@yield('js')
@@ -132,6 +131,7 @@
 			if(!window.localStorage.getItem("ModalPrincipal")) {
 				axios.get(URLSERVER+"api/advs/type/Bienvenida").then( res => {
 					const srcImage = res.data.data[0].image;
+					console.log("que hay en", srcImage);
 					$("#modal_popup").html(`<img class="img-responsive" style="width: 100%" src="storage/${srcImage}" />`);
 					localStorage.setItem("ModalPrincipal", "visto");
 					$('#ModalPrincipal').modal('show');

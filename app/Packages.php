@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\DB;
 class Packages extends Model
 {
     protected $table='packages';
-
+    protected $fillable = [
+        'name', // Agrega el campo 'name' aquí
+        // Otros campos que desees permitir en asignación masiva
+    ];
 
     public function setNameAttribute($value)
     {
@@ -42,4 +45,5 @@ class Packages extends Model
        $fg= new FuncionesGenerales;
        return $fg->get_formato_moneda($value);
     }
+    
 }

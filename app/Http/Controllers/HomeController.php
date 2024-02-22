@@ -123,14 +123,16 @@ class HomeController extends Controller
                                 ( (products.price * taxes.value / 100) + products.price) as calculado
                                 , ((products.qty_avaliable * products.porc_stock) / 100) as qty_avaliable
                             from det_product_packages
-                            inner join products on products.id = det_product_packages.products_id
+                            inner join products on products.id = det_product_packages.product_id
                             left join det_product_taxes on det_product_taxes.products_id = products.id
                             left join taxes on taxes.id = det_product_taxes.taxes_id
                             where det_product_packages.packages_id = ".$c["id"]." and ((products.qty_avaliable * products.porc_stock) / 100) >= det_product_packages.cant and products.status = 'A'");
             
+// var_dump($c["products"]);
+                           
             foreach($c["products"] as $j => $p) {
                 $cantTotal += $p->cant_combo;
-
+              
                 if($p->qty_avaliable >= $p->cant_combo) {
                     if($p->calculado > 0){
                         $total += ($p->calculado * $p->cant_combo);
@@ -144,6 +146,7 @@ class HomeController extends Controller
             $c["cantTotal"] = $cantTotal;
             array_push($Combos,$c);
         }
+        
         $Combos = json_encode($Combos);
 
         return view("home",[

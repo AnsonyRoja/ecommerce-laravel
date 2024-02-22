@@ -2,7 +2,7 @@
 <template>
 
 <div class="col-12">
-    <div v-for="(direction, index) in userData.directions"
+    <div v-for="(direction, index) in userData?.directions"
         :key="direction.id" :id="'address-' + index"
         class="address-section">
         <div class="row">

@@ -51,7 +51,7 @@
             LazyImg
         },
         mounted() {
-            // console.log("this.sliders::> ",this.sliders);
+            console.log("this.sliders::> ",this.sliders);
         }
     }
 </script>

@@ -7,5 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class DetProductPackages extends Model
 {
     protected $table = 'det_product_packages';
-    protected $fillable = ['id'];
+    protected $fillable = ['cant', 'packages_id', 'product_id'];
+    public $timestamps = false;
+
+
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    
 }

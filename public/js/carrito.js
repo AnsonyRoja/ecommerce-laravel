@@ -878,15 +878,16 @@ function actualizarResumenOrden() {
 					var peso = parseFloat(p.peso);
 					contador++;
 					var cant = value.cant;
+					console.log("esto es la cantidad", cant);
 					// var precio_con_iva = (p.total_precio * cant);
 					// var precio_dolar = (p.total_precio_dolar * cant);
 					var precio_con_iva = (p.price * cant);
-					var precio_dolar = ((p.price * cant) / productos.tasadolar);
+					var precio_dolar = parseFloat((p.price * cant) / productos.tasadolar);
 					var nombre = p.name;
 					totalB += precio_con_iva;
 					totalD += precio_dolar;
 					totalPeso += peso * cant;
-
+					console.log("precio dolar", precio_dolar, "p price", p.price, "productos tasadolar", productos.tasadolar);
 					detalle += '<div class="row" style="margin-bottom:5px; border-bottom:1px solid #ddd "><div class="col-md-1" style="margin:0"><img width="30px" src="storage/' + p.image + '"></div><div class="col-md-5" style="font-size:13px">' + nombre + ' <span style="color:red"> X ' + cant + '</span></div><div class="col-md-5" style="text-align:right">' + formatB(precio_con_iva) + '<br>' + formatD(up(precio_dolar, 2)) + '</div></div>';
 				}
 			}
@@ -922,6 +923,9 @@ function actualizarResumenOrden() {
 
 			aPagarUsd = totalPagarD;
 
+			console.log("total envio Dolar", totalEnvioD, "totalD", totalD);
+
+			console.log("Total a pagar D", totalPagarD);
 
 			console.log("esto es el total a pagar", aPagarUsd);
 
@@ -1093,25 +1097,23 @@ function successPayment() {
 }
 
 
-var selectDireccion = document.getElementById('direccion_selected');
-
-if (selectDireccion !== null) {
 
 	var optionZero = document.createElement('option');
 	optionZero.value = '0';
 	optionZero.id = 'one_value';
 	optionZero.textContent = 'Pick - Up';
-	selectDireccion.add(optionZero);
-
-
-}
-
+	
+	if (typeof selectDireccion !== 'undefined') {
+		selectDireccion.add(optionZero);
+	}
+	
 
 
 function deli_type(e) {
 	var column = document.getElementById('select_address');
 	var divDireccionEntrega = document.getElementById('div_direccion_entrega');
 	var selectDireccion = document.getElementById('direccion_selected');
+	
 
 	checkDeliveryType = e.value;
 	if (parseInt(e.value) > 0) {

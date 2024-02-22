@@ -28,12 +28,13 @@ export default {
     methods: {
 		getcategories: function() {
 			this.categories.forEach( (a,b) => {
-				this.backgrounds.push('url(storage/'+a.image+')');
+				this.backgrounds.push('url(http://127.0.0.1:8000/storage/'+a.image+')');
 			});
         }
     },
     mounted() {
         this.getcategories();
+		console.log("Esta son las categorias", this.categories);
 	},
 	props: {
 		categories: Array

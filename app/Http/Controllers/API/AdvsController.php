@@ -90,6 +90,6 @@ class AdvsController extends BaseController
     public function ByType($type)
     {
         $Advs = Advs::where('status','A')->whereRaw('LOWER(type) LIKE ?', [trim(strtolower($type)).'%'])->orderBy('order','ASC')->get();
-        return $this->sendResponse(AdvsResource::collection($Advs), 'Advs retrieved successfully.');
+        return $this->sendResponse(AdvsResource::collection($Advs), 'Advs retrieved successfullys.');
     }
 }

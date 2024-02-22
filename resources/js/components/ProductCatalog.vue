@@ -67,7 +67,7 @@
                                 <div class="product-quantity" v-if="product.qty_avaliable > 0">
                                     <label>Cantidad</label>
                                     <div class="product-quantity-group">
-                                        <input :class="'cantidad_'+product.id" class="form-control" type="text" name="quantity" v-model="cant_product[product.id]">
+                                        <input :class="'cantidad_'+product.id" class="form-control" type="text" name="quantity" v-model="cant_product[product.id]" :max="product.stock" @input="updateQuantity(product)">
                                         <div class="product-quantity-buttons">
                                             <span class="max-stock" style="display:none;">{{product.qty_avaliable}}</span>
                                             <button type="button" class="btn " @click="increaseValue(product)">
@@ -145,7 +145,18 @@
         },
     
         methods: {
-            
+            updateQuantity(product) {
+            console.log("esto es product", product);
+            const maxStock = product.qty_avaliable;
+            const minStock = 1; // Valor mínimo permitido
+            const enteredQuantity = this.cant_product[product.id];
+
+                if (enteredQuantity < minStock) {
+                    this.cant_product[product.id] = minStock;
+                } else if (enteredQuantity > maxStock) {
+                    this.cant_product[product.id] = maxStock;
+                }
+        },   
             async fetchDataArray() {
              try {
 

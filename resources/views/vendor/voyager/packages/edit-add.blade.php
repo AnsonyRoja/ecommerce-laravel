@@ -40,6 +40,9 @@
                         <!-- CSRF TOKEN -->
                         {{ csrf_field() }}
 
+                        <div>{{ $dataType->slug }}</div>
+
+
                         <div class="panel-body">
 
                             @if (count($errors) > 0)
@@ -58,6 +61,8 @@
                             @endphp
 
 @foreach($dataTypeRows as $row)
+
+
     <!-- GET THE DISPLAY OPTIONS -->
     @php
         $display_options = $row->details->display ?? NULL;
@@ -95,7 +100,7 @@
     </div>
 @endforeach
 
-                        </div><!-- panel-body -->
+    </div><!-- panel-body -->
        <div class="panel">
             <div class="panel-header text-center text-success">
                         Cantidades
@@ -105,8 +110,7 @@
 
                         
                     <table id="tabla" style="margin: 0 auto" >
-                    </table>    
-                                    
+                    </table>     
                     </div>
             </div>
        </div>                 
@@ -118,9 +122,8 @@
                             @yield('submit-buttons')
                         </div>
                     </form>
-
                     <iframe id="form_target" name="form_target" style="display:none"></iframe>
-                    <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post"
+                    <form id="my_form" action="{{ route('voyager.upload')}}" target="form_target" method="post"
                             enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
                         <input name="image" id="upload_file" type="file"
                                  onchange="$('#my_form').submit();this.value='';">
@@ -181,7 +184,8 @@ if($dataTypeContent->id){
 $pack = DB::select("SELECT det_product_packages.*, products.name FROM det_product_packages INNER JOIN products ON products.id=det_product_packages.products_id WHERE packages_id='$dataTypeContent->id'");
 
 echo "var data= new Array(".count($pack).");";                                
-                                foreach($pack as $valor){
+                        
+        foreach($pack as $valor){
 
 echo "
     var row = table.insertRow(".$i.");
@@ -194,7 +198,10 @@ echo "
         
        
         ";
-        $i++;               }
+
+        $i++;  
+
+       }
     }else{
         echo "var data= new Array();"; 
 
@@ -236,7 +243,7 @@ $(".select2-ajax").on('change', function(){
             
             i++
         });
-        //alert("You have selected the country - " + countries.join("<input type='text'> "));
+        // alert("You have selected the country - " + countries.join("<input type='text'> "));
 });
 
 
@@ -311,5 +318,8 @@ $(".select2-ajax").on('change', function(){
             });
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+    
+
     </script>
 @stop

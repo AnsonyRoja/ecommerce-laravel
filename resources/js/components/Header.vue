@@ -142,8 +142,16 @@
 					</div>
 					<ul class="navbar-nav">
 						<li class="nav-item" v-for="cat in categories.slice(0,5)" :key="cat.id">
+
 							<a class="nav-link" :href="'/catalog?cat='+cat.id">{{cat.name}}</a>
 						</li>
+						<!-- <li id="nav-categories" class="nav-item dropdown">
+							
+							<a class="nav-link dropdown-toggle" href="#" id="navbarCategories" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Viveres</a>
+							<div class="dropdown-menu" aria-labelledby="navbarCategories">
+								<a v-for="cat in categories.slice(5)" :key="cat.id" class="dropdown-item" :href="'/catalog?cat='+cat.id">{{cat.name}}</a>
+							</div>
+						</li> -->
 						<li id="nav-categories" class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarCategories" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Más Categorías

@@ -172,28 +172,20 @@ async loadParroquiaHab(event) {
         update_profile(user)
 			{
 				const that = this;
-				console.log(user);
+				console.log("this user> antes de guardarse",user);
 
 				const user_data = {
-					...user,
-					habDirection: {
-						state_id: user.habDirection.state_id,
-						region_id: user.habDirection.region_id,
-						city_id: user.habDirection.city_id,
-						urb: user.habDirection.urb,
-						sector: user.habDirection.sector,
-						nro_home: user.habDirection.nro_home,
-						zip_code: user.habDirection.zip_code,
-						reference_point: user.habDirection?.reference_point
-						}
+					...user.habDirection,
+				
 					};
-					console.log("esto es user_data",user_data);
+					console.log("esto es user_data", user_data);
 				axios.post(URLSERVER+'api/update_profile', {
                     user_data: user_data ,
                 })
                 .then(function (response) {
                 	console.log(response.data);
-					that.userData = response?.data;
+					that.userData = user_data;
+          console.log("valor de that.userData",that.userData);
 					fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
 					Swal.fire(
 						'Perfil',

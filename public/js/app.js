@@ -2728,27 +2728,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     update_profile: function update_profile(user) {
-      var _user$habDirection;
       var that = this;
-      console.log(user);
-      var user_data = _objectSpread(_objectSpread({}, user), {}, {
-        habDirection: {
-          state_id: user.habDirection.state_id,
-          region_id: user.habDirection.region_id,
-          city_id: user.habDirection.city_id,
-          urb: user.habDirection.urb,
-          sector: user.habDirection.sector,
-          nro_home: user.habDirection.nro_home,
-          zip_code: user.habDirection.zip_code,
-          reference_point: (_user$habDirection = user.habDirection) === null || _user$habDirection === void 0 ? void 0 : _user$habDirection.reference_point
-        }
-      });
+      console.log("this user> antes de guardarse", user);
+      var user_data = _objectSpread({}, user.habDirection);
       console.log("esto es user_data", user_data);
       axios.post(URLSERVER + 'api/update_profile', {
         user_data: user_data
       }).then(function (response) {
         console.log(response.data);
-        that.userData = response === null || response === void 0 ? void 0 : response.data;
+        that.userData = user_data;
+        console.log("valor de that.userData", that.userData);
         fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
         Swal.fire('Perfil', 'Tus datos han sido guardado exitosamente', 'success');
       })["catch"](function (error) {
@@ -4089,6 +4078,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     tasadolar: Number
   },
   methods: {
+    updateDetails: function updateDetails() {
+      this.update_profile(this.userData);
+    },
     updateQuantity: function updateQuantity(favorite) {
       console.log("esto es product", favorite);
       var maxStock = favorite.qty_avaliable;
@@ -4289,24 +4281,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     update_profile: function update_profile(user) {
       var that = this;
       console.log(user);
-      var user_data = _objectSpread(_objectSpread({}, user), {}, {
-        habDirection: {
-          state_id: user.habDirection.state_id,
-          region_id: user.habDirection.region_id,
-          city_id: user.habDirection.city_id,
-          urb: user.habDirection.urb,
-          sector: user.habDirection.sector,
-          nro_home: user.habDirection.nro_home,
-          zip_code: user.habDirection.zip_code,
-          reference_point: user.habDirection.reference_point
-        }
-      });
+      var user_data = _objectSpread({}, user);
       console.log("esto es user_data", user_data);
       axios.post(URLSERVER + 'api/update_profile', {
         user_data: user_data
       }).then(function (response) {
         console.log(response.data);
-        that.userData = response.data;
+        that.userData = user_data;
         fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
         Swal.fire('Perfil', 'Tus datos han sido guardado exitosamente', 'success');
       })["catch"](function (error) {
@@ -8907,8 +8888,12 @@ var staticRenderFns = [function () {
       href: "/"
     }
   }, [_c("img", {
+    staticStyle: {
+      width: "100%",
+      height: "auto"
+    },
     attrs: {
-      src: "/img/logo.png",
+      src: "/img/logo_bio.png",
       alt: "Bio Mercados"
     }
   })])]);
@@ -13027,7 +13012,19 @@ var render = function render() {
     attrs: {
       "for": "user-name"
     }
-  }, [_vm._v("Nombre y Apellido (s):")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c("input", {
+  }, [_vm._v("Nombre y Apellido (s):")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-confirm-info",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("img", {
+    attrs: {
+      src: "assets/img/confirmar-bio-mercados.svg"
+    },
+    on: {
+      click: _vm.updateDetails
+    }
+  })]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -13059,7 +13056,19 @@ var render = function render() {
     attrs: {
       "for": "user-email"
     }
-  }, [_vm._v("Correo Electrónico:")]), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("input", {
+  }, [_vm._v("Correo Electrónico:")]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-confirm-info",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("img", {
+    attrs: {
+      src: "assets/img/confirmar-bio-mercados.svg"
+    },
+    on: {
+      click: _vm.updateDetails
+    }
+  })]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -13091,7 +13100,19 @@ var render = function render() {
     attrs: {
       "for": "user-birthday"
     }
-  }, [_vm._v("Cumpleaños:")]), _vm._v(" "), _vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), _c("input", {
+  }, [_vm._v("Cumpleaños:")]), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-confirm-info",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("img", {
+    attrs: {
+      src: "assets/img/confirmar-bio-mercados.svg"
+    },
+    on: {
+      click: _vm.updateDetails
+    }
+  })]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -13123,7 +13144,19 @@ var render = function render() {
     attrs: {
       "for": "user-gender"
     }
-  }, [_vm._v("Sexo:")]), _vm._v(" "), _vm._m(7), _vm._v(" "), _vm._m(8), _vm._v(" "), _c("select", {
+  }, [_vm._v("Sexo:")]), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-confirm-info",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("img", {
+    attrs: {
+      src: "assets/img/confirmar-bio-mercados.svg"
+    },
+    on: {
+      click: _vm.updateDetails
+    }
+  })]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -13167,7 +13200,19 @@ var render = function render() {
     attrs: {
       "for": "user-contact-phone"
     }
-  }, [_vm._v("Teléfono de\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tContacto:")]), _vm._v(" "), _vm._m(9), _vm._v(" "), _vm._m(10), _vm._v(" "), _c("input", {
+  }, [_vm._v("Teléfono de\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tContacto:")]), _vm._v(" "), _vm._m(5), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-confirm-info",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("img", {
+    attrs: {
+      src: "assets/img/confirmar-bio-mercados.svg"
+    },
+    on: {
+      click: _vm.updateDetails
+    }
+  })]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -13198,7 +13243,19 @@ var render = function render() {
     attrs: {
       "for": "user-office-phone"
     }
-  }, [_vm._v("Teléfono de Oficina:")]), _vm._v(" "), _vm._m(11), _vm._v(" "), _vm._m(12), _vm._v(" "), _c("input", {
+  }, [_vm._v("Teléfono de Oficina:")]), _vm._v(" "), _vm._m(6), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-confirm-info",
+    attrs: {
+      type: "button"
+    }
+  }, [_c("img", {
+    attrs: {
+      src: "assets/img/confirmar-bio-mercados.svg"
+    },
+    on: {
+      click: _vm.updateDetails
+    }
+  })]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -13229,14 +13286,14 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("div", {
     staticClass: "col-lg-6"
-  })], 1)])])]), _vm._v(" "), _vm._m(13)])]), _vm._v(" "), _c("div", {
+  })], 1)])])]), _vm._v(" "), _vm._m(7)])]), _vm._v(" "), _c("div", {
     staticClass: "tab-pane fade",
     attrs: {
       id: "my-address",
       role: "tabpanel",
       "aria-labelledby": "my-address-tab"
     }
-  }, [_vm._m(14), _vm._v(" "), _c("div", {
+  }, [_vm._m(8), _vm._v(" "), _c("div", {
     staticClass: "tab-content",
     attrs: {
       id: "address-content"
@@ -13264,7 +13321,7 @@ var render = function render() {
       role: "tabpanel",
       "aria-labelledby": "my-orders-tab"
     }
-  }, [_vm._m(15), _vm._v(" "), _c("div", {
+  }, [_vm._m(9), _vm._v(" "), _c("div", {
     staticClass: "tab-content",
     staticStyle: {
       position: "relative"
@@ -13298,7 +13355,7 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("div", {
     staticClass: "order-table"
-  }, [_vm._m(16), _vm._v(" "), _vm._l(_vm.orders, function (order) {
+  }, [_vm._m(10), _vm._v(" "), _vm._l(_vm.orders, function (order) {
     return _c("div", {
       key: order.id,
       staticClass: "row"
@@ -13440,7 +13497,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "order-table"
-  }, [_vm._m(17), _vm._v(" "), _vm._l(_vm.en_proceso, function (order) {
+  }, [_vm._m(11), _vm._v(" "), _vm._l(_vm.en_proceso, function (order) {
     return _c("div", {
       key: order.id,
       staticClass: "row"
@@ -13501,7 +13558,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "order-table"
-  }, [_vm._m(18), _vm._v(" "), _vm._l(_vm.completos, function (order) {
+  }, [_vm._m(12), _vm._v(" "), _vm._l(_vm.completos, function (order) {
     return _c("div", {
       key: order.id,
       staticClass: "row"
@@ -13599,7 +13656,7 @@ var render = function render() {
       role: "tabpanel",
       "aria-labelledby": "my-favorites"
     }
-  }, [_vm._m(19), _vm._v(" "), _c("div", {
+  }, [_vm._m(13), _vm._v(" "), _c("div", {
     staticClass: "tab-content",
     attrs: {
       id: "orders-content"
@@ -14021,13 +14078,13 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("button", {
-    staticClass: "btn btn-confirm-info",
+    staticClass: "btn btn-edit-info",
     attrs: {
       type: "button"
     }
   }, [_c("img", {
     attrs: {
-      src: "assets/img/confirmar-bio-mercados.svg"
+      src: "assets/img/editar-bio-mercados.svg"
     }
   })]);
 }, function () {
@@ -14047,13 +14104,13 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("button", {
-    staticClass: "btn btn-confirm-info",
+    staticClass: "btn btn-edit-info",
     attrs: {
       type: "button"
     }
   }, [_c("img", {
     attrs: {
-      src: "assets/img/confirmar-bio-mercados.svg"
+      src: "assets/img/editar-bio-mercados.svg"
     }
   })]);
 }, function () {
@@ -14073,19 +14130,6 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("button", {
-    staticClass: "btn btn-confirm-info",
-    attrs: {
-      type: "button"
-    }
-  }, [_c("img", {
-    attrs: {
-      src: "assets/img/confirmar-bio-mercados.svg"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("button", {
     staticClass: "btn btn-edit-info",
     attrs: {
       type: "button"
@@ -14093,71 +14137,6 @@ var staticRenderFns = [function () {
   }, [_c("img", {
     attrs: {
       src: "assets/img/editar-bio-mercados.svg"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("button", {
-    staticClass: "btn btn-confirm-info",
-    attrs: {
-      type: "button"
-    }
-  }, [_c("img", {
-    attrs: {
-      src: "assets/img/confirmar-bio-mercados.svg"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("button", {
-    staticClass: "btn btn-edit-info",
-    attrs: {
-      type: "button"
-    }
-  }, [_c("img", {
-    attrs: {
-      src: "assets/img/editar-bio-mercados.svg"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("button", {
-    staticClass: "btn btn-confirm-info",
-    attrs: {
-      type: "button"
-    }
-  }, [_c("img", {
-    attrs: {
-      src: "assets/img/confirmar-bio-mercados.svg"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("button", {
-    staticClass: "btn btn-edit-info",
-    attrs: {
-      type: "button"
-    }
-  }, [_c("img", {
-    attrs: {
-      src: "assets/img/editar-bio-mercados.svg"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("button", {
-    staticClass: "btn btn-confirm-info",
-    attrs: {
-      type: "button"
-    }
-  }, [_c("img", {
-    attrs: {
-      src: "assets/img/confirmar-bio-mercados.svg"
     }
   })]);
 }, function () {

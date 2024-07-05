@@ -155,7 +155,7 @@
 																<button class="btn btn-edit-info" type="button"><img
 																		src="assets/img/editar-bio-mercados.svg"></button>
 																<button class="btn btn-confirm-info" type="button"><img
-																		src="assets/img/confirmar-bio-mercados.svg"></button>
+																		src="assets/img/confirmar-bio-mercados.svg" @click="updateDetails" ></button>
 																<input type="text" class="form-control" id="user-name"
 																	name="user-name" disabled="disabled" value=""
 																	v-model="userData.name">
@@ -175,7 +175,7 @@
 																<button class="btn btn-edit-info" type="button"><img
 																		src="assets/img/editar-bio-mercados.svg"></button>
 																<button class="btn btn-confirm-info" type="button"><img
-																		src="assets/img/confirmar-bio-mercados.svg"></button>
+																		src="assets/img/confirmar-bio-mercados.svg" @click="updateDetails" ></button>
 																<input type="email" class="form-control" id="user-email"
 																	name="user-email" disabled="disabled" value=""
 																	v-model="userData.email">
@@ -187,7 +187,7 @@
 																<button class="btn btn-edit-info" type="button"><img
 																		src="assets/img/editar-bio-mercados.svg"></button>
 																<button class="btn btn-confirm-info" type="button"><img
-																		src="assets/img/confirmar-bio-mercados.svg"></button>
+																		src="assets/img/confirmar-bio-mercados.svg" @click="updateDetails" ></button>
 																<input type="date" class="form-control" id="user-birthday"
 																	name="user-birthday" disabled="disabled"
 																	value="DD/MM/YYYY" v-model="userData.birthdate">
@@ -199,7 +199,7 @@
 																<button class="btn btn-edit-info" type="button"><img
 																		src="assets/img/editar-bio-mercados.svg"></button>
 																<button class="btn btn-confirm-info" type="button"><img
-																		src="assets/img/confirmar-bio-mercados.svg"></button>
+																		src="assets/img/confirmar-bio-mercados.svg" @click="updateDetails" ></button>
 																<select id="user-gender" name="user-gender"
 																	disabled="disabled" class="form-control"
 																	v-model="userData.sex">
@@ -231,7 +231,7 @@
 																<button class="btn btn-edit-info" type="button"><img
 																		src="assets/img/editar-bio-mercados.svg"></button>
 																<button class="btn btn-confirm-info" type="button"><img
-																		src="assets/img/confirmar-bio-mercados.svg"></button>
+																		src="assets/img/confirmar-bio-mercados.svg" @click="updateDetails" ></button>
 																<input type="text" class="form-control"
 																	id="user-contact-phone" name="user-contact-phone"
 																	disabled="disabled" v-model="userData.phone">
@@ -243,7 +243,7 @@
 																<button class="btn btn-edit-info" type="button"><img
 																		src="assets/img/editar-bio-mercados.svg"></button>
 																<button class="btn btn-confirm-info" type="button"><img
-																		src="assets/img/confirmar-bio-mercados.svg"></button>
+																		src="assets/img/confirmar-bio-mercados.svg" @click="updateDetails" ></button>
 																<input type="text" class="form-control"
 																	id="user-office-phone" name="user-office-phone"
 																	disabled="disabled" v-model="userData.phone_home">
@@ -887,6 +887,12 @@ export default {
 	},
 	methods: {
 
+		updateDetails() {
+
+      this.update_profile(this.userData);
+    
+	},
+
 		updateQuantity(favorite) {
             console.log("esto es product", favorite);
             const maxStock = favorite.qty_avaliable;
@@ -1043,16 +1049,7 @@ export default {
 
 			const user_data = {
 				...user,
-				habDirection: {
-					state_id: user.habDirection.state_id,
-					region_id: user.habDirection.region_id,
-					city_id: user.habDirection.city_id,
-					urb: user.habDirection.urb,
-					sector: user.habDirection.sector,
-					nro_home: user.habDirection.nro_home,
-					zip_code: user.habDirection.zip_code,
-					reference_point: user.habDirection.reference_point
-				}
+				
 			};
 			console.log("esto es user_data", user_data);
 			axios.post(URLSERVER + 'api/update_profile', {
@@ -1060,7 +1057,7 @@ export default {
 			})
 				.then(function (response) {
 					console.log(response.data);
-					that.userData = response.data;
+					that.userData = user_data;
 					fetch(URLHOME + "api_rapida.php?evento=obtenerTodo");
 					Swal.fire(
 						'Perfil',

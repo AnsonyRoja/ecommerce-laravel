@@ -12,7 +12,7 @@
 	<!--<link rel="stylesheet" type="text/css" href="{{ asset('css/new-styles.css') }}?ver=2.0.4">-->
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-171491944-1"></script>
+	{{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-171491944-1"></script> --}}
 	<script>
 	  var url_base = "{{ str_replace('http:','https:',url('/')) }}";
 	  window.dataLayer = window.dataLayer || [];
@@ -29,6 +29,7 @@
 	<!-- Facebook Pixel Code -->
 	
 	<script>
+		
 	!function(f,b,e,v,n,t,s)
 	{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 	n.callMethod.apply(n,arguments):n.queue.push(arguments)};

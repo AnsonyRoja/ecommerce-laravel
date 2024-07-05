@@ -114,9 +114,11 @@ class RegisterController extends BaseController
             ->where('id', $data_user["user_data"]['id'])
             ->update([
                 'name' => $data_user["user_data"]['name'],
+                'email' => $data_user["user_data"]['email'], 
             ]);
     
         // Actualizar datos de personas (peoples)
+        
         DB::table('peoples')
             ->where('id', $data_user["user_data"]['peoples_id'])
             ->update([
@@ -126,6 +128,7 @@ class RegisterController extends BaseController
                 'cities_id' => $data_user["user_data"]['city_id'],
                 'phone' => $data_user["user_data"]['phone'],
                 'phone_home' => $data_user["user_data"]['phone_home'],
+                
             ]);
     
         // Verificar si el usuario tiene dirección de habitación existente
@@ -153,12 +156,12 @@ class RegisterController extends BaseController
                     ->where('users_id', $data_user["user_data"]['id'])
                     ->where('type', "=", "home")
                     ->update([
-                        'cities_id' => $data_user["user_data"]["habDirection"]["city_id"],
-                        'zip_code' => $data_user["user_data"]["habDirection"]["zip_code"],
-                        'urb' => $data_user["user_data"]["habDirection"]["urb"],
-                        'sector' => $data_user["user_data"]["habDirection"]["sector"],
-                        'nro_home' => $data_user["user_data"]["habDirection"]["nro_home"],
-                        'reference_point' => $data_user["user_data"]["habDirection"]["reference_point"],
+                        'cities_id' => $data_user["user_data"]["habDirection"][0]["city_id"],
+                        'zip_code' => $data_user["user_data"]["habDirection"][0]["zip_code"],
+                        'urb' => $data_user["user_data"]["habDirection"][0]["urb"],
+                        'sector' => $data_user["user_data"]["habDirection"][0]["sector"],
+                        'nro_home' => $data_user["user_data"]["habDirection"][0]["nro_home"],
+                        'reference_point' => $data_user["user_data"]["habDirection"][0]["reference_point"],
                         'address' => '',
                     ]);
             }

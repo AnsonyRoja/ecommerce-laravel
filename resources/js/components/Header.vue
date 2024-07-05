@@ -29,7 +29,7 @@
 						</button>
 					</div>
 					<div id="brand-header" class="col-lg-2 col-4">
-						<a  href="/" class="navbar-brand"><img  src="/img/logo.png" alt="Bio Mercados"></a>
+						<a  href="/" class="navbar-brand"><img  src="/img/logo_bio.png" alt="Bio Mercados" style="width: 100%; height: auto"></a>
 					</div>
 
 					<div id="search-header" class="col-lg-6 col-md-12">
@@ -143,7 +143,25 @@
 					<ul class="navbar-nav">
 						<li class="nav-item" v-for="cat in categories.slice(0,5)" :key="cat.id">
 
-							<a class="nav-link" :href="'/catalog?cat='+cat.id">{{cat.name}}</a>
+							<a class="nav-link" :href="'/catalog?cat=' + cat.id">{{ cat.name }}</a>
+
+					<!-- <template v-if="cat.name === 'VIVERES II'">
+						<div class="dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								{{ cat.name }}
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item" href="#">Arroz</a>
+								<a class="dropdown-item" href="#">Arroz</a>
+							</div>
+						</div>
+						</template>
+						<template v-else>
+
+							<a class="nav-link" :href="'/catalog?cat=' + cat.id">{{ cat.name }}</a>
+
+						</template> -->
+
 						</li>
 						<!-- <li id="nav-categories" class="nav-item dropdown">
 							
